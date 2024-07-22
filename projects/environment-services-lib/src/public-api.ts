@@ -2,5 +2,5 @@
  * Public API Surface of environment-services-lib
  */
 
-export * from './lib/environment-services-lib.service';
-export * from './lib/environment-services-lib.component';
+export * from './theming/theming-service';
+export * from './theming/theming-service.models';

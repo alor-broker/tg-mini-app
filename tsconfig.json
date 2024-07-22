@@ -4,14 +4,14 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "api-lib": [
-        "./dist/api-lib"
+      "@api-lib": [
+        "./projects/api-lib/src/public-api.ts"
       ],
-      "environment-services-lib": [
-        "./dist/environment-services-lib"
+      "@environment-services-lib": [
+        "./projects/environment-services-lib/src/public-api.ts"
       ],
-      "shared-components-lib": [
-        "./dist/shared-components-lib"
+      "@shared-components-lib": [
+        "./projects/shared-components-lib/src/public-api.ts"
       ]
     },
     "outDir": "./dist/out-tsc",

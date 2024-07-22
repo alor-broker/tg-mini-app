@@ -10,7 +10,7 @@
       "projectType": "library",
       "root": "projects/api-lib",
       "sourceRoot": "projects/api-lib/src",
-      "prefix": "lib",
+      "prefix": "api",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -43,7 +43,7 @@
       "projectType": "library",
       "root": "projects/environment-services-lib",
       "sourceRoot": "projects/environment-services-lib/src",
-      "prefix": "lib",
+      "prefix": "es",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -76,7 +76,7 @@
       "projectType": "library",
       "root": "projects/shared-components-lib",
       "sourceRoot": "projects/shared-components-lib/src",
-      "prefix": "lib",
+      "prefix": "sc",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -101,6 +101,107 @@
               "zone.js",
               "zone.js/testing"
             ]
+          }
+        }
+      }
+    },
+    "tg-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
+      "root": "projects/tg-app",
+      "sourceRoot": "projects/tg-app/src",
+      "prefix": "tga",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/tg-app",
+            "index": "projects/tg-app/src/index.html",
+            "browser": "projects/tg-app/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/tg-app/tsconfig.app.json",
+            "inlineStyleLanguage": "less",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/tg-app/public"
+              }
+            ],
+            "styles": [
+              "projects/tg-app/src/styles.less"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kB",
+                  "maximumError": "4kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/tg-app/src/environments/environment.ts",
+                  "with": "projects/tg-app/src/environments/environment.development.ts"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "tg-app:build:production"
+            },
+            "development": {
+              "buildTarget": "tg-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/tg-app/tsconfig.spec.json",
+            "inlineStyleLanguage": "less",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/tg-app/public"
+              }
+            ],
+            "styles": [
+              "projects/tg-app/src/styles.less"
+            ],
+            "scripts": []
           }
         }
       }

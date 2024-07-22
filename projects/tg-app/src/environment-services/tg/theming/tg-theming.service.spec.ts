@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApiLibService } from './api-lib.service';
+import { TgThemingService } from './tg-theming.service';
 
-describe('ApiLibService', () => {
-  let service: ApiLibService;
+describe('TgThemingService', () => {
+  let service: TgThemingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ApiLibService);
+    service = TestBed.inject(TgThemingService);
   });
 
   it('should be created', () => {
