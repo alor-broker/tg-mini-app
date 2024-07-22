@@ -3,6 +3,17 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "api-lib": [
+        "./dist/api-lib"
+      ],
+      "environment-services-lib": [
+        "./dist/environment-services-lib"
+      ],
+      "shared-components-lib": [
+        "./dist/shared-components-lib"
+      ]
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
