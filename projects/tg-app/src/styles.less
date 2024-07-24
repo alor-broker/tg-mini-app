@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@import "vars";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 14px;
+  padding: @main-padding;
+  font-family: "Montserrat", sans-serif;
+  background-color: @tg-background-color;
+  color: @tg-text-color;
+}
+
+a {
+  color: @tg-link-text-color;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: @tg-button-background-color;
+  color: @tg-button-text-color;
+}
+
+.mb {
+  margin-bottom: @main-padding;
+}

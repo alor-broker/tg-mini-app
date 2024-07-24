@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ApplicationProviders } from "./application-providers";
+import { TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.less',
-  providers: [...ApplicationProviders]
+  styleUrl: './app.component.less'
 })
 export class AppComponent {
-  title = 'tg-app';
+
+  constructor(
+    @Inject(TelegramWebApp) private readonly tgWebApp: WebApp
+  ) {
+    this.tgWebApp.ready();
+  }
 }
