@@ -2,6 +2,7 @@
 
 export interface ApiConfig {
   apiUrl: string;
+  userDataUrl: string;
 }
 
 export abstract class ApiConfigProvider {

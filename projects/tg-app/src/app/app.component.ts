@@ -12,4 +12,7 @@ import { ApplicationProviders } from "./application-providers";
 })
 export class AppComponent {
   title = 'tg-app';
+
+  constructor() {
+  }
 }
