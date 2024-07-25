@@ -1,9 +1,11 @@
+import { Injectable } from "@angular/core";
 import {
   ThemeConfig,
   ThemeConfigKey,
   ThemingService
 } from "@environment-services-lib";
 
+@Injectable({ providedIn: 'root' })
 export class TgThemingService extends ThemingService {
   // just for example
   private readonly config: ThemeConfig = {

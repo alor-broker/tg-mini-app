@@ -136,6 +136,11 @@
             "styles": [
               "projects/tg-app/src/styles.less"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/tg-app/src/styles"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
