@@ -35,7 +35,7 @@ interface UserState {
 })
 export class AuthService {
 
-  private readonly accountUrl = environment.clientDataUrl + '/auth/actions';
+  private readonly accountUrl = environment.userDataUrl + '/auth/actions';
   private readonly ssoUrl = environment.ssoUrl;
   private readonly ssoTokenStorageKey = 'sso';
   private readonly currentUserSub = new BehaviorSubject<UserState | null>(null);
