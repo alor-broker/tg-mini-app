@@ -12,8 +12,8 @@ import {
   ApiResponse
 } from "@api-lib";
 import { RefreshJwtTokenResponse } from "./auth-service.models";
-import { HttpContextTokens } from "../http.constatnts";
 import { map } from "rxjs";
+import { HttpContextTokens } from "../http.constants";
 
 @Injectable({
   providedIn: 'root'
