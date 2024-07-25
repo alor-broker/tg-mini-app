@@ -31,6 +31,7 @@ export class IdentificationComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO: убрать, когда появятся http-запросы (сделано для возможности перекидывать на SSO
     this.authService.accessToken$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
