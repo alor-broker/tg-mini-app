@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { RoutesHelper } from "./core/utils/routes.helper";
+import { HomePageComponent } from "./home/pages/home-page/home-page.component";
 
 export const routes: Routes = [
   {
@@ -15,8 +17,8 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/identification/components/password-create/password-create.component').then(mod => mod.PasswordCreateComponent)
   },
   {
-    path: 'main',
-    loadComponent: () => import('./pages/main/components/main/main.component').then(mod => mod.MainComponent)
+    path: RoutesHelper.appRoutes.home,
+    component: HomePageComponent
   },
   {
     path: '',

@@ -1,11 +1,19 @@
-import { Component, Inject } from '@angular/core';
+import {
+  Component,
+  Inject
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
+import {
+  TelegramWebApp,
+  WebApp
+} from "@m1cron-labs/ng-telegram-mini-app";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.less'
 })

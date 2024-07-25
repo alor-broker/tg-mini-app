@@ -138,7 +138,9 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/tg-app/src/styles"
+                "projects/tg-app/src/styles",
+                "projects/tg-app/src/styles/utils",
+                "projects/tg-app/src/styles/components"
               ]
             },
             "scripts": []

@@ -7,6 +7,7 @@ import { AuthService } from "../../../auth/services/auth/auth.service";
 import { BiometryService, StorageService } from "@environment-services-lib";
 import { AsyncPipe } from "@angular/common";
 import { PasswordFormComponent } from "../password-form/password-form.component";
+import { RoutesHelper } from "../../../../core/utils/routes.helper";
 
 @Component({
   selector: 'tga-identification',
@@ -61,7 +62,7 @@ export class IdentificationComponent implements OnInit {
               }
 
               if (v === val) {
-                this.router.navigate([ '/main' ])
+                this.router.navigate([ `/${RoutesHelper.appRoutes.home}` ])
               } else {
                 this.passwordControl.setValue('');
               }
