@@ -1,0 +1,7 @@
+@if(portfolioSummary$ | async; as portfolioSummary) {
+  <div class="d-flex flex-column justify-content-center">
+    <span class="text-center">Стоимость портфеля</span>
+    <h1 class="text-center">{{portfolioSummary.portfolioEvaluation | number: '1.0-2'}} ₽</h1>
+  </div>
+}
+

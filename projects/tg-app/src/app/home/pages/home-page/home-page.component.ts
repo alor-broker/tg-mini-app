@@ -4,6 +4,7 @@ import {
   NzCollapsePanelComponent
 } from "ng-zorro-antd/collapse";
 import { PortfolioSelectionComponent } from "../../components/portfolio-selection/portfolio-selection.component";
+import { PortfolioEvaluationComponent } from "../../components/portfolio-evaluation/portfolio-evaluation.component";
 
 @Component({
   selector: 'tga-home-page',
@@ -11,7 +12,8 @@ import { PortfolioSelectionComponent } from "../../components/portfolio-selectio
   imports: [
     NzCollapseComponent,
     NzCollapsePanelComponent,
-    PortfolioSelectionComponent
+    PortfolioSelectionComponent,
+    PortfolioEvaluationComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'
