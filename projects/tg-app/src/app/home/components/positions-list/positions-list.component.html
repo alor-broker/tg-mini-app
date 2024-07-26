@@ -1,5 +1,5 @@
 @for (position of positions$ | async; track position) {
-  <div class="d-flex flex-row align-items-center flex-gap-3 item">
+  <div class="d-flex flex-row align-items-center flex-gap-3 user-select-none">
     <div>
       <nz-avatar
         #avatar
@@ -31,4 +31,6 @@
       </div>
     </div>
   </div>
+}@empty {
+  <span>В Вашем порфеле нет позиций.</span>
 }

@@ -6,6 +6,7 @@ import {
 import { PortfolioSelectionComponent } from "../../components/portfolio-selection/portfolio-selection.component";
 import { PortfolioEvaluationComponent } from "../../components/portfolio-evaluation/portfolio-evaluation.component";
 import { PositionsListComponent } from "../../components/positions-list/positions-list.component";
+import { TradeListComponent } from "../../components/trade-list/trade-list.component";
 
 @Component({
   selector: 'tga-home-page',
@@ -15,7 +16,8 @@ import { PositionsListComponent } from "../../components/positions-list/position
     NzCollapsePanelComponent,
     PortfolioSelectionComponent,
     PortfolioEvaluationComponent,
-    PositionsListComponent
+    PositionsListComponent,
+    TradeListComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'
