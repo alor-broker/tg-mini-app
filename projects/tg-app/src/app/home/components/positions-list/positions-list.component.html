@@ -1,0 +1,34 @@
+@for (position of positions$ | async; track position) {
+  <div class="d-flex flex-row align-items-center flex-gap-3 item">
+    <div>
+      <nz-avatar
+        #avatar
+        [nzText]="iconSymbol(position)"
+        [nzSize]="32"
+        nzGap='4'
+        [nzSrc]="getIconUrl(position)">
+      </nz-avatar>
+    </div>
+    <div
+      class="d-flex flex-row flex-fill"
+      [class.bottom-border]="!$last"
+    >
+      <div class="d-flex flex-column flex-fill">
+        <div>
+          <span nz-typography nzEllipsis>
+            <strong>{{ positionTitle(position) }}</strong>
+          </span>
+        </div>
+        @if (showLots(position)) {
+          <div>
+            {{ position.qtyTFutureBatch | number }} л.
+          </div>
+        }
+      </div>
+
+      <div class="d-flex align-items-center">
+        {{ position.volume | number: '1.0-2' }} ₽
+      </div>
+    </div>
+  </div>
+}
