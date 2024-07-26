@@ -3,11 +3,11 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { BehaviorSubject, filter, switchMap, tap } from "rxjs";
 import { Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { AuthService } from "../../../auth/services/auth/auth.service";
 import { BiometryService, StorageService } from "@environment-services-lib";
 import { AsyncPipe } from "@angular/common";
 import { PasswordFormComponent } from "../password-form/password-form.component";
 import { RoutesHelper } from "../../../../core/utils/routes.helper";
+import { ApiTokenProviderService } from "../../../../core/services/api-token-provider.service";
 
 @Component({
   selector: 'tga-identification',
@@ -25,7 +25,7 @@ export class IdentificationComponent implements OnInit {
     private readonly biometryService: BiometryService,
     private readonly storageService: StorageService,
     private readonly router: Router,
-    private readonly authService: AuthService,
+    private readonly apiTokenProviderService: ApiTokenProviderService,
     private readonly cdr: ChangeDetectorRef,
     private readonly destroyRef: DestroyRef
   ) {
@@ -33,7 +33,7 @@ export class IdentificationComponent implements OnInit {
 
   ngOnInit() {
     // TODO: убрать, когда появятся http-запросы (сделано для возможности перекидывать на SSO
-    this.authService.accessToken$
+    this.apiTokenProviderService.apiToken$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         tap(() => this.isLoading.next(false)),
@@ -62,6 +62,7 @@ export class IdentificationComponent implements OnInit {
               }
 
               if (v === val) {
+
                 this.router.navigate([ `/${RoutesHelper.appRoutes.home}` ])
               } else {
                 this.passwordControl.setValue('');
@@ -81,7 +82,7 @@ export class IdentificationComponent implements OnInit {
       )
       .subscribe(isAuthenticated => {
         if (isAuthenticated) {
-          this.router.navigate([ '/main' ])
+          this.router.navigate([ `/${RoutesHelper.appRoutes.home}`  ])
         }
       });
   }

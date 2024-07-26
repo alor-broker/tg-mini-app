@@ -1,5 +1,6 @@
 ﻿export class RoutesHelper {
   static appRoutes = {
-    home: 'main'
+    home: 'home',
+    identification: 'identification'
   }
 }

@@ -4,6 +4,7 @@
 
 export * from './api-config-provider';
 export * from './api-errors-tracker';
+export * from './http.constants';
 
 export * from './models/public.models';
 export * from './models/api.enums';

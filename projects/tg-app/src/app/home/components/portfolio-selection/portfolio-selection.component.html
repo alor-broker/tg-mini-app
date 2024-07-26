@@ -1,0 +1,27 @@
+@if (allPortfolios$ | async; as portfolios) {
+  @if (selectedPortfolio$ | async; as selectedPortfolio) {
+    <button
+      nz-button
+      nz-dropdown
+      [nzDropdownMenu]="menu"
+    >
+      {{ selectedPortfolio.portfolioKey.portfolio }}
+      <span nz-icon nzType="down"></span>
+    </button>
+
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        @for (portfolio of portfolios; track $index) {
+          <li
+            nz-menu-item
+            (click)="changeSelection(portfolio)"
+          >
+            {{ portfolio.portfolioKey.portfolio }} {{ portfolio.market }}
+          </li>
+        }
+      </ul>
+    </nz-dropdown-menu>
+  }
+}
+
+

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { AuthService } from "../../services/auth/auth.service";
+import { ApiTokenProviderService } from "../../../../core/services/api-token-provider.service";
 
 @Component({
   selector: 'tga-auth',
@@ -12,13 +12,13 @@ export class AuthComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly authService: AuthService
+    private readonly apiTokenProviderService: ApiTokenProviderService
   ) {
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.authService.setRefreshToken(params['refreshToken']?.trim(), () => {
+      this.apiTokenProviderService.setRefreshToken(params['refreshToken']?.trim(), () => {
         this.router.navigate(['/identification']);
       });
     });
