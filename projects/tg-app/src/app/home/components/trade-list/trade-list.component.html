@@ -1,5 +1,8 @@
 @for (trade of trades$ | async; track trade) {
-  <div class="d-flex flex-row align-items-center flex-gap-3 item cursor-pointer">
+  <div
+    class="d-flex flex-row align-items-center flex-gap-3 item cursor-pointer"
+    (click)="selectItem.emit(trade)"
+  >
     <div
       class="align-self-stretch"
       [ngClass]="{
