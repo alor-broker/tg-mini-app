@@ -131,6 +131,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/tg-app/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
               }
             ],
             "styles": [

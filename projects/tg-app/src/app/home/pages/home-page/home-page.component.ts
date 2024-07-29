@@ -12,21 +12,29 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 import { BackButtonService } from "@environment-services-lib";
 import { PortfolioSelectionComponent } from "../../components/portfolio-selection/portfolio-selection.component";
 import { PortfolioEvaluationComponent } from "../../components/portfolio-evaluation/portfolio-evaluation.component";
+import { PositionsListComponent } from "../../components/positions-list/positions-list.component";
+import { TradesListComponent } from "../../components/trades-list/trades-list.component";
+import { OrdersListComponent } from "../../components/orders-list/orders-list.component";
 
 @Component({
   selector: 'tga-home-page',
   standalone: true,
   imports: [
-    PortfolioSelectionComponent,
-    PortfolioEvaluationComponent,
-    InvestmentIdeasComponent,
-    AsyncPipe,
     NzCollapseComponent,
     NzCollapsePanelComponent,
     NzButtonComponent,
     NzDrawerComponent,
     NzDrawerContentDirective,
-    NzIconDirective
+    NzIconDirective,
+    AsyncPipe,
+    PortfolioSelectionComponent,
+    PortfolioEvaluationComponent,
+    InvestmentIdeasComponent,
+    PortfolioSelectionComponent,
+    PortfolioEvaluationComponent,
+    PositionsListComponent,
+    TradesListComponent,
+    OrdersListComponent,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'

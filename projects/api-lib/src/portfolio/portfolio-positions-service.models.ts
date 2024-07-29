@@ -19,7 +19,6 @@
   qtyT2Batch: number;
   qtyTFutureBatch: number;
   openQtyBatch: number;
-  qty: number;
   open: number;
   dailyUnrealisedPl: number;
   unrealisedPl: number;
