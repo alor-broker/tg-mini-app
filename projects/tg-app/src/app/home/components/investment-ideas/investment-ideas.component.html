@@ -1,29 +1,41 @@
 @for (idea of (investmentIdeas$ | async); track idea.signalId) {
-  <nz-collapse [class]="'mb ' + 'idea-' + idea.signalId">
+  <nz-collapse
+    [class]="'mb ' + 'idea-' + idea.signalId"
+  >
     <nz-collapse-panel
-      [nzHeader]="idea.symbolShortName + ' (' + idea.symbol + ')'"
+      [nzHeader]="header"
       [nzActive]="!watchedIdeasIdsSet?.has(idea.signalId)"
       [nzShowArrow]="false"
-      [nzExtra]="publishDate"
-      (nzActiveChange)="watchIdea(idea.signalId)"
+      [nzExtra]="extras"
     >
-      <div (click)="watchIdea(idea.signalId)">
-        <p>{{ idea.comment }}</p>
-        <nz-descriptions nzBordered nzSize="small" class="mb">
-          <nz-descriptions-item nzTitle="Рек. цена">{{ idea.price }}</nz-descriptions-item>
-          <nz-descriptions-item
-            nzTitle="Дейст. до">{{ idea.validTo == null ? 'Бессрочно' : (idea.validTo | date : 'dd.MM.yyyy') }}
-          </nz-descriptions-item>
-        </nz-descriptions>
-        <div class="w-100 text-end">
-          Автор: {{ idea.userFullName }}
-        </div>
+      <p>{{ idea.comment }}</p>
+      <nz-descriptions nzBordered nzSize="small" class="mb">
+        <nz-descriptions-item nzTitle="Рек. цена">{{ idea.price }}</nz-descriptions-item>
+        <nz-descriptions-item
+          nzTitle="Дейст. до">{{ idea.validTo == null ? 'Бессрочно' : (idea.validTo | date : 'dd.MM.yyyy') }}
+        </nz-descriptions-item>
+      </nz-descriptions>
+      <div class="w-100 text-end">
+        Автор: {{ idea.userFullName }}
       </div>
     </nz-collapse-panel>
   </nz-collapse>
 
-  <ng-template #publishDate>
-    {{ (idea.timestamp | date :'dd.MM.yyyy') ?? '' }}
+  <ng-template #extras>
+    @if (!watchedIdeasIdsSet?.has(idea.signalId)) {
+    <button
+      nz-button
+      nzType="text"
+      (click)="watchIdea(idea.signalId)"
+      >
+      <span nz-icon nzType="eye-invisible" nzTheme="outline"></span>
+    </button>
+    }
+  </ng-template>
+
+  <ng-template #header>
+    <h4 class="mb-0">{{ idea.symbolShortName }} ({{ idea.symbol }})</h4>
+    <span class="publish-date">{{ (idea.timestamp | date :'dd.MM.yyyy') ?? '' }}</span>
   </ng-template>
 } @empty {
   @if (isLoading$ | async) {

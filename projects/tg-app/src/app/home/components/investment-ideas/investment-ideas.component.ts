@@ -16,6 +16,8 @@ import { MarketService } from "../../../core/services/market.service";
 import { map } from "rxjs/operators";
 import { WatchedInvestmentIdeasService } from "../../services/watched-investment-ideas.service";
 import { NzCollapseComponent, NzCollapsePanelComponent } from "ng-zorro-antd/collapse";
+import { NzIconDirective } from "ng-zorro-antd/icon";
+import { NzButtonComponent } from "ng-zorro-antd/button";
 
 
 interface InvestmentIdeaExtended extends InvestmentIdea {
@@ -33,7 +35,9 @@ interface InvestmentIdeaExtended extends InvestmentIdea {
     NzCollapsePanelComponent,
     NzDescriptionsComponent,
     NzDescriptionsItemComponent,
-    AsyncPipe
+    NzIconDirective,
+    AsyncPipe,
+    NzButtonComponent
   ],
   templateUrl: './investment-ideas.component.html',
   styleUrl: './investment-ideas.component.less'
