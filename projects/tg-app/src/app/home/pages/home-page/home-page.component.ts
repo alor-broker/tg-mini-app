@@ -6,7 +6,8 @@ import {
 import { PortfolioSelectionComponent } from "../../components/portfolio-selection/portfolio-selection.component";
 import { PortfolioEvaluationComponent } from "../../components/portfolio-evaluation/portfolio-evaluation.component";
 import { PositionsListComponent } from "../../components/positions-list/positions-list.component";
-import { TradeListComponent } from "../../components/trade-list/trade-list.component";
+import { TradesListComponent } from "../../components/trades-list/trades-list.component";
+import { OrdersListComponent } from "../../components/orders-list/orders-list.component";
 
 @Component({
   selector: 'tga-home-page',
@@ -17,7 +18,8 @@ import { TradeListComponent } from "../../components/trade-list/trade-list.compo
     PortfolioSelectionComponent,
     PortfolioEvaluationComponent,
     PositionsListComponent,
-    TradeListComponent
+    TradesListComponent,
+    OrdersListComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'

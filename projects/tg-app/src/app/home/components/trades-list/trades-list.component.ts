@@ -27,7 +27,7 @@ import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 
 @Component({
-  selector: 'tga-trade-list',
+  selector: 'tga-trades-list',
   standalone: true,
   imports: [
     NzAvatarComponent,
@@ -37,10 +37,10 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
     NgClass,
     NzIconDirective
   ],
-  templateUrl: './trade-list.component.html',
-  styleUrl: './trade-list.component.less'
+  templateUrl: './trades-list.component.html',
+  styleUrl: './trades-list.component.less'
 })
-export class TradeListComponent implements OnInit {
+export class TradesListComponent implements OnInit {
   trades$!: Observable<PortfolioTrade[]>;
 
   @Output()
