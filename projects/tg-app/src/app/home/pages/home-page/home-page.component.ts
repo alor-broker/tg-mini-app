@@ -15,6 +15,18 @@ import { PortfolioEvaluationComponent } from "../../components/portfolio-evaluat
 import { PositionsListComponent } from "../../components/positions-list/positions-list.component";
 import { TradesListComponent } from "../../components/trades-list/trades-list.component";
 import { OrdersListComponent } from "../../components/orders-list/orders-list.component";
+import { OrderItemComponent } from "../../components/order-item/order-item.component";
+
+enum SelectedItemType {
+  InvestingIdeas = 'investingIdeas',
+  Order = 'order'
+}
+
+interface DrawerContext {
+  isVisible: boolean,
+  itemType?: SelectedItemType,
+  data?: any
+}
 
 @Component({
   selector: 'tga-home-page',
@@ -35,14 +47,16 @@ import { OrdersListComponent } from "../../components/orders-list/orders-list.co
     PositionsListComponent,
     TradesListComponent,
     OrdersListComponent,
+    OrderItemComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'
 })
 export class HomePageComponent implements OnInit {
 
-  investmentIdeasVisible$ = new BehaviorSubject(false);
+  drawerContext$ = new BehaviorSubject<DrawerContext>({ isVisible: false })
   isBackButtonAvailable = false;
+  selectedItemType = SelectedItemType
 
   constructor(
     private readonly backButtonService: BackButtonService
@@ -53,7 +67,21 @@ export class HomePageComponent implements OnInit {
     this.isBackButtonAvailable = this.backButtonService.isAvailable;
   }
 
-  changeInvestmentIdeasVisibility(isVisible: boolean) {
-    this.investmentIdeasVisible$.next(isVisible);
+  changeDrawerVisibility(isVisible: boolean, itemType?: SelectedItemType, data?: any) {
+    if (!isVisible) {
+      this.drawerContext$.next({ isVisible: false });
+      return;
+    }
+
+    switch (itemType) {
+      case SelectedItemType.InvestingIdeas:
+        this.drawerContext$.next({ isVisible, itemType  });
+        break;
+      case SelectedItemType.Order:
+        this.drawerContext$.next({ isVisible, itemType, data  });
+        break;
+    }
   }
+
+  protected readonly SelectedItemType = SelectedItemType;
 }

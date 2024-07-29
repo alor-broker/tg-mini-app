@@ -16,7 +16,7 @@
         nz-button
         nzSize="small"
         nzType="link"
-        (click)="changeInvestmentIdeasVisibility(true)"
+        (click)="changeDrawerVisibility(true, selectedItemType.InvestingIdeas)"
       >
         Ещё
       </a>
@@ -39,38 +39,60 @@
         </nz-collapse-panel>
 
         <nz-collapse-panel nzHeader="Заявки">
-          <tga-orders-list></tga-orders-list>
+          <tga-orders-list (selectItem)="changeDrawerVisibility(true, selectedItemType.Order, $event)"></tga-orders-list>
         </nz-collapse-panel>
       </nz-collapse>
     </div>
   </div>
 </div>
 
-<nz-drawer
-  [nzTitle]="investmentIdeasTitle"
-  nzPlacement="bottom"
-  nzHeight="100%"
-  [nzClosable]="false"
-  [nzVisible]="investmentIdeasVisible$ | async"
-  (nzOnClose)="changeInvestmentIdeasVisibility(false)"
->
-  <ng-container *nzDrawerContent>
-    <tga-investment-ideas (onBack)="changeInvestmentIdeasVisibility(false)"></tga-investment-ideas>
-  </ng-container>
-</nz-drawer>
+@if (drawerContext$ | async; as drawerContext) {
+  <nz-drawer
+    [nzTitle]="drawerTitle"
+    nzPlacement="bottom"
+    nzHeight="100%"
+    [nzClosable]="false"
+    [nzVisible]="drawerContext.isVisible"
+    (nzOnClose)="changeDrawerVisibility(false)"
+  >
+    <ng-container *nzDrawerContent>
+      @switch (drawerContext.itemType) {
+        @case (SelectedItemType.InvestingIdeas) {
+          <tga-investment-ideas
+            (onBack)="changeDrawerVisibility(false)"
+          ></tga-investment-ideas>
+        }
+        @case (SelectedItemType.Order) {
+          <tga-order-item
+            [order]="drawerContext.data"
+            (onBack)="changeDrawerVisibility(false)"
+          ></tga-order-item>
+        }
+      }
+    </ng-container>
+  </nz-drawer>
 
-<ng-template #investmentIdeasTitle>
-  <div class="d-flex align-items-center">
-  @if (!isBackButtonAvailable) {
-    <button
-      nz-button
-      nzType="text"
-      class="mr-15"
-      (click)="changeInvestmentIdeasVisibility(false)"
-    >
-      <span nz-icon nzType="left" nzTheme="outline"></span>
-    </button>
-  }
-  <h3 class="mb-0">Инвестиционные идеи</h3>
-  </div>
-</ng-template>
+  <ng-template #drawerTitle>
+    <div class="d-flex align-items-center">
+      @if (!isBackButtonAvailable) {
+        <button
+          nz-button
+          nzType="text"
+          class="mr-15"
+          (click)="changeDrawerVisibility(false)"
+        >
+          <span nz-icon nzType="left" nzTheme="outline"></span>
+        </button>
+      }
+
+      @switch (drawerContext.itemType) {
+        @case (SelectedItemType.InvestingIdeas) {
+          <h3 class="mb-0">Инвестиционные идеи</h3>
+        }
+        @case (SelectedItemType.Order) {
+          <h3 class="mb-0">Заявка №{{drawerContext.data.id}}</h3>
+        }
+      }
+    </div>
+  </ng-template>
+}
