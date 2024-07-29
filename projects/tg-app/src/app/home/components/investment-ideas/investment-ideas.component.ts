@@ -68,14 +68,16 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
             orderBy: 'timestamp'
           }),
           (authors, ideas) => {
-            return (ideas ?? []).map(idea => {
-              const userFullName = authors?.find(a => a.userId === idea.userId)?.fullName ?? 'Неизвестен';
+            return (ideas ?? [])
+              .reverse()
+              .map(idea => {
+                const userFullName = authors?.find(a => a.userId === idea.userId)?.fullName ?? 'Неизвестен';
 
-              return {
-                ...idea,
-                userFullName
-              };
-            })
+                return {
+                  ...idea,
+                  userFullName
+                };
+              })
           }
         ),
         mapWith(
