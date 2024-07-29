@@ -1,0 +1,43 @@
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { DatePipe } from "@angular/common";
+import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
+import { OrderSidePipe } from "../../../core/pipes/order-side.pipe";
+import { PortfolioTrade, Side } from "@api-lib";
+import { BackButtonService } from "@environment-services-lib";
+
+@Component({
+  selector: 'tga-trade-item',
+  standalone: true,
+  imports: [
+    DatePipe,
+    NzDescriptionsComponent,
+    NzDescriptionsItemComponent,
+    OrderSidePipe,
+  ],
+  templateUrl: './trade-item.component.html',
+  styleUrl: './trade-item.component.less'
+})
+export class TradeItemComponent implements OnInit, OnDestroy {
+  @Input({ required: true }) trade!: PortfolioTrade;
+  @Output() onBack = new EventEmitter();
+
+  side = Side;
+
+  constructor(
+    private readonly backButtonService: BackButtonService,
+  ) {}
+
+  private onBackButtonCallback = () => {
+    this.onBack.emit();
+    this.backButtonService.hide();
+  }
+
+  ngOnInit() {
+    this.backButtonService.onClick(this.onBackButtonCallback)
+    this.backButtonService.show();
+  }
+
+  ngOnDestroy() {
+    this.backButtonService.offClick(this.onBackButtonCallback);
+  }
+}

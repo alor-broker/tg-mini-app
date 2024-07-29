@@ -35,11 +35,15 @@
         </nz-collapse-panel>
 
         <nz-collapse-panel nzHeader="Сделки">
-          <tga-trades-list></tga-trades-list>
+          <tga-trades-list
+            (selectItem)="changeDrawerVisibility(true, selectedItemType.Trade, $event)"
+          ></tga-trades-list>
         </nz-collapse-panel>
 
         <nz-collapse-panel nzHeader="Заявки">
-          <tga-orders-list (selectItem)="changeDrawerVisibility(true, selectedItemType.Order, $event)"></tga-orders-list>
+          <tga-orders-list
+            (selectItem)="changeDrawerVisibility(true, selectedItemType.Order, $event)"
+          ></tga-orders-list>
         </nz-collapse-panel>
       </nz-collapse>
     </div>
@@ -68,6 +72,12 @@
             (onBack)="changeDrawerVisibility(false)"
           ></tga-order-item>
         }
+        @case (SelectedItemType.Trade) {
+          <tga-trade-item
+            [trade]="drawerContext.data"
+            (onBack)="changeDrawerVisibility(false)"
+          ></tga-trade-item>
+        }
       }
     </ng-container>
   </nz-drawer>
@@ -91,6 +101,9 @@
         }
         @case (SelectedItemType.Order) {
           <h3 class="mb-0">Заявка №{{drawerContext.data.id}}</h3>
+        }
+        @case (SelectedItemType.Trade) {
+          <h3 class="mb-0">Сделка №{{drawerContext.data.id}}</h3>
         }
       }
     </div>

@@ -15,6 +15,7 @@ export interface PortfolioTrade {
   orderNo: string;
   comment?: string;
   symbol: string;
+  shortName: string;
   brokerSymbol: string;
   exchange: string;
   date: Date;

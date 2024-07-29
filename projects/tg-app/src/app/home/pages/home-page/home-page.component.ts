@@ -16,10 +16,12 @@ import { PositionsListComponent } from "../../components/positions-list/position
 import { TradesListComponent } from "../../components/trades-list/trades-list.component";
 import { OrdersListComponent } from "../../components/orders-list/orders-list.component";
 import { OrderItemComponent } from "../../components/order-item/order-item.component";
+import { TradeItemComponent } from "../../components/trade-item/trade-item.component";
 
 enum SelectedItemType {
   InvestingIdeas = 'investingIdeas',
-  Order = 'order'
+  Order = 'order',
+  Trade = 'trade'
 }
 
 interface DrawerContext {
@@ -47,7 +49,8 @@ interface DrawerContext {
     PositionsListComponent,
     TradesListComponent,
     OrdersListComponent,
-    OrderItemComponent
+    OrderItemComponent,
+    TradeItemComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'
@@ -78,6 +81,9 @@ export class HomePageComponent implements OnInit {
         this.drawerContext$.next({ isVisible, itemType  });
         break;
       case SelectedItemType.Order:
+        this.drawerContext$.next({ isVisible, itemType, data  });
+        break;
+      case SelectedItemType.Trade:
         this.drawerContext$.next({ isVisible, itemType, data  });
         break;
     }
