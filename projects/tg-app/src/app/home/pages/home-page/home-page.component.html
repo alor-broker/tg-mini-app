@@ -12,6 +12,14 @@
 
     <div class="ideas">
       Инвестиционные идеи
+      <a
+        nz-button
+        nzSize="small"
+        nzType="link"
+        (click)="changeInvestmentIdeasVisibility(true)"
+      >
+        Ещё
+      </a>
     </div>
   </div>
 
@@ -37,3 +45,32 @@
     </div>
   </div>
 </div>
+
+<nz-drawer
+  [nzTitle]="investmentIdeasTitle"
+  nzPlacement="bottom"
+  nzHeight="100%"
+  [nzClosable]="false"
+  [nzVisible]="investmentIdeasVisible$ | async"
+  (nzOnClose)="changeInvestmentIdeasVisibility(false)"
+>
+  <ng-container *nzDrawerContent>
+    <tga-investment-ideas (onBack)="changeInvestmentIdeasVisibility(false)"></tga-investment-ideas>
+  </ng-container>
+</nz-drawer>
+
+<ng-template #investmentIdeasTitle>
+  <div class="d-flex align-items-center">
+  @if (!isBackButtonAvailable) {
+    <button
+      nz-button
+      nzType="text"
+      class="mr-15"
+      (click)="changeInvestmentIdeasVisibility(false)"
+    >
+      <span nz-icon nzType="left" nzTheme="outline"></span>
+    </button>
+  }
+  <h3 class="mb-0">Инвестиционные идеи</h3>
+  </div>
+</ng-template>

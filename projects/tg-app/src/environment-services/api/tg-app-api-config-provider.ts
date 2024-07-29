@@ -12,7 +12,8 @@ export class TgAppApiConfigProvider extends ApiConfigProvider {
   getConfig(): Observable<ApiConfig> {
     return of({
       apiUrl: environment.apiUrl,
-      userDataUrl: environment.userDataUrl
+      userDataUrl: environment.userDataUrl,
+      superappUrl: environment.superappUrl
     });
   }
 }
