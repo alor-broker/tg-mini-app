@@ -35,7 +35,7 @@ export interface JwtBody {
 })
 export class ApiTokenProviderService {
   readonly apiToken$: Observable<string>;
-  private readonly ssoTokenStorageKey = 'sso.refreshToken';
+  private readonly ssoTokenStorageKey = 'sso-refreshToken';
 
   constructor(
     private readonly userStateService: UserStateService,
