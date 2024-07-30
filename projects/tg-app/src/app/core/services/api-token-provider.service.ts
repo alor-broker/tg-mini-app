@@ -130,8 +130,7 @@ export class ApiTokenProviderService {
   }
 
   private redirectToSso(isExit: boolean): void {
-    // TODO: Поменять scope (если необходимо) и url , когда сделают отдельный домен
-    window.location.assign(environment.ssoUrl + `?url=http://${window.location.host}/test-web-ap/auth&scope=MiniApp` + (isExit ? '&exit=1' : ''));
+    window.location.assign(environment.ssoUrl + `?url=http://${window.location.host}/auth&scope=MiniApp` + (isExit ? '&exit=1' : ''));
   }
 
   private refreshToken(userState: UserState): void {
