@@ -1,72 +1,72 @@
-@for (order of orders$ | async; track order) {
-  <div
-    class="d-flex flex-row align-items-center flex-gap-3 item cursor-pointer"
-    (click)="selectItem.emit(order)"
-  >
-    <div
-      class="align-self-stretch"
-      [ngClass]="{
+<tga-list>
+  @for (order of orders$ | async; track order) {
+    <tga-list-item>
+      <div
+        class="d-flex flex-row align-items-center flex-gap-10 cursor-pointer"
+        (click)="selectItem.emit(order)"
+      >
+        <div
+          class="align-self-stretch"
+          [ngClass]="{
       'order-side': true,
-      'buy-bgr': order.side === Sides.Buy,
-      'sell-bgr': order.side === Sides.Sell,
+      'buy-bg': order.side === Sides.Buy,
+      'sell-bg': order.side === Sides.Sell,
       'inactive-bgr': order.status === Statuses.Canceled || order.status === Statuses.Rejected
       }"
-    >&nbsp;
-    </div>
-    <div class="d-flex align-items-center justify-content-center">
-      @switch (order.status) {
-        @case (Statuses.Canceled) {
-          <span nz-icon nzType="stop" nzTheme="outline" class="inactive-color"></span>
-        }
-        @case (Statuses.Filled) {
-          <span nz-icon nzType="check" nzTheme="outline" class="buy-color"></span>
-        }
-        @default {
-          <span nz-icon nzType="hourglass" nzTheme="outline"></span>
-        }
-      }
-    </div>
-    <div>
-      <nz-avatar
-        #avatar
-        [nzText]="order.symbol"
-        [nzSize]="32"
-        nzGap='4'
-        [nzSrc]="getIconUrl(order)">
-      </nz-avatar>
-    </div>
-    <div
-      class="d-flex flex-row flex-fill"
-      [class.bottom-border]="!$last"
-    >
-      <div class="d-flex flex-column flex-fill">
-        <div>
-          <span nz-typography nzEllipsis>
-            <strong>{{ order.symbol }}</strong>
-          </span>
+        >&nbsp;
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+          @switch (order.status) {
+            @case (Statuses.Canceled) {
+              <span nz-icon nzType="stop" nzTheme="outline" class="inactive-color"></span>
+            }
+            @case (Statuses.Filled) {
+              <span nz-icon nzType="check" nzTheme="outline" class="buy-color"></span>
+            }
+            @default {
+              <span nz-icon nzType="hourglass" nzTheme="outline"></span>
+            }
+          }
         </div>
         <div>
-          {{ order.qtyBatch | number }} л.
+          <nz-avatar
+            [nzText]="order.symbol"
+            [nzSize]="32"
+            nzGap='4'
+            [nzSrc]="getIconUrl(order)">
+          </nz-avatar>
         </div>
-      </div>
+        <div class="d-flex flex-row flex-fill list-item-bordered-part">
+          <div class="d-flex flex-column flex-fill">
+            <div>
+              <span nz-typography nzEllipsis>{{ order.symbol }}</span>
+            </div>
+            <div>
+              <span class="text-subtitle-color">{{ order.qtyBatch | number }} л.</span>
+            </div>
+          </div>
 
-      <div class="d-flex flex-column">
-        <div [ngClass]="{
+          <div class="d-flex flex-column">
+            <div [ngClass]="{
               'buy-color': order.side === Sides.Buy,
               'sell-color': order.side === Sides.Sell,
         }"
-        >
-          {{ order.price | number: '1.0-6' }}
-        </div>
-        @if (order.volume != null) {
-          <div>
-            {{ order.volume | number: '1.0-6' }} ₽
+            >
+              {{ order.price | number: '1.0-6' }}
+            </div>
+            @if (order.volume != null) {
+              <div>
+                <span class="text-subtitle-color">{{ order.volume | number: '1.0-6' }} ₽</span>
+              </div>
+            }
           </div>
-        }
+          <span nz-icon nzType="right" nzTheme="outline" class="list-item-arrow ml-10"></span>
+        </div>
       </div>
-      <span nz-icon nzType="right" nzTheme="outline"></span>
-    </div>
-  </div>
-} @empty {
-  <span>В текущей торговой сессии заявок не было.</span>
-}
+    </tga-list-item>
+  } @empty {
+    <tga-list-item>
+      <span>В текущей торговой сессии заявок не было.</span>
+    </tga-list-item>
+  }
+</tga-list>

@@ -20,6 +20,8 @@ import {
 import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { NzAvatarComponent } from "ng-zorro-antd/avatar";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
+import { ListItemComponent } from "../../../core/components/list/list-item/list-item.component";
+import { ListComponent } from "../../../core/components/list/list/list.component";
 
 @Component({
   selector: 'tga-positions-list',
@@ -28,7 +30,9 @@ import { InstrumentIconSourceService } from "../../../core/services/instrument-i
     AsyncPipe,
     DecimalPipe,
     NzTypographyComponent,
-    NzAvatarComponent
+    NzAvatarComponent,
+    ListItemComponent,
+    ListComponent
   ],
   templateUrl: './positions-list.component.html',
   styleUrl: './positions-list.component.less'

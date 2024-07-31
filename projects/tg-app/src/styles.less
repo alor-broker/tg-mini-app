@@ -1,5 +1,7 @@
 @import "ng-zorro-antd/ng-zorro-antd.less";
-@import "vars";
+@import "ng-zorro-overrides/index";
+
+// utils
 @import "cursor-utils";
 @import "display-utils";
 @import "flex-utils";
@@ -11,6 +13,20 @@
 @import "spacing-utils";
 @import "text-utils";
 @import "z-index-utils";
+@import "color-utils";
+
+// ng-zorro overrides. USE ONLY CONSTANT VALUES
+@font-family: Roboto, system-ui, sans-serif;
+@font-size-base: 16px;
+@font-size-lg: @font-size-base + 2px;
+@font-size-sm: @font-size-base - 2px;
+@heading-1-size: ceil(@font-size-base * 2.75);
+@heading-2-size: ceil(@font-size-base * 2.14);
+@heading-3-size: ceil(@font-size-base * 1.71);
+@heading-4-size: ceil(@font-size-base * 1.42);
+@heading-5-size: ceil(@font-size-base * 1.14);
+
+// END ng-zorro overrides
 
 * {
   padding: 0;
@@ -18,24 +34,19 @@
   box-sizing: border-box;
 }
 
+:root {
+  --font-size: @font-size-base;
+  --font-size-lg: @font-size-lg;
+  --font-size-sm: @font-size-sm;
+}
+
 body {
-  font-size: 14px;
-  padding: @main-padding;
-  font-family: "Montserrat", sans-serif;
-  background-color: @tg-background-color;
-  color: @tg-text-color;
+  @text-color: var(--mini-app-text-color);
+  @bg-color: var(--mini-app-secondary-bg-color);
+
+  padding: 0;
+
+  background-color: @bg-color;
+  color: @text-color;
 }
 
-a {
-  color: @tg-link-text-color;
-}
-
-button {
-  padding: 5px 10px;
-  background-color: @tg-button-background-color;
-  color: @tg-button-text-color;
-}
-
-.mb {
-  margin-bottom: @main-padding;
-}
