@@ -2,18 +2,26 @@
 
 .@{btn-prefix-cls} {
   @tg-button-text-color: var(--mini-app-button-text-color);
+  @tg-text-color: var(--mini-app-text-color);
+  @tg-link-color: var(--mini-app-link-color);
 
   color: @tg-button-text-color;
 
 
   &-text {
+    color: @tg-text-color;
+
     &:hover,
     &:focus {
-      color: @tg-button-text-color;
+      color: @tg-text-color;
     }
 
     &:active {
-      color: @tg-button-text-color;
+      color: @tg-text-color;
     }
+  }
+
+  &-link {
+    color: @tg-link-color;
   }
 }

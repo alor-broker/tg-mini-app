@@ -1,0 +1,23 @@
+﻿@list-prefix-cls: ~'ant-list';
+
+.@{list-prefix-cls} {
+  @tg-bg-color: var(--mini-app-bg-color);
+  @tg-bg-secondary-color: var(--mini-app-secondary-bg-color);
+  @tg-section-separator-color: var(--mini-app-section-separator-color);
+
+  background-color: @tg-bg-color;
+
+  &-bordered {
+    border-color: @tg-section-separator-color;
+  }
+
+  &-split &-header {
+    border-color: @tg-section-separator-color;
+  }
+
+  &-items {
+    .@{list-prefix-cls}-item {
+      border-color: @tg-section-separator-color;
+    }
+  }
+}

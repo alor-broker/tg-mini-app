@@ -1,6 +1,6 @@
 @for (idea of (investmentIdeas$ | async); track idea.signalId) {
   <nz-collapse
-    [class]="'mb ' + 'idea-' + idea.signalId"
+    [class]="'mb-10 ' + 'idea-' + idea.signalId"
   >
     <nz-collapse-panel
       [nzHeader]="header"
@@ -9,7 +9,7 @@
       [nzExtra]="extras"
     >
       <p>{{ idea.comment }}</p>
-      <nz-descriptions nzBordered nzSize="small" class="mb">
+      <nz-descriptions nzBordered nzSize="small" class="mb-10">
         <nz-descriptions-item nzTitle="Рек. цена">{{ idea.price }}</nz-descriptions-item>
         <nz-descriptions-item
           nzTitle="Дейст. до">{{ idea.validTo == null ? 'Бессрочно' : (idea.validTo | date : 'dd.MM.yyyy') }}
