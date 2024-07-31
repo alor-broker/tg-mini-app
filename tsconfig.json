@@ -14,7 +14,6 @@
         "./projects/shared-components-lib/src/public-api.ts"
       ]
     },
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

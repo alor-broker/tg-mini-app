@@ -22,3 +22,9 @@ export * from './portfolio/portfolio-orders.service';
 export * from './portfolio/porfolio-orders-service.models';
 export * from './portfolio/portfolio-summary.service';
 export * from './portfolio/portfolio-summary-service.models';
+
+export * from './investment-ideas/investment-ideas.service';
+export * from './investment-ideas/investment-ideas-service.model';
+
+export * from './instruments/instruments.service';
+export * from './instruments/instruments-service.model';

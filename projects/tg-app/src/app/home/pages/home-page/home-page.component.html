@@ -13,6 +13,14 @@
 
       <div class="ideas">
         Инвестиционные идеи
+        <a
+          (click)="openSubview(SubviewTypes.InvestingIdeas)"
+          nz-button
+          nzSize="small"
+          nzType="link"
+        >
+          Ещё
+        </a>
       </div>
     </div>
   </tga-section-panel>
@@ -34,7 +42,7 @@
   <tga-section-panel>
     <nz-collapse nzExpandIconPosition="end">
       <nz-collapse-panel nzHeader="Сделки">
-        <tga-trades-list></tga-trades-list>
+        <tga-trades-list (selectItem)="openSubview(SubviewTypes.Trade, $event)"></tga-trades-list>
       </nz-collapse-panel>
     </nz-collapse>
   </tga-section-panel>
@@ -42,8 +50,63 @@
   <tga-section-panel>
     <nz-collapse nzExpandIconPosition="end">
       <nz-collapse-panel nzHeader="Заявки">
-        <tga-orders-list></tga-orders-list>
+        <tga-orders-list (selectItem)="openSubview(SubviewTypes.Order, $event)"></tga-orders-list>
       </nz-collapse-panel>
     </nz-collapse>
   </tga-section-panel>
 </tga-sections>
+
+
+@if (drawerContext$ | async; as drawerContext) {
+  <nz-drawer
+    [nzTitle]="drawerTitle"
+    nzPlacement="bottom"
+    nzHeight="100%"
+    [nzClosable]="false"
+    [nzVisible]="drawerContext.isVisible"
+    (nzOnClose)="closeSubview()"
+  >
+    <ng-container *nzDrawerContent>
+      @switch (drawerContext.itemType) {
+        @case (SubviewTypes.InvestingIdeas) {
+          <tga-investment-ideas (onBack)="closeSubview()"></tga-investment-ideas>
+        }
+        @case (SubviewTypes.Order) {
+          <tga-order-item [order]="drawerContext.data" (onBack)="closeSubview()"></tga-order-item>
+        }
+        @case (SubviewTypes.Trade) {
+          <tga-trade-item [trade]="drawerContext.data" (onBack)="closeSubview()"></tga-trade-item>
+        }
+      }
+    </ng-container>
+  </nz-drawer>
+
+  <ng-template #drawerTitle>
+    <div class="d-flex align-items-center">
+      @if (!isBackButtonAvailable) {
+        <button
+          nz-button
+          nzType="text"
+          class="mr-15"
+          (click)="closeSubview()"
+        >
+          <span nz-icon nzType="left" nzTheme="outline"></span>
+        </button>
+      }
+
+      <h3 class="mb-0">
+        @switch (drawerContext.itemType) {
+          @case (SubviewTypes.InvestingIdeas) {
+            Инвестиционные идеи
+          }
+          @case (SubviewTypes.Order) {
+            Заявка №
+          }
+          @case (SubviewTypes.Trade) {
+            Сделка №{{ drawerContext.data.id }}
+          }
+        }
+      </h3>
+    </div>
+  </ng-template>
+}

@@ -35,7 +35,7 @@ export interface JwtBody {
 })
 export class ApiTokenProviderService {
   readonly apiToken$: Observable<string>;
-  private readonly ssoTokenStorageKey = 'sso.refreshToken';
+  private readonly ssoTokenStorageKey = 'sso-refreshToken';
 
   constructor(
     private readonly userStateService: UserStateService,
@@ -130,7 +130,6 @@ export class ApiTokenProviderService {
   }
 
   private redirectToSso(isExit: boolean): void {
-    // TODO: Поменять scope (если необходимо) и url , когда сделают отдельный домен
     window.location.assign(environment.ssoUrl + `?url=http://${window.location.host}/auth&scope=MiniApp` + (isExit ? '&exit=1' : ''));
   }
 

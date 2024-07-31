@@ -5,7 +5,6 @@ import { AuthGuard } from "./core/guards/auth-guard";
 
 export const routes: Routes = [
   {
-    // TODO: поменять на нормальный роут после настройки ССО
     path: 'auth/sso',
     loadComponent: () => import('./pages/auth/components/auth/auth.component').then(mod => mod.AuthComponent)
   },

@@ -23,20 +23,20 @@ export abstract class BaseHttpApiService {
 
   }
 
-  protected sendRequest<R>(
-    requestFactory: (config: ApiConfig) => Observable<R>,
+  protected sendRequest<ReturnedType, HttpResponse = ReturnedType>(
+    requestFactory: (config: ApiConfig) => Observable<HttpResponse>,
     options?: ApiRequestOptions,
-    responseMap?: (response: R) => R
-  ): ApiResponse<R> {
+    responseMap?: (response: HttpResponse) => ReturnedType
+  ): ApiResponse<ReturnedType> {
     return this.configProvider.getConfig().pipe(
       switchMap(config => requestFactory(config)),
-      catchApiError<R | null>(
+      catchApiError<HttpResponse | null>(
         () => null,
         options?.errorTracker ?? this.errorsTracker
       ),
       map(r => {
         if (r == null || responseMap == null) {
-          return r;
+          return r as ReturnedType | null;
         }
 
         return responseMap(r);

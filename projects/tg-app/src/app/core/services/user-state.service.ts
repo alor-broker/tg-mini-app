@@ -5,8 +5,7 @@ import {
 import { User } from "../models/user.models";
 import {
   BehaviorSubject,
-  filter,
-  tap
+  filter
 } from "rxjs";
 import { map } from "rxjs/operators";
 

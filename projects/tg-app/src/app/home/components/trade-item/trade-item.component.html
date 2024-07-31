@@ -1,0 +1,23 @@
+<nz-descriptions nzBordered nzSize="small">
+  <nz-descriptions-item nzTitle="Заявка">
+    №{{ trade.orderNo }}
+  </nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Тикер">{{ trade.symbol }}</nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Название">{{ trade.shortName }}</nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Биржа">{{ trade.exchange }}</nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Сторона">
+    <span [class]="trade.side === side.Buy ? 'buy-color' : 'sell-color'">{{ trade.side | orderSide }}</span>
+  </nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Количество">{{ trade.qtyUnits }}</nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Цена">{{ trade.price }}</nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Время">{{ trade.date | date : 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+
+  <nz-descriptions-item nzTitle="Объём">{{ trade.volume }}</nz-descriptions-item>
+</nz-descriptions>

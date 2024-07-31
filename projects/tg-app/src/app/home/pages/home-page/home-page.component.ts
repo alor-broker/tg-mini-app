@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import {
   NzCollapseComponent,
   NzCollapsePanelComponent
@@ -10,6 +14,30 @@ import { TradesListComponent } from "../../components/trades-list/trades-list.co
 import { OrdersListComponent } from "../../components/orders-list/orders-list.component";
 import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
 import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
+import { NzButtonComponent } from "ng-zorro-antd/button";
+import { BehaviorSubject } from "rxjs";
+import { BackButtonService } from "@environment-services-lib";
+import { AsyncPipe } from "@angular/common";
+import {
+  NzDrawerComponent,
+  NzDrawerContentDirective
+} from "ng-zorro-antd/drawer";
+import { InvestmentIdeasComponent } from "../../components/investment-ideas/investment-ideas.component";
+import { OrderItemComponent } from "../../components/order-item/order-item.component";
+import { TradeItemComponent } from "../../components/trade-item/trade-item.component";
+import { NzIconDirective } from "ng-zorro-antd/icon";
+
+enum SelectedItemType {
+  InvestingIdeas = 'investingIdeas',
+  Order = 'order',
+  Trade = 'trade'
+}
+
+interface DrawerContext {
+  isVisible: boolean,
+  itemType?: SelectedItemType,
+  data?: any
+}
 
 @Component({
   selector: 'tga-home-page',
@@ -23,11 +51,49 @@ import { SectionPanelComponent } from "../../../core/components/sections/section
     TradesListComponent,
     OrdersListComponent,
     SectionsComponent,
-    SectionPanelComponent
+    SectionPanelComponent,
+    NzButtonComponent,
+    AsyncPipe,
+    NzDrawerComponent,
+    NzDrawerContentDirective,
+    InvestmentIdeasComponent,
+    OrderItemComponent,
+    TradeItemComponent,
+    NzIconDirective
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit, OnDestroy {
+  readonly SubviewTypes = SelectedItemType;
 
+  readonly drawerContext$ = new BehaviorSubject<DrawerContext>({ isVisible: false })
+  isBackButtonAvailable = false;
+
+  constructor(
+    private readonly backButtonService: BackButtonService
+  ) {
+  }
+
+  ngOnDestroy(): void {
+    this.drawerContext$.complete();
+  }
+
+  ngOnInit(): void {
+    this.isBackButtonAvailable = this.backButtonService.isAvailable;
+  }
+
+  openSubview(itemType: SelectedItemType, data?: any) {
+    this.drawerContext$.next({
+      isVisible: true,
+      itemType,
+      data
+    });
+  }
+
+  closeSubview(): void {
+    this.drawerContext$.next({
+      isVisible: false
+    });
+  }
 }
