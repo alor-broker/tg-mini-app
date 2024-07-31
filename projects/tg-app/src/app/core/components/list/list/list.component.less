@@ -1,0 +1,9 @@
+.list {
+  @tg-section-separator-color: var(--mini-app-section-separator-color);
+
+  &-item:not(:first-child) {
+    .list-item-bordered-part {
+      border-top: 1px @tg-section-separator-color solid;
+    }
+  }
+}

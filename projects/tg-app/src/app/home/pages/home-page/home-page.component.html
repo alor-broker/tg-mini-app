@@ -1,54 +1,61 @@
-<div class="d-flex flex-column">
-  <div class="d-flex flex-column">
-    <div class="header d-flex justify-content-end">
-      <div>
-        <tga-portfolio-selection></tga-portfolio-selection>
+<tga-sections>
+  <tga-section-panel>
+    <div>
+      <div class="header d-flex justify-content-end">
+        <div>
+          <tga-portfolio-selection></tga-portfolio-selection>
+        </div>
+      </div>
+
+      <div class="portfolio-summary">
+        <tga-portfolio-evaluation></tga-portfolio-evaluation>
+      </div>
+
+      <div class="ideas">
+        Инвестиционные идеи
+        <a
+          (click)="openSubview(SubviewTypes.InvestingIdeas)"
+          nz-button
+          nzSize="small"
+          nzType="link"
+        >
+          Ещё
+        </a>
       </div>
     </div>
+  </tga-section-panel>
 
-    <div class="portfolio-summary">
-      <tga-portfolio-evaluation></tga-portfolio-evaluation>
-    </div>
-
-    <div class="ideas">
-      Инвестиционные идеи
-      <a
-        nz-button
-        nzSize="small"
-        nzType="link"
-        (click)="changeDrawerVisibility(true, selectedItemType.InvestingIdeas)"
-      >
-        Ещё
-      </a>
-    </div>
-  </div>
-
-  <div class="d-flex flex-column">
+  <tga-section-panel>
     <div class="links">
       Ссылки
     </div>
+  </tga-section-panel>
 
-    <div class="portfolio-details d-flex flex-column">
-      <nz-collapse nzExpandIconPosition="end">
-        <nz-collapse-panel nzHeader="Позиции">
-          <tga-positions-list></tga-positions-list>
-        </nz-collapse-panel>
+  <tga-section-panel>
+    <nz-collapse nzExpandIconPosition="end">
+      <nz-collapse-panel nzHeader="Позиции">
+        <tga-positions-list></tga-positions-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </tga-section-panel>
 
-        <nz-collapse-panel nzHeader="Сделки">
-          <tga-trades-list
-            (selectItem)="changeDrawerVisibility(true, selectedItemType.Trade, $event)"
-          ></tga-trades-list>
-        </nz-collapse-panel>
+  <tga-section-panel>
+    <nz-collapse nzExpandIconPosition="end">
+      <nz-collapse-panel nzHeader="Сделки">
+        <tga-trades-list (selectItem)="openSubview(SubviewTypes.Trade, $event)"></tga-trades-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </tga-section-panel>
 
-        <nz-collapse-panel nzHeader="Заявки">
-          <tga-orders-list
-            (selectItem)="changeDrawerVisibility(true, selectedItemType.Order, $event)"
-          ></tga-orders-list>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </div>
-  </div>
-</div>
+  <tga-section-panel>
+    <nz-collapse nzExpandIconPosition="end">
+      <nz-collapse-panel nzHeader="Заявки">
+        <tga-orders-list (selectItem)="openSubview(SubviewTypes.Order, $event)"></tga-orders-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </tga-section-panel>
+</tga-sections>
+
 
 @if (drawerContext$ | async; as drawerContext) {
   <nz-drawer
@@ -57,26 +64,18 @@
     nzHeight="100%"
     [nzClosable]="false"
     [nzVisible]="drawerContext.isVisible"
-    (nzOnClose)="changeDrawerVisibility(false)"
+    (nzOnClose)="closeSubview()"
   >
     <ng-container *nzDrawerContent>
       @switch (drawerContext.itemType) {
-        @case (SelectedItemType.InvestingIdeas) {
-          <tga-investment-ideas
-            (onBack)="changeDrawerVisibility(false)"
-          ></tga-investment-ideas>
+        @case (SubviewTypes.InvestingIdeas) {
+          <tga-investment-ideas (onBack)="closeSubview()"></tga-investment-ideas>
         }
-        @case (SelectedItemType.Order) {
-          <tga-order-item
-            [order]="drawerContext.data"
-            (onBack)="changeDrawerVisibility(false)"
-          ></tga-order-item>
+        @case (SubviewTypes.Order) {
+          <tga-order-item [order]="drawerContext.data" (onBack)="closeSubview()"></tga-order-item>
         }
-        @case (SelectedItemType.Trade) {
-          <tga-trade-item
-            [trade]="drawerContext.data"
-            (onBack)="changeDrawerVisibility(false)"
-          ></tga-trade-item>
+        @case (SubviewTypes.Trade) {
+          <tga-trade-item [trade]="drawerContext.data" (onBack)="closeSubview()"></tga-trade-item>
         }
       }
     </ng-container>
@@ -89,23 +88,25 @@
           nz-button
           nzType="text"
           class="mr-15"
-          (click)="changeDrawerVisibility(false)"
+          (click)="closeSubview()"
         >
           <span nz-icon nzType="left" nzTheme="outline"></span>
         </button>
       }
 
-      @switch (drawerContext.itemType) {
-        @case (SelectedItemType.InvestingIdeas) {
-          <h3 class="mb-0">Инвестиционные идеи</h3>
+      <h3 class="mb-0">
+        @switch (drawerContext.itemType) {
+          @case (SubviewTypes.InvestingIdeas) {
+            Инвестиционные идеи
+          }
+          @case (SubviewTypes.Order) {
+            Заявка №
+          }
+          @case (SubviewTypes.Trade) {
+            Сделка №{{ drawerContext.data.id }}
+          }
         }
-        @case (SelectedItemType.Order) {
-          <h3 class="mb-0">Заявка №{{drawerContext.data.id}}</h3>
-        }
-        @case (SelectedItemType.Trade) {
-          <h3 class="mb-0">Сделка №{{drawerContext.data.id}}</h3>
-        }
-      }
+      </h3>
     </div>
   </ng-template>
 }

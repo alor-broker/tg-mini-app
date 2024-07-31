@@ -1,0 +1,13 @@
+﻿@tg-text-color: var(--mini-app-text-color);
+
+.ant-typography {
+  color: @tg-text-color;
+}
+
+@selectors: h1, h2, h3, h4, h5, h6;
+each(@selectors, {
+  @{value} {
+    color: @tg-text-color !important;
+  }
+});
+

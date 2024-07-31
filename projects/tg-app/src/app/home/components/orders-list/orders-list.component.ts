@@ -26,6 +26,8 @@ import {
 } from "@angular/common";
 import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { NzIconDirective } from "ng-zorro-antd/icon";
+import { ListComponent } from "../../../core/components/list/list/list.component";
+import { ListItemComponent } from "../../../core/components/list/list-item/list-item.component";
 
 @Component({
   selector: 'tga-orders-list',
@@ -36,7 +38,9 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
     AsyncPipe,
     NzTypographyComponent,
     DecimalPipe,
-    NzIconDirective
+    NzIconDirective,
+    ListComponent,
+    ListItemComponent
   ],
   templateUrl: './orders-list.component.html',
   styleUrl: './orders-list.component.less'

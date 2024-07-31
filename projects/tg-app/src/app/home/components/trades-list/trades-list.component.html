@@ -1,47 +1,51 @@
-@for (trade of trades$ | async; track trade) {
-  <div
-    class="d-flex flex-row align-items-center flex-gap-3 item cursor-pointer"
-    (click)="selectItem.emit(trade)"
-  >
-    <div
-      class="align-self-stretch"
-      [ngClass]="{
+<tga-list>
+  @for (trade of trades$ | async; track trade) {
+    <tga-list-item>
+      <div
+        class="d-flex flex-row align-items-center flex-gap-10 item cursor-pointer"
+        (click)="selectItem.emit(trade)"
+      >
+        <div
+          class="align-self-stretch"
+          [ngClass]="{
       'trade-side': true,
-      'side-buy': trade.side === Sides.Buy,
-      'side-sell': trade.side === Sides.Sell,
+      'buy-bg': trade.side === Sides.Buy,
+      'sell-bg': trade.side === Sides.Sell,
       }"
-    >&nbsp;</div>
-    <div>
-      <nz-avatar
-        #avatar
-        [nzText]="trade.symbol"
-        [nzSize]="32"
-        nzGap='4'
-        [nzSrc]="getIconUrl(trade)">
-      </nz-avatar>
-    </div>
-    <div
-      class="d-flex flex-row flex-fill"
-      [class.bottom-border]="!$last"
-    >
-      <div class="d-flex flex-column flex-fill">
+        >&nbsp;</div>
         <div>
-          <span nz-typography nzEllipsis>
-            <strong>{{ trade.symbol }}</strong>
-          </span>
+          <nz-avatar
+            [nzText]="trade.symbol"
+            [nzSize]="32"
+            nzGap='4'
+            [nzSrc]="getIconUrl(trade)">
+          </nz-avatar>
         </div>
-        <div>
-          {{ trade.qtyBatch | number }} л.
-        </div>
-      </div>
+        <div class="d-flex flex-row flex-fill list-item-bordered-part">
+          <div class="d-flex flex-column flex-fill">
+            <div>
+          <span nz-typography nzEllipsis>{{ trade.symbol }}</span>
+            </div>
+            <div>
+              <span class="text-subtitle-color">
+                {{ trade.qtyBatch | number }} л.
+              </span>
+            </div>
+          </div>
 
-      <div class="d-flex align-items-center">
-        {{ trade.price | number: '1.0-6' }} ₽
+          <div class="d-flex align-items-center">
+            {{ trade.price | number: '1.0-6' }} ₽
+          </div>
+
+          <span nz-icon nzType="right" nzTheme="outline" class="list-item-arrow ml-10"></span>
+        </div>
       </div>
-      <span nz-icon nzType="right" nzTheme="outline"></span>
-    </div>
-  </div>
-}
-@empty {
-  <span>В текущей торговой сессии сделок не было.</span>
-}
+    </tga-list-item>
+
+  }
+  @empty {
+    <tga-list-item>
+      <span>В текущей торговой сессии сделок не было.</span>
+    </tga-list-item>
+  }
+</tga-list>

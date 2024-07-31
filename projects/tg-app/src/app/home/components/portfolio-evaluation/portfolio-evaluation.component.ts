@@ -17,13 +17,15 @@ import {
   AsyncPipe,
   DecimalPipe
 } from "@angular/common";
+import { NzTypographyComponent } from "ng-zorro-antd/typography";
 
 @Component({
   selector: 'tga-portfolio-evaluation',
   standalone: true,
   imports: [
     AsyncPipe,
-    DecimalPipe
+    DecimalPipe,
+    NzTypographyComponent
   ],
   templateUrl: './portfolio-evaluation.component.html',
   styleUrl: './portfolio-evaluation.component.less'
