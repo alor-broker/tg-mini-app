@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { RoutesHelper } from "./core/utils/routes.helper";
 import { HomePageComponent } from "./home/pages/home-page/home-page.component";
 import { AuthGuard } from "./core/guards/auth-guard";
+import { SettingsComponent } from "./pages/settings/components/settings/settings.component";
 
 export const routes: Routes = [
   {
@@ -19,6 +20,11 @@ export const routes: Routes = [
   {
     path: RoutesHelper.appRoutes.home,
     component: HomePageComponent,
+    canActivate: [AuthGuard.canActivate]
+  },
+  {
+    path: RoutesHelper.appRoutes.settings,
+    component: SettingsComponent,
     canActivate: [AuthGuard.canActivate]
   },
   {

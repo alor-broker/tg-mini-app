@@ -1,7 +1,16 @@
 <tga-sections>
   <tga-section-panel>
     <div>
-      <div class="header d-flex justify-content-end">
+      <div class="header d-flex justify-content-between">
+        <button
+          nz-button
+          nzSize="large"
+          nzType="text"
+          routerLink="/settings"
+        >
+          <span nz-icon nzType="setting" nzTheme="outline"></span>
+        </button>
+
         <div>
           <tga-portfolio-selection></tga-portfolio-selection>
         </div>
