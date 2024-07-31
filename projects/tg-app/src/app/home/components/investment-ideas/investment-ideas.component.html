@@ -1,3 +1,41 @@
+@if (showDisclaimer$ | async) {
+  <nz-alert
+    class="mb-10"
+    nzBanner
+    [nzMessage]="disclaimer"
+    [nzShowIcon]="false"
+    (nzOnClose)="onDisclaimerClosed()"
+  ></nz-alert>
+}
+
+<ng-template #disclaimer>
+  <div class="d-flex flex-column text-subtitle-color">
+    <div class="w-100 d-flex justify-content-end">
+      <button
+        nz-button
+        class="text-subtitle-color"
+        nzType="text"
+        (click)="onDisclaimerClosed()"
+      >
+        <span nz-icon nzType="close" nzTheme="outline"></span>
+      </button>
+    </div>
+
+    <div class="disclaimer-text">
+      <p>
+        Указанная информация не является индивидуальной инвестиционной рекомендацией. Вы самостоятельно несете все риски принятия решений о способах и возможностях использования соответствующей информации.
+      </p>
+      <p>
+        Для получения более точной консультации вы можете обратиться по телефону
+        <a href="tel:88007751199">8 800 775-11-99 (доб. 3)</a>,
+        <a href="tel:+74959815577">+7 495 981-55-77 (доб. 3)</a>,
+        и/или по адресу электронной почты
+        <a href= "mailto: client@alor.ru"> client&#64;alor.ru </a>
+      </p>
+    </div>
+  </div>
+</ng-template>
+
 @for (idea of (investmentIdeas$ | async); track idea.signalId) {
   <nz-collapse
     [class]="'mb-10 ' + 'idea-' + idea.signalId"
@@ -35,15 +73,25 @@
 
   <ng-template #header>
     <h4 class="mb-0">{{ idea.symbolShortName }} ({{ idea.symbol }})</h4>
-    <span class="publish-date">{{ (idea.timestamp | date :'dd.MM.yyyy') ?? '' }}</span>
+    <span class="text-subtitle-color">{{ (idea.timestamp | date :'dd.MM.yyyy') ?? '' }}</span>
   </ng-template>
 } @empty {
-  @if (isLoading$ | async) {
-    <div class="w-100 d-flex justify-content-center">
+  <div class="w-100 d-flex justify-content-center mb-10">
+    @if (isLoading$ | async) {
       <nz-spin nzSimple [nzSize]="'small'"></nz-spin>
-    </div>
-  } @else {
-    <h2>Инвестиционные идеи отсутствуют</h2>
-  }
+    } @else {
+      <span class="text-subtitle-color">Инвестиционные идеи отсутствуют</span>
+    }
+  </div>
 }
 
+@if (!(isOldIdeasRequested$ | async)) {
+  <div class="d-flex justify-content-center">
+    <button
+      nz-button
+      (click)="loadOldIdeas()"
+    >
+      Показать устаревшие идеи
+    </button>
+  </div>
+}

@@ -1,23 +1,31 @@
 import {
   Component,
+  DestroyRef,
   EventEmitter,
   OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
 import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
-import { InvestmentIdeasService, InvestmentIdea, InstrumentsService, InstrumentKey } from "@api-lib";
-import { BehaviorSubject, forkJoin, Observable, tap } from "rxjs";
+import {
+  InvestmentIdeasService,
+  InvestmentIdea,
+  InstrumentsService,
+  InstrumentKey
+} from "@api-lib";
+import { BehaviorSubject, forkJoin, Observable, of, shareReplay, tap } from "rxjs";
 import { AsyncPipe, CommonModule } from "@angular/common";
 import { mapWith } from "../../../core/utils/observable-helper";
 import { NzSpinComponent } from "ng-zorro-antd/spin";
-import { BackButtonService } from "@environment-services-lib";
+import { BackButtonService, StorageService } from "@environment-services-lib";
 import { MarketService } from "../../../core/services/market.service";
 import { map } from "rxjs/operators";
 import { WatchedInvestmentIdeasService } from "../../services/watched-investment-ideas.service";
 import { NzCollapseComponent, NzCollapsePanelComponent } from "ng-zorro-antd/collapse";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { NzButtonComponent } from "ng-zorro-antd/button";
+import { NzAlertComponent } from "ng-zorro-antd/alert";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 
 interface InvestmentIdeaExtended extends InvestmentIdea {
@@ -37,7 +45,8 @@ interface InvestmentIdeaExtended extends InvestmentIdea {
     NzDescriptionsItemComponent,
     NzIconDirective,
     AsyncPipe,
-    NzButtonComponent
+    NzButtonComponent,
+    NzAlertComponent
   ],
   templateUrl: './investment-ideas.component.html',
   styleUrl: './investment-ideas.component.less'
@@ -46,6 +55,10 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
 
   @Output() onBack = new EventEmitter();
 
+  private disclaimerStorageKey = 'investment-ideas_disclaimer';
+  showDisclaimer$ = new BehaviorSubject<boolean>(false);
+
+  isOldIdeasRequested$ = new BehaviorSubject(false);
   isLoading$ = new BehaviorSubject(true);
   investmentIdeas$!: Observable<InvestmentIdeaExtended[]>;
 
@@ -56,65 +69,15 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
     private readonly watchedInvestmentIdeasService: WatchedInvestmentIdeasService,
     private readonly backButtonService: BackButtonService,
     private readonly instrumentsService: InstrumentsService,
-    private readonly marketService: MarketService
+    private readonly marketService: MarketService,
+    private readonly storageService: StorageService,
+    private readonly destroyRef: DestroyRef
   ) {}
 
   ngOnInit() {
-    this.investmentIdeas$ = this.investmentIdeasService.getAuthors()
-      .pipe(
-        // get investment ideas with author name
-        mapWith(
-          () => this.investmentIdeasService.getInvestmentIdeas({
-            orderBy: 'timestamp'
-          }),
-          (authors, ideas) => {
-            return (ideas ?? [])
-              .reverse()
-              .map(idea => {
-                const userFullName = authors?.find(a => a.userId === idea.userId)?.fullName ?? 'Неизвестен';
-
-                return {
-                  ...idea,
-                  userFullName
-                };
-              })
-          }
-        ),
-        mapWith(
-          () => this.marketService.getDefaultExchange(),
-          (ideas, defaultExchange) => ({ ideas, defaultExchange })
-        ),
-        // get investment ideas with symbol short name
-        mapWith(
-          ({ ideas, defaultExchange }) => {
-
-            const tickersMap = new Map<string, Observable<string>>;
-
-            ideas.forEach(idea => {
-              if (!tickersMap.has(idea.symbol)) {
-                tickersMap.set(
-                  idea.symbol,
-                  this.instrumentsService.getInstrument(this.instrumentKeyFromTicker(idea.symbol, defaultExchange!))
-                    .pipe(
-                      map(i => i?.shortName ?? '')
-                    )
-                )
-              }
-            });
-
-            return forkJoin(Object.fromEntries(tickersMap));
-          },
-          ({ ideas }, tickers) => ideas.map(idea => ({
-            ...idea,
-            symbolShortName: tickers[idea.symbol]
-            })
-          )
-        ),
-        tap(ideas => this.initWatchedIdeas(ideas)),
-        tap(() => this.isLoading$.next(false))
-      );
-
-    this.backButtonService.onClick(this.onBackButtonCallback)
+    this.checkShowDisclaimer();
+    this.investmentIdeas$ = this.getInvestmentIdeas();
+    this.backButtonService.onClick(this.onBackButtonCallback);
     this.backButtonService.show();
   }
 
@@ -124,6 +87,7 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
     }
     this.backButtonService.offClick(this.onBackButtonCallback);
     this.isLoading$.complete();
+    this.isOldIdeasRequested$.complete();
   }
 
   private onBackButtonCallback = () => {
@@ -156,5 +120,99 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
 
   watchIdea(id: number) {
     this.watchedIdeasIdsSet!.add(id);
+  }
+
+  loadOldIdeas() {
+    this.investmentIdeas$ = this.investmentIdeas$
+      .pipe(
+        mapWith(
+          () => this.getInvestmentIdeas(true),
+          (ideas, oldIdeas) => [...ideas, ...oldIdeas]
+        ),
+        tap(() => this.isOldIdeasRequested$.next(true))
+      );
+  }
+
+  checkShowDisclaimer() {
+    this.storageService.getItem(this.disclaimerStorageKey)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(val => {
+        if (val == null || val.length === 0) {
+          this.showDisclaimer$.next(true);
+        }
+      })
+  }
+
+  onDisclaimerClosed() {
+    this.storageService.setItem(this.disclaimerStorageKey, 'true')
+      .pipe(
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        this.showDisclaimer$.next(false);
+      })
+  }
+
+  private getInvestmentIdeas(isInvalidAllowed = false) {
+    this.isLoading$.next(true);
+
+    return this.investmentIdeasService.getAuthors()
+      .pipe(
+        // get investment ideas with author name
+        mapWith(
+          () => this.investmentIdeasService.getInvestmentIdeas({
+            orderBy: 'timestamp',
+            valid: !isInvalidAllowed
+          }),
+          (authors, ideas) => {
+            return (ideas ?? [])
+              .reverse()
+              .map(idea => {
+                const userFullName = authors?.find(a => a.userId === idea.userId)?.fullName ?? 'Неизвестен';
+
+                return {
+                  ...idea,
+                  userFullName
+                } as InvestmentIdeaExtended;
+              })
+          }
+        ),
+        mapWith(
+          () => this.marketService.getDefaultExchange(),
+          (ideas, defaultExchange) => ({ ideas, defaultExchange })
+        ),
+        // get investment ideas with symbol short name
+        mapWith(
+          ({ ideas, defaultExchange }) => {
+            if (ideas.length === 0) {
+              return of({} as { [instrName: string]: string });
+            }
+
+            const tickersMap = new Map<string, Observable<string>>;
+
+            ideas.forEach(idea => {
+              if (!tickersMap.has(idea.symbol)) {
+                tickersMap.set(
+                  idea.symbol,
+                  this.instrumentsService.getInstrument(this.instrumentKeyFromTicker(idea.symbol, defaultExchange!))
+                    .pipe(
+                      map(i => i?.shortName ?? '')
+                    )
+                )
+              }
+            });
+
+            return forkJoin(Object.fromEntries(tickersMap));
+          },
+          ({ ideas }, tickers) => ideas.map(idea => ({
+              ...idea,
+              symbolShortName: tickers[idea.symbol]
+            })
+          )
+        ),
+        tap(ideas => this.initWatchedIdeas(ideas)),
+        tap(() => this.isLoading$.next(false)),
+        shareReplay(1)
+      );
   }
 }
