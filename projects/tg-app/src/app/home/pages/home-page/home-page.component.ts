@@ -28,6 +28,7 @@ import { TradeItemComponent } from "../../components/trade-item/trade-item.compo
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { StopOrdersListComponent } from "../../components/stop-orders-list/stop-orders-list.component";
 import { LinksComponent } from "../../components/links/links.component";
+import { RouterLink } from "@angular/router";
 
 enum SelectedItemType {
   InvestingIdeas = 'investingIdeas',
@@ -63,7 +64,8 @@ interface DrawerContext {
     TradeItemComponent,
     NzIconDirective,
     StopOrdersListComponent,
-    LinksComponent
+    LinksComponent,
+    RouterLink
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'

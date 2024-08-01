@@ -3,33 +3,13 @@
     {
       "exchange": "MOEX",
       "settings": {
-        "hasIssue": true,
-        "hasPayments": true,
-        "hasFinance": true,
-        "hasDividends": true,
-        "defaultPortfolioCurrencyInstrument": "RUB",
-        "isDefault": true,
-        "defaultInstrument": {
-          "symbol": "SBER",
-          "instrumentGroup": "TQBR"
-        },
-        "timezone": "Europe/Moscow",
-        "defaultTradingSession": "0700-0000,0000-0200:1234567"
+        "isDefault": true
       }
     },
     {
       "exchange": "SPBX",
       "settings": {
-        "isInternational": true,
-        "hasFinance": true,
-        "hasDividends": true,
-        "defaultPortfolioCurrencyInstrument": "USD000UTSTOM",
-        "defaultInstrument": {
-          "symbol": "GAZP",
-          "instrumentGroup": "SPBX"
-        },
-        "timezone": "Europe/Moscow",
-        "defaultTradingSession": "0700-0000,0000-0200:1234567"
+        "isDefault": false
       }
     }
   ]

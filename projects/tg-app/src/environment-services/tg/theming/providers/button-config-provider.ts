@@ -1,6 +1,5 @@
 ﻿import {
-  ButtonConfig,
-  Theme
+  ButtonConfig
 } from "@environment-services-lib";
 import { ThemeParams } from "@m1cron-labs/ng-telegram-mini-app";
 import { ThemeReadingHelper } from "../theme-reading.helper";

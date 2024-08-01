@@ -13,7 +13,7 @@ export class TgAppApiConfigProvider extends ApiConfigProvider {
     return of({
       apiUrl: environment.apiUrl,
       userDataUrl: environment.userDataUrl,
-      superappUrl: environment.superappUrl
+      superAppUrl: environment.superAppUrl
     });
   }
 }
