@@ -1,9 +1,20 @@
 .list {
   @tg-section-separator-color: var(--mini-app-section-separator-color);
 
-  &-item:not(:first-child) {
+  &-item {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    &-arrow {
+      font-size: var(--font-size-sm);
+      color: var(--mini-app-subtitle-text-color);
+    }
+  }
+
+  &-item:not(:last-child) {
     .list-item-bordered-part {
-      border-top: 1px @tg-section-separator-color solid;
+      border-bottom: 1px @tg-section-separator-color solid;
     }
   }
 }

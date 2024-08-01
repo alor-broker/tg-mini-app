@@ -130,11 +130,17 @@
             "assets": [
               {
                 "glob": "**/*",
+                "ignore": ["**/custom_icons/**/*"],
                 "input": "projects/tg-app/public"
               },
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/tg-app/public/custom_icons/",
                 "output": "/assets/"
               }
             ],

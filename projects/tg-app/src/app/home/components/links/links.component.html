@@ -1,0 +1,25 @@
+<div class="d-flex flex-row flex-nowrap flex-gap-10">
+  <div
+    class="link-wrapper"
+    (click)="openInBrowser(externalLinks.astras)"
+  >
+    <span nz-icon nzType="astras-logo" nzTheme="outline"></span>
+    Заявка
+  </div>
+
+  <div
+    class="link-wrapper"
+    (click)="openInBrowser(externalLinks.personalAccount)"
+  >
+    <span nz-icon nzType="user" nzTheme="outline"></span>
+    Кабинет
+  </div>
+
+  <div
+    class="link-wrapper"
+    (click)="openInApplication(externalLinks.tgAlor)"
+  >
+    <span nz-icon nzType="message" nzTheme="outline"></span>
+    Канал
+  </div>
+</div>

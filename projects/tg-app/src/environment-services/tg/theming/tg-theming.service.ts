@@ -16,7 +16,7 @@ import { BackgroundConfigProvider } from "./providers/background-config-provider
 import { TextConfigProvider } from "./providers/text-config-provider";
 import { ButtonConfigProvider } from "./providers/button-config-provider";
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TgThemingService extends ThemingService {
   private config: ThemeConfig | null = null;
 

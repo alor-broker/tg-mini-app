@@ -19,6 +19,16 @@ each(range(0, 25, 1), {
     margin-left: @value * 1px;
   }
 
+  .mx-@{value} {
+    margin-right: @value * 1px;
+    margin-left: @value * 1px;
+  }
+
+  my-@{value} {
+    margin-top: @value * 1px;
+    margin-bottom: @value * 1px;
+  }
+
   .p-@{value} {
     padding: @value * 1px;
   }

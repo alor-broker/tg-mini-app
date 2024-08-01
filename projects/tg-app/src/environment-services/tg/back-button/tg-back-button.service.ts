@@ -2,9 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { BackButtonService } from "@environment-services-lib";
 import { BackButton, TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TgBackButtonService extends BackButtonService {
 
   private readonly backButton: BackButton | null = null;

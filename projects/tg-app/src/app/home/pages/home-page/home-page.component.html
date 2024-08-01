@@ -26,8 +26,8 @@
   </tga-section-panel>
 
   <tga-section-panel>
-    <div class="links">
-      Ссылки
+    <div class="m-15">
+      <tga-links></tga-links>
     </div>
   </tga-section-panel>
 
@@ -51,6 +51,14 @@
     <nz-collapse nzExpandIconPosition="end">
       <nz-collapse-panel nzHeader="Заявки">
         <tga-orders-list (selectItem)="openSubview(SubviewTypes.Order, $event)"></tga-orders-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </tga-section-panel>
+
+  <tga-section-panel>
+    <nz-collapse nzExpandIconPosition="end">
+      <nz-collapse-panel nzHeader="Стоп-заявки">
+        <tga-stop-orders-list (selectItem)="openSubview(SubviewTypes.Order, $event)"></tga-stop-orders-list>
       </nz-collapse-panel>
     </nz-collapse>
   </tga-section-panel>

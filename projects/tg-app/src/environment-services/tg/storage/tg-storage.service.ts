@@ -3,7 +3,7 @@ import { StorageService } from "@environment-services-lib";
 import { Observable, of } from "rxjs";
 import { CloudStorage, TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class TgStorageService extends StorageService {
 
   private readonly storage: CloudStorage | null = null;
