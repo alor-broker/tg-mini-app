@@ -1,0 +1,9 @@
+@if (isLoading | async) {
+  <h1>Loading...</h1>
+} @else {
+  <div class="password-wrapper">
+    <h3 class="mb"> Войти по код-паролю </h3>
+    <tga-password-form [formControl]="passwordControl" />
+    <button (click)="resetPassword()">Сбросить пароль</button>
+  </div>
+}

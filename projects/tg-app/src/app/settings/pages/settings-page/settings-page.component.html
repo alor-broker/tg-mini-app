@@ -1,0 +1,32 @@
+<nz-list nzBordered [nzHeader]="header">
+  @for (item of settingsButtons; track item.icon) {
+    <nz-list-item (click)="item.action()">
+      <div class="d-flex flex-gap-10 align-items-center">
+        <div
+          class="menu-icon"
+          [style.background-color]="item.bgColor"
+        >
+          <span nz-icon [nzType]="item.icon" nzTheme="outline"></span>
+        </div>
+        <span nz-typography [nzType]="item.type">{{ item.title }}</span>
+      </div>
+    </nz-list-item>
+  }
+</nz-list>
+
+<ng-template #header>
+  <div class="d-flex align-items-center">
+    @if (!isBackButtonAvailable) {
+      <button
+        nz-button
+        nzType="text"
+        class="mr-15"
+        (click)="onBack()"
+      >
+        <span nz-icon nzType="left" nzTheme="outline"></span>
+      </button>
+    }
+
+    <h3 class="mb-0"> Настройки </h3>
+  </div>
+</ng-template>
