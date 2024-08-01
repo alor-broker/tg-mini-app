@@ -1,6 +1,8 @@
 @import "ng-zorro-antd/ng-zorro-antd.less";
 @import "ng-zorro-overrides/index";
 
+@import 'scrollable-mixin';
+
 // utils
 @import "cursor-utils";
 @import "display-utils";
@@ -48,5 +50,7 @@ body {
 
   background-color: @bg-color;
   color: @text-color;
+
+  .scrollable(var(--mini-app-subtitle-text-color));
 }
 
