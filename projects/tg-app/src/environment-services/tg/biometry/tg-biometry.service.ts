@@ -6,7 +6,7 @@ import { BiometricManager, TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegr
 @Injectable()
 export class TgBiometryService extends BiometryService {
 
-  private readonly unavailablePlatforms = ['windows', 'macos'];
+  private readonly unavailablePlatforms = ['windows', 'macos', 'web'];
   private readonly biometricManager: BiometricManager | null = null;
 
   constructor(

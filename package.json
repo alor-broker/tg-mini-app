@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start-tg": "ng serve --ssl",
+    "start-in-app": "ng serve --ssl --host 127.0.0.1",
     "build": "ng build --project tg-app",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

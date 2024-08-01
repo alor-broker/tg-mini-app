@@ -1,20 +1,6 @@
-<nz-list nzBordered [nzHeader]="header">
-  @for (item of settingsButtons; track item.icon) {
-    <nz-list-item (click)="item.action()">
-      <div class="d-flex flex-gap-10 align-items-center">
-        <div
-          class="menu-icon"
-          [style.background-color]="item.bgColor"
-        >
-          <span nz-icon [nzType]="item.icon" nzTheme="outline"></span>
-        </div>
-        <span nz-typography [nzType]="item.type">{{ item.title }}</span>
-      </div>
-    </nz-list-item>
-  }
-</nz-list>
-
-<ng-template #header>
+<div
+  class="px-24 py-16 bg-header-color mb-15"
+>
   <div class="d-flex align-items-center">
     @if (!isBackButtonAvailable) {
       <button
@@ -29,4 +15,26 @@
 
     <h3 class="mb-0"> Настройки </h3>
   </div>
-</ng-template>
+</div>
+
+<div class="d-flex flex-column">
+  @for (buttonsblock of settingsButtons; let i = $index; track i) {
+    <div class="d-flex flex-column mb-15">
+      @for (item of buttonsblock; track item.icon) {
+        <div
+          class="cursor-pointer menu-item px-24 py-12 bg-color"
+          (click)="item.action()"
+        >
+          <div class="d-flex flex-gap-10 align-items-center">
+            <div
+              [class]="'menu-icon ' + item.className"
+            >
+              <span nz-icon [nzType]="item.icon" nzTheme="outline"></span>
+            </div>
+            <span nz-typography [nzType]="item.type">{{ item.title }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

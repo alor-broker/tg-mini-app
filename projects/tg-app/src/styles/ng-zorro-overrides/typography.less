@@ -1,7 +1,16 @@
-﻿@tg-text-color: var(--mini-app-text-color);
+﻿@typography-prefix-cls: ~'ant-typography';
 
-.ant-typography {
+@tg-text-color: var(--mini-app-text-color);
+@tg-destructive-text-color: var(--mini-app-destructive-text-color);
+
+.@{typography-prefix-cls} {
   color: @tg-text-color;
+
+  &.@{typography-prefix-cls} {
+    &-danger {
+      color: @tg-destructive-text-color;
+    }
+  }
 }
 
 @selectors: h1, h2, h3, h4, h5, h6;

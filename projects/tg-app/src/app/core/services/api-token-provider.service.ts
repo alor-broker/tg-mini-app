@@ -48,7 +48,7 @@ export class ApiTokenProviderService {
         if (
           userState?.ssoToken?.refreshToken != null
           && userState.ssoToken.refreshToken.length > 0
-          && (userState.ssoToken.jwt == null || userState.ssoToken.jwt.length == 0)
+          && ((userState.ssoToken.jwt == null || userState.ssoToken.jwt.length == 0) || !this.isAuthorised(userState?.ssoToken))
         ) {
           // refreshToken is set after login. Need to get jwt
           this.refreshToken(userState);
