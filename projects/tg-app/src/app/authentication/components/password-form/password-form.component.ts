@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, DestroyRef, forwardRef, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  forwardRef,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NzIconDirective } from "ng-zorro-antd/icon";
@@ -17,7 +26,10 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
     }
   ]
 })
-export class PasswordFormComponent implements ControlValueAccessor, OnInit {
+export class PasswordFormComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+
+  @ViewChild('inputElement', { static: true })
+  inputElement!: ElementRef<HTMLInputElement>;
 
   passwordControl = new FormControl('');
 
@@ -36,9 +48,22 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(v => {
+        let parsedValue = (v ?? '')
+          .trim()
+          .replace(/\D/g, '');
+
+        if (v != parsedValue) {
+          this.passwordControl.setValue(parsedValue);
+          return;
+        }
+
         this.onChange?.(v ?? '');
         this.cdr.detectChanges();
       })
+  }
+
+  ngAfterViewInit() {
+    this.inputElement.nativeElement.focus();
   }
 
   writeValue(val: string | null): void {
@@ -54,12 +79,7 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit {
     this.onTouch = fn;
   }
 
-  addNumber(num: string) {
-    this.passwordControl.setValue(this.passwordControl.value! + num);
-  }
-
-  removeNumber() {
-    const ctrlValue = this.passwordControl.value! ?? '';
-    this.passwordControl.setValue(ctrlValue.slice(0, -1));
+  focusToInput() {
+    this.inputElement.nativeElement.focus();
   }
 }
