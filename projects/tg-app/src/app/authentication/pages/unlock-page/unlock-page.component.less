@@ -1,12 +1,18 @@
-.password-wrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+@btn-prefix-cls: ~'ant-btn';
 
-  h3 {
-    text-align: center;
+.@{btn-prefix-cls} {
+  @tg-accent-text-color: var(--mini-app-accent-text-color);
+
+  color: @tg-accent-text-color;
+
+  &-text {
+    &:hover,
+    &:focus {
+      color: @tg-accent-text-color;
+    }
+
+    &:active {
+      color: @tg-accent-text-color;
+    }
   }
 }

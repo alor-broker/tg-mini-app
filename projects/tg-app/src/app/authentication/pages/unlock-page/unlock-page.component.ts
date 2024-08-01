@@ -24,6 +24,7 @@ import { ApiTokenProviderService } from "../../../core/services/api-token-provid
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { switchMap } from "rxjs/operators";
+import { NzButtonComponent } from "ng-zorro-antd/button";
 
 @Component({
   selector: 'tga-unlock-page',
@@ -31,7 +32,8 @@ import { switchMap } from "rxjs/operators";
   imports: [
     PasswordFormComponent,
     AsyncPipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzButtonComponent
   ],
   templateUrl: './unlock-page.component.html',
   styleUrl: './unlock-page.component.less'
