@@ -29,7 +29,7 @@ export class TgThemingService extends ThemingService {
   override getThemeConfig(): ThemeConfig {
     if (this.config == null) {
       const themeParameters = this.tgWebApp?.themeParams;
-      const currentScheme = TgColorScheme.Dark//<TgColorScheme>(this.tgWebApp?.colorScheme ?? TgColorScheme.Light);
+      const currentScheme = <TgColorScheme>(this.tgWebApp?.colorScheme ?? TgColorScheme.Light);
 
       this.config = {
         theme: {
