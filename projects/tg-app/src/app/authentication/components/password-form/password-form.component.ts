@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, DestroyRef, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { NzIconDirective } from "ng-zorro-antd/icon";
 
 @Component({
   selector: 'tga-password-form',
   standalone: true,
-  imports: [ ReactiveFormsModule ],
+  imports: [ReactiveFormsModule, NzIconDirective],
   templateUrl: './password-form.component.html',
   styleUrl: './password-form.component.less',
   providers: [
