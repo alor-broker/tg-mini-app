@@ -4,13 +4,19 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  EventEmitter,
   forwardRef,
+  Input,
   OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NzIconDirective } from "ng-zorro-antd/icon";
+import {
+  PlatformInfoService
+} from "../../../../../../environment-services-lib/src/platform-info/platform-info.service";
 
 @Component({
   selector: 'tga-password-form',
@@ -28,16 +34,23 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 })
 export class PasswordFormComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
-  @ViewChild('inputElement', { static: true })
+  @Input() isBiometryButtonVisible = false;
+
+  @Output() onBiometryButtonClicked = new EventEmitter();
+
+  @ViewChild('inputElement')
   inputElement!: ElementRef<HTMLInputElement>;
 
   passwordControl = new FormControl('');
+  isDesktopPlatform = false;
+  private desktopPlatforms = ['windows', 'macos', 'web'];
 
   onChange?: (val: string) => void;
   onTouch?: () => void;
 
   constructor(
     private readonly cdr: ChangeDetectorRef,
+    private readonly platformInfoService: PlatformInfoService,
     private readonly destroyRef: DestroyRef
   ) {
   }
@@ -50,7 +63,8 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
       .subscribe(v => {
         let parsedValue = (v ?? '')
           .trim()
-          .replace(/\D/g, '');
+          .replace(/\D/g, '')
+          .slice(0, 4);
 
         if (v != parsedValue) {
           this.passwordControl.setValue(parsedValue);
@@ -59,11 +73,15 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
 
         this.onChange?.(v ?? '');
         this.cdr.detectChanges();
-      })
+      });
+
+    this.isDesktopPlatform = this.desktopPlatforms.includes(this.platformInfoService.getPlatformName());
   }
 
   ngAfterViewInit() {
-    this.inputElement.nativeElement.focus();
+    if (this.isDesktopPlatform) {
+      this.inputElement.nativeElement.focus();
+    }
   }
 
   writeValue(val: string | null): void {
@@ -79,7 +97,22 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
     this.onTouch = fn;
   }
 
+  addNumber(num: string) {
+    this.passwordControl.setValue((this.passwordControl.value ?? '') + num);
+  }
+
+  removeNumber() {
+    const ctrlValue = (this.passwordControl.value ?? '') ?? '';
+    this.passwordControl.setValue(ctrlValue.slice(0, -1));
+  }
+
   focusToInput() {
     this.inputElement.nativeElement.focus();
+  }
+
+  biometryButtonClicked() {
+    if (this.isBiometryButtonVisible) {
+      this.onBiometryButtonClicked.emit();
+    }
   }
 }

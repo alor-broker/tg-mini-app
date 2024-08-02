@@ -3,7 +3,11 @@
 } @else {
   <div class="h-100 d-flex flex-column align-items-center justify-content-center flex-gap-15 user-select-none">
     <h2> Войти по код-паролю </h2>
-    <tga-password-form [formControl]="passwordControl" />
+    <tga-password-form
+      [formControl]="passwordControl"
+      [isBiometryButtonVisible]="(isBiometryAvailable$ | async) ?? false"
+      (onBiometryButtonClicked)="scanBiometry()"
+    />
     <button
       class="mt-15"
       nz-button
