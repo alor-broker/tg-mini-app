@@ -10,7 +10,6 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
@@ -80,10 +79,8 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
     this.isDesktopPlatform = this.desktopPlatforms.includes(this.platformInfoService.getPlatformName());
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['isBiometryButtonVisible'].previousValue !== changes['isBiometryButtonVisible'].currentValue) {
-      setTimeout(() => this.cdr.detectChanges(), 0);
-    }
+  ngOnChanges() {
+    this.cdr.detectChanges();
   }
 
   ngAfterViewInit() {
