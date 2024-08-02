@@ -26,8 +26,7 @@ import { OrderConditionPipe } from "../../../core/pipes/order-condition.pipe";
     OrderConditionPipe,
     NgClass,
   ],
-  templateUrl: './order-item.component.html',
-  styleUrl: './order-item.component.less'
+  templateUrl: './order-item.component.html'
 })
 export class OrderItemComponent implements OnInit, OnDestroy {
   @Input({ required: true }) order!: PortfolioStopOrder | PortfolioOrder;

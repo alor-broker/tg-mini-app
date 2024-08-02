@@ -2,9 +2,9 @@
   <nz-descriptions-item nzTitle="Статус">
     <span
       [ngClass]="{
-        'filled-status-color': order.status === orderStatus.Filled,
-        'cancelled-status-color': order.status === orderStatus.Canceled,
-        'working-status-color': order.status === orderStatus.Working,
+        'buy-color': order.status === orderStatus.Filled,
+        'inactive-color': order.status === orderStatus.Canceled,
+        'text-accent-color': order.status === orderStatus.Working
       }"
     >
       {{ order.status | orderStatus }}

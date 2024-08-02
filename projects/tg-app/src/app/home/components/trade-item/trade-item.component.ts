@@ -14,8 +14,7 @@ import { BackButtonService } from "@environment-services-lib";
     NzDescriptionsItemComponent,
     OrderSidePipe,
   ],
-  templateUrl: './trade-item.component.html',
-  styleUrl: './trade-item.component.less'
+  templateUrl: './trade-item.component.html'
 })
 export class TradeItemComponent implements OnInit, OnDestroy {
   @Input({ required: true }) trade!: PortfolioTrade;

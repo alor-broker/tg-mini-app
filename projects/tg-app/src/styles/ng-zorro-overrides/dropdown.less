@@ -1,26 +1,12 @@
-﻿@dropdown-prefix-cls: ~'ant-dropdown';
+﻿@dropdown-menu-bg: @item-hover-bg;
 
 .@{dropdown-prefix-cls} {
-  @tg-bg-color: var(--mini-app-bg-color);
-  @tg-bg-secondary-color: var(--mini-app-secondary-bg-color);
-  @tg-text-color: var(--mini-app-text-color);
   @tg-section-separator-color: var(--mini-app-section-separator-color);
 
   &-menu {
-    @menu-background-color: color-mix(in srgb, @tg-bg-color 25%, @tg-bg-secondary-color);
-
-    background-color: @menu-background-color;
-
     &-item {
-      color: @tg-text-color;
-
       &:not(:first-child) {
         border-top: 1px @tg-section-separator-color solid;
-      }
-
-      &:hover,
-      &&-active {
-        background-color: @menu-background-color;
       }
     }
   }
