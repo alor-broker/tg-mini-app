@@ -24,31 +24,31 @@
 //text
 .text- {
   &color {
-    color: var(--mini-app-text-color);
+    color: var(--mini-app-text-color) !important;
   }
 
   &subtitle-color {
-    color: var(--mini-app-subtitle-text-color);
+    color: var(--mini-app-subtitle-text-color) !important;
   }
 
   &hint-color {
-    color: var(--mini-app-hint-color);
+    color: var(--mini-app-hint-color) !important;
   }
 
   &link-color {
-    color: var(--mini-app-link-color);
+    color: var(--mini-app-link-color) !important;
   }
 
   &accent-color {
-    color: var(--mini-app-accent-text-color);
+    color: var(--mini-app-accent-text-color) !important;
   }
 
   &section-header-color {
-    color: var(--mini-app-section-header-text-color);
+    color: var(--mini-app-section-header-text-color) !important;
   }
 
   &destructive-color {
-    color: var(--mini-app-destructive-text-color);
+    color: var(--mini-app-destructive-text-color) !important;
   }
 }
 
@@ -73,5 +73,17 @@
 
   &bg {
     background-color: @buy-color;
+  }
+}
+
+.inactive- {
+  @inactive-color: gray;
+
+  &color {
+    color: @inactive-color;
+  }
+
+  &bg {
+    background-color: @inactive-color;
   }
 }

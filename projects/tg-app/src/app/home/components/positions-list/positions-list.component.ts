@@ -10,6 +10,7 @@ import {
 import {
   Observable,
   shareReplay,
+  startWith,
   switchMap
 } from "rxjs";
 import { map } from "rxjs/operators";
@@ -22,6 +23,9 @@ import { NzAvatarComponent } from "ng-zorro-antd/avatar";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 import { ListItemComponent } from "../../../core/components/list/list-item/list-item.component";
 import { ListComponent } from "../../../core/components/list/list/list.component";
+import { ViewModel } from "../../../core/models/view-model.model";
+import { Portfolio } from "../../../core/models/porfolio.models";
+import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 
 @Component({
   selector: 'tga-positions-list',
@@ -32,13 +36,13 @@ import { ListComponent } from "../../../core/components/list/list/list.component
     NzTypographyComponent,
     NzAvatarComponent,
     ListItemComponent,
-    ListComponent
+    ListComponent,
+    NzSkeletonComponent
   ],
-  templateUrl: './positions-list.component.html',
-  styleUrl: './positions-list.component.less'
+  templateUrl: './positions-list.component.html'
 })
 export class PositionsListComponent implements OnInit {
-  positions$!: Observable<PortfolioPosition[]>;
+  viewModel$!: Observable<ViewModel<PortfolioPosition[]>>;
 
   constructor(
     private readonly selectedPortfolioDataContextService: SelectedPortfolioDataContextService,
@@ -48,11 +52,27 @@ export class PositionsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.positions$ = this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
-      switchMap(p => this.apiPortfolioPositionsService.getAllForPortfolio(p.portfolioKey)),
-      map(p => p ?? []),
-      shareReplay(1)
-    );
+    const getPositions = (portfolio: Portfolio): Observable<ViewModel<PortfolioPosition[]>> => {
+      return this.apiPortfolioPositionsService.getAllForPortfolio(portfolio.portfolioKey).pipe(
+        map(p => p ?? []),
+        map(p => ({
+          isUpdating: true,
+          viewData: p
+        })),
+        startWith(({
+          isUpdating: true
+        })),
+      )
+    }
+
+    this.viewModel$ =
+      this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
+        switchMap(portfolio => getPositions(portfolio)),
+        startWith(({
+          isUpdating: true
+        })),
+        shareReplay(1)
+      );
   }
 
   showLots(position: PortfolioPosition): boolean {
@@ -67,7 +87,7 @@ export class PositionsListComponent implements OnInit {
     return 'Рубли'
   }
 
-  iconSymbol(position: PortfolioPosition): string{
+  iconSymbol(position: PortfolioPosition): string {
     if (position.symbol !== 'RUB') {
       return position.symbol;
     }

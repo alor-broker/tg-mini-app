@@ -1,29 +1,33 @@
-@if (allPortfolios$ | async; as portfolios) {
-  @if (selectedPortfolio$ | async; as selectedPortfolio) {
-    <button
-      nz-button
-      nz-dropdown
-      [nzDropdownMenu]="menu"
-      nzOverlayClassName="portfolio-selection"
-      nzType="text"
-    >
-      {{ selectedPortfolio.portfolioKey.portfolio }}
+@if (viewModel$ | async; as viewModel) {
+  <button
+    nz-button
+    nz-dropdown
+    [nzDropdownMenu]="menu"
+    nzOverlayClassName="portfolio-selection"
+    nzType="text"
+    [nzDisabled]="!viewModel.viewData"
+  >
+    @if (viewModel.viewData) {
+      {{ viewModel.viewData.selectedPortfolio.portfolioKey.portfolio }}
       <span nz-icon nzType="down"></span>
-    </button>
+    } @else {
+      <span nz-icon nzType="loading" nzTheme="outline"></span>
+    }
+  </button>
 
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu>
-        @for (portfolio of portfolios; track $index) {
-          <li
-            nz-menu-item
-            (click)="changeSelection(portfolio)"
-          >
-            {{ portfolio.portfolioKey.portfolio }} {{ portfolio.market }}
-          </li>
-        }
-      </ul>
-    </nz-dropdown-menu>
-  }
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      @for (portfolio of viewModel.viewData?.allPortfolios ?? []; track $index) {
+        <li
+          nz-menu-item
+          (click)="changeSelection(portfolio)"
+        >
+          {{ portfolio.portfolioKey.portfolio }} {{ portfolio.market }}
+        </li>
+      }
+    </ul>
+  </nz-dropdown-menu>
 }
+
 
 
