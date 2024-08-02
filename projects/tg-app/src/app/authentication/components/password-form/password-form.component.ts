@@ -82,7 +82,7 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['isBiometryButtonVisible'].previousValue !== changes['isBiometryButtonVisible'].currentValue) {
-      this.cdr.detectChanges();
+      setTimeout(() => this.cdr.detectChanges(), 0);
     }
   }
 
