@@ -11,6 +11,8 @@ import { TgStorageService } from "./storage/tg-storage.service";
 import { TgBiometryService } from "./biometry/tg-biometry.service";
 import { TgBackButtonService } from "./back-button/tg-back-button.service";
 import { TgLinksService } from "./links/tg-links.service";
+import { PlatformInfoService } from "../../../../environment-services-lib/src/platform-info/platform-info.service";
+import { TgPlatformInfoService } from "./platform-info/tg-platform-info.service";
 
 export const EnvironmentServicesProviders: Provider[] = [
   {
@@ -32,5 +34,9 @@ export const EnvironmentServicesProviders: Provider[] = [
   {
     provide: LinksService,
     useClass: TgLinksService
+  },
+  {
+    provide: PlatformInfoService,
+    useClass: TgPlatformInfoService
   }
 ];

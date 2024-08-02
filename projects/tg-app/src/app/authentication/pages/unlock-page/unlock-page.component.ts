@@ -17,6 +17,8 @@ import {
 import {
   BehaviorSubject,
   filter,
+  Observable,
+  shareReplay,
   tap
 } from "rxjs";
 import { Router } from "@angular/router";
@@ -42,6 +44,7 @@ export class UnlockPageComponent implements OnInit {
   appPasswordKey = 'app-password';
   passwordControl = new FormControl('');
   isLoading = new BehaviorSubject(true);
+  isBiometryAvailable$!: Observable<boolean>;
 
   constructor(
     private readonly biometryService: BiometryService,
@@ -95,7 +98,16 @@ export class UnlockPageComponent implements OnInit {
   }
 
   initIdentification() {
-    this.biometryService.isBiometryAvailable()
+    this.isBiometryAvailable$ = this.biometryService.isBiometryAvailable()
+      .pipe(
+        shareReplay(1)
+      );
+
+    this.scanBiometry();
+  }
+
+  scanBiometry() {
+    this.isBiometryAvailable$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         filter(isAvailable => isAvailable),
