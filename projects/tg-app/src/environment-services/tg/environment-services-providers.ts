@@ -4,15 +4,17 @@ import {
   StorageService,
   BiometryService,
   BackButtonService,
-  LinksService
+  LinksService,
+  PlatformInfoService,
+  ModalService
 } from "@environment-services-lib";
 import { TgThemingService } from "./theming/tg-theming.service";
 import { TgStorageService } from "./storage/tg-storage.service";
 import { TgBiometryService } from "./biometry/tg-biometry.service";
 import { TgBackButtonService } from "./back-button/tg-back-button.service";
 import { TgLinksService } from "./links/tg-links.service";
-import { PlatformInfoService } from "../../../../environment-services-lib/src/platform-info/platform-info.service";
 import { TgPlatformInfoService } from "./platform-info/tg-platform-info.service";
+import { TgModalService } from "./modal/tg-modal.service";
 
 export const EnvironmentServicesProviders: Provider[] = [
   {
@@ -38,5 +40,9 @@ export const EnvironmentServicesProviders: Provider[] = [
   {
     provide: PlatformInfoService,
     useClass: TgPlatformInfoService
+  },
+  {
+    provide: ModalService,
+    useClass: TgModalService
   }
 ];

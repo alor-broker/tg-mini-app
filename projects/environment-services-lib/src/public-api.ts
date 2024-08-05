@@ -8,3 +8,5 @@ export * from './storage/storage.service';
 export * from './biometry/biometry.service';
 export * from './back-button/back-button.service';
 export * from './links/links-service';
+export * from './platform-info/platform-info.service';
+export * from './modal/modal.service';

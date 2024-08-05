@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NzButtonComponent } from "ng-zorro-antd/button";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { BackButtonService, LinksService } from "@environment-services-lib";
@@ -6,6 +6,17 @@ import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { Router } from "@angular/router";
 import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
+import { PasswordCheckService } from "../../../home/services/password-check.service";
+import { filter, take } from "rxjs";
+import { PasswordCheckComponent } from "../../../home/components/password-check/password-check.component";
+import { AsyncPipe } from "@angular/common";
+import { InvestmentIdeasComponent } from "../../../home/components/investment-ideas/investment-ideas.component";
+import { OrderItemComponent } from "../../../home/components/order-item/order-item.component";
+import { TradeItemComponent } from "../../../home/components/trade-item/trade-item.component";
+import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
+import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
+import { NzSwitchComponent } from "ng-zorro-antd/switch";
+import { PasswordSettingsComponent } from "../../components/password-settings/password-settings.component";
 
 interface SettingsButton {
   icon: string;
@@ -21,23 +32,46 @@ interface SettingsButton {
   imports: [
     NzButtonComponent,
     NzIconDirective,
-    NzTypographyComponent
+    NzTypographyComponent,
+    PasswordCheckComponent,
+    AsyncPipe,
+    InvestmentIdeasComponent,
+    OrderItemComponent,
+    TradeItemComponent,
+    SectionsComponent,
+    SectionPanelComponent,
+    NzSwitchComponent,
+    PasswordSettingsComponent
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.less'
 })
 export class SettingsPageComponent implements OnInit, OnDestroy {
   isBackButtonAvailable = false;
+  isPasswordSettingsOpened = false;
 
   settingsButtons: SettingsButton[][] = [
     [
       {
         icon: 'key',
-        title: 'Сбросить код-пароль',
+        title: 'Код-пароль и биометрия',
         className: 'reset-password-icon',
         action: () => {
-          this.backButtonService.hide();
-          RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.authentication.createPassword)
+          this.backButtonService.offClick(this.onBack);
+          this.passwordCheckService.checkPassword(true);
+
+          this.passwordCheckService.passwordCheckParams$
+            .pipe(
+              filter(p => p.isChecked),
+              take(1)
+            )
+            .subscribe(params => {
+              if (params.isSuccess) {
+                this.isPasswordSettingsOpened = true;
+              } else {
+                this.setBackBtn();
+              }
+            })
         }
       },
     ],
@@ -75,18 +109,15 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly apiTokenProviderService: ApiTokenProviderService,
+    private readonly passwordCheckService: PasswordCheckService,
     private readonly linksService: LinksService,
-    private readonly backButtonService: BackButtonService
+    private readonly backButtonService: BackButtonService,
+    private readonly cdr: ChangeDetectorRef
   ) {
   }
 
   ngOnInit() {
-    this.isBackButtonAvailable = this.backButtonService.isAvailable;
-
-    if (this.isBackButtonAvailable) {
-      this.backButtonService.onClick(this.onBack);
-      this.backButtonService.show();
-    }
+    this.setBackBtn();
   }
 
   ngOnDestroy() {
@@ -96,5 +127,20 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   onBack = () => {
     this.backButtonService.hide();
     RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.home)
+  }
+
+  passwordSettingsBackClicked() {
+    this.isPasswordSettingsOpened = false;
+    this.setBackBtn();
+    this.cdr.detectChanges();
+  }
+
+  private setBackBtn() {
+    this.isBackButtonAvailable = this.backButtonService.isAvailable;
+
+    if (this.isBackButtonAvailable) {
+      this.backButtonService.onClick(this.onBack);
+      this.backButtonService.show();
+    }
   }
 }

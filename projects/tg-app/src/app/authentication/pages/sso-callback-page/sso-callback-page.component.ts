@@ -27,7 +27,7 @@ export class SsoCallbackPageComponent implements OnInit {
   ngOnInit(): void {
     this.apiTokenProviderService.setRefreshToken(
       (this.refreshToken ?? '').trim(),
-      () => RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.authentication.unlock)
+      () => RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.home)
     );
   }
 }

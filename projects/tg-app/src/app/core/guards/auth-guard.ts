@@ -24,7 +24,7 @@ export class AuthGuard {
           return true;
         }
 
-        return router.parseUrl(RoutesHelper.urlForRoot(RoutesHelper.appRoutes.authentication.unlock))
+        return router.parseUrl(RoutesHelper.urlForRoot(RoutesHelper.appRoutes.home))
       }),
       take(1)
     );

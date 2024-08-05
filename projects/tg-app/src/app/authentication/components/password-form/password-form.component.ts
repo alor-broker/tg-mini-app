@@ -17,7 +17,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import {
   PlatformInfoService
-} from "../../../../../../environment-services-lib/src/platform-info/platform-info.service";
+} from "@environment-services-lib";
 
 @Component({
   selector: 'tga-password-form',

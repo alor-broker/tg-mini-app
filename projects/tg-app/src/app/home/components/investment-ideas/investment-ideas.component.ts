@@ -26,6 +26,7 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 import { NzButtonComponent } from "ng-zorro-antd/button";
 import { NzAlertComponent } from "ng-zorro-antd/alert";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { StorageKeys } from "../../../core/utils/storage-keys";
 
 
 interface InvestmentIdeaExtended extends InvestmentIdea {
@@ -55,7 +56,6 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
 
   @Output() onBack = new EventEmitter();
 
-  private disclaimerStorageKey = 'investment-ideas_disclaimer';
   showDisclaimer$ = new BehaviorSubject<boolean>(false);
 
   isOldIdeasRequested$ = new BehaviorSubject(false);
@@ -134,7 +134,7 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
   }
 
   checkShowDisclaimer() {
-    this.storageService.getItem(this.disclaimerStorageKey)
+    this.storageService.getItem(StorageKeys.InvestmentIdeasDisclaimer)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(val => {
         if (val == null || val.length === 0) {
@@ -144,7 +144,7 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
   }
 
   onDisclaimerClosed() {
-    this.storageService.setItem(this.disclaimerStorageKey, 'true')
+    this.storageService.setItem(StorageKeys.InvestmentIdeasDisclaimer, 'true')
       .pipe(
         takeUntilDestroyed(this.destroyRef)
       )

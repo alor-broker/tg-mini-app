@@ -16,11 +16,13 @@ import { Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
   of,
-  switchMap
+  switchMap,
+  tap
 } from "rxjs";
 import { PasswordFormComponent } from "../../components/password-form/password-form.component";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { NzButtonComponent } from "ng-zorro-antd/button";
+import { StorageKeys } from "../../../core/utils/storage-keys";
 
 enum PasswordPhase {
   Create = 'create',
@@ -39,8 +41,6 @@ enum PasswordPhase {
   styleUrl: './create-password-page.component.less'
 })
 export class CreatePasswordPageComponent implements OnInit {
-
-  appPasswordKey = 'app-password';
 
   passwordCtrl = new FormControl('');
   passwordPhaseEnum = PasswordPhase;
@@ -74,7 +74,7 @@ export class CreatePasswordPageComponent implements OnInit {
         }
 
         if (v === this.createdPassword) {
-          this.storageService.setItem(this.appPasswordKey, v)
+          this.storageService.setItem(StorageKeys.AppPassword, v)
             .subscribe(
               isSaved => {
                 if (!isSaved) {
@@ -109,11 +109,15 @@ export class CreatePasswordPageComponent implements OnInit {
             return this.biometryService.requestAccess('Для входа по биометрии предоставьте доступ')
           }
 
-          return of(null);
+          return of(false);
+        }),
+        tap(isAccepted => {
+          this.storageService.setItem(StorageKeys.AppBiometryAccess, JSON.stringify(isAccepted))
+            .subscribe();
         })
       )
       .subscribe(() => {
-        RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.authentication.unlock)
+        RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.home);
         this.cdr.detectChanges();
       })
   }

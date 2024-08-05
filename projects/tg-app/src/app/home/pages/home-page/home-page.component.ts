@@ -1,5 +1,7 @@
 import {
+  ChangeDetectorRef,
   Component,
+  DestroyRef,
   OnDestroy,
   OnInit
 } from '@angular/core';
@@ -15,7 +17,7 @@ import { OrdersListComponent } from "../../components/orders-list/orders-list.co
 import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
 import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
 import { NzButtonComponent } from "ng-zorro-antd/button";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, tap } from "rxjs";
 import { BackButtonService } from "@environment-services-lib";
 import { AsyncPipe } from "@angular/common";
 import {
@@ -29,6 +31,9 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 import { StopOrdersListComponent } from "../../components/stop-orders-list/stop-orders-list.component";
 import { LinksComponent } from "../../components/links/links.component";
 import { RouterLink } from "@angular/router";
+import { PasswordCheckComponent } from "../../components/password-check/password-check.component";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
 
 enum SelectedItemType {
   InvestingIdeas = 'investingIdeas',
@@ -65,19 +70,24 @@ interface DrawerContext {
     NzIconDirective,
     StopOrdersListComponent,
     LinksComponent,
-    RouterLink
+    RouterLink,
+    PasswordCheckComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   readonly SubviewTypes = SelectedItemType;
+  isLoading = new BehaviorSubject(true);
 
   readonly drawerContext$ = new BehaviorSubject<DrawerContext>({ isVisible: false })
   isBackButtonAvailable = false;
 
   constructor(
-    private readonly backButtonService: BackButtonService
+    private readonly backButtonService: BackButtonService,
+    private readonly apiTokenProviderService: ApiTokenProviderService,
+    private readonly destroyRef: DestroyRef,
+    private readonly cdr: ChangeDetectorRef,
   ) {
   }
 
@@ -86,6 +96,16 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // TODO: убрать, когда появятся http-запросы (сделано для возможности перекидывать на SSO
+    this.apiTokenProviderService.apiToken$
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        tap(() => this.isLoading.next(false)),
+      )
+      .subscribe(() => {
+        this.cdr.detectChanges();
+      });
+
     this.isBackButtonAvailable = this.backButtonService.isAvailable;
   }
 

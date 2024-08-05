@@ -20,6 +20,7 @@ import {
   switchMap
 } from "rxjs";
 import { mapWith } from "../utils/observable-helper";
+import { StorageKeys } from "../utils/storage-keys";
 
 export interface JwtBody {
   exp: number;
@@ -35,7 +36,6 @@ export interface JwtBody {
 })
 export class ApiTokenProviderService {
   readonly apiToken$: Observable<string>;
-  private readonly ssoTokenStorageKey = 'sso_refreshToken';
 
   constructor(
     private readonly userStateService: UserStateService,
@@ -61,7 +61,7 @@ export class ApiTokenProviderService {
           }
         } else {
           // user is not authorized
-          this.storageService.removeItem(this.ssoTokenStorageKey)
+          this.storageService.removeItem(StorageKeys.SsoToken)
             .subscribe(() => this.redirectToSso(userState?.isExited ?? false));
           return NEVER;
         }
@@ -83,7 +83,7 @@ export class ApiTokenProviderService {
       distinct()
     );
 
-    this.storageService.getItem(this.ssoTokenStorageKey)
+    this.storageService.getItem(StorageKeys.SsoToken)
       .subscribe(token => {
         if (token == null || token.length === 0) {
           this.updateUserState({
@@ -101,7 +101,7 @@ export class ApiTokenProviderService {
   }
 
   setRefreshToken(token: string, cb?: (isSaved: boolean) => void): void {
-    this.storageService.setItem(this.ssoTokenStorageKey, token)
+    this.storageService.setItem(StorageKeys.SsoToken, token)
       .subscribe(isSaved => {
           this.updateUserState({
             ssoToken: {
@@ -117,7 +117,7 @@ export class ApiTokenProviderService {
   }
 
   logout() {
-    this.storageService.removeItem(this.ssoTokenStorageKey)
+    this.storageService.removeItem(StorageKeys.SsoToken)
       .subscribe(isRemoved => {
           if (!isRemoved) {
             console.log('Not removed');
@@ -159,7 +159,7 @@ export class ApiTokenProviderService {
             user
           });
         } else {
-          this.storageService.removeItem(this.ssoTokenStorageKey)
+          this.storageService.removeItem(StorageKeys.SsoToken)
             .subscribe(() => this.redirectToSso(false));
         }
       });

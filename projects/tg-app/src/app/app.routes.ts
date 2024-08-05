@@ -10,17 +10,12 @@ export const routes: Routes = [
     loadComponent: () => import('./authentication/pages/sso-callback-page/sso-callback-page.component').then(mod => mod.SsoCallbackPageComponent)
   },
   {
-    path: RoutesHelper.appRoutes.authentication.unlock,
-    loadComponent: () => import('./authentication/pages/unlock-page/unlock-page.component').then(mod => mod.UnlockPageComponent)
-  },
-  {
     path: RoutesHelper.appRoutes.authentication.createPassword,
     loadComponent: () => import('./authentication/pages/create-password-page/create-password-page.component').then(mod => mod.CreatePasswordPageComponent)
   },
   {
     path: RoutesHelper.appRoutes.home,
     component: HomePageComponent,
-    canActivate: [AuthGuard.canActivate]
   },
   {
     path: RoutesHelper.appRoutes.settings,
@@ -29,11 +24,11 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: `/${RoutesHelper.appRoutes.authentication.unlock}`,
+    redirectTo: `/${RoutesHelper.appRoutes.home}`,
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: `/${RoutesHelper.appRoutes.authentication.unlock}`
+    redirectTo: `/${RoutesHelper.appRoutes.home}`
   }
 ];
