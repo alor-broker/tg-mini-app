@@ -1,20 +1,14 @@
-﻿@collapse-prefix-cls: ~'ant-collapse';
+﻿@collapse-header-bg: var(--mini-app-bg-color);
+@collapse-content-bg: var(--mini-app-bg-color);
 
 .@{collapse-prefix-cls} {
-  @tg-bg-color: var(--mini-app-bg-color);
-  @tg-text-color: var(--mini-app-text-color);
   @tg-subtitle-text-color: var(--mini-app-subtitle-text-color);
   @tg-section-separator-color: var(--mini-app-section-separator-color);
-
-  background-color: @tg-bg-color;
-  border-color: @tg-bg-color;
 
   & > &-item {
     border-bottom-color: transparent;
 
     > .@{collapse-prefix-cls}-header {
-      color: @tg-text-color;
-
       .@{collapse-prefix-cls}-arrow {
         color: @tg-subtitle-text-color;
       }
@@ -22,9 +16,6 @@
   }
 
   &-content {
-    color: @tg-text-color;
-    background-color: @tg-bg-color;
     border-top-color: @tg-section-separator-color;
-    border-top-width: 1px;
   }
 }

@@ -1,22 +1,30 @@
-﻿@typography-prefix-cls: ~'ant-typography';
-
-@tg-text-color: var(--mini-app-text-color);
-@tg-destructive-text-color: var(--mini-app-destructive-text-color);
-
+﻿
 .@{typography-prefix-cls} {
-  color: @tg-text-color;
+  @tg-destructive-text-color: var(--mini-app-destructive-text-color);
 
-  &.@{typography-prefix-cls} {
-    &-danger {
+  &&-warning {
+    color: @tg-destructive-text-color;
+  }
+
+  &&-danger {
+    color: @tg-destructive-text-color;
+
+    a&:active,
+    a&:focus {
+      color: @tg-destructive-text-color;
+    }
+
+    a&:hover {
       color: @tg-destructive-text-color;
     }
   }
 }
 
+
 @selectors: h1, h2, h3, h4, h5, h6;
 each(@selectors, {
   @{value} {
-    color: @tg-text-color !important;
+    color: @text-color !important;
   }
 });
 

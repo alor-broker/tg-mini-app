@@ -1,38 +1,52 @@
-<tga-list>
-  @for (position of positions$ | async; track position) {
-    <tga-list-item>
-      <div class="d-flex flex-row align-items-center flex-gap-10 user-select-none">
-        <div>
-          <nz-avatar
-            #avatar
-            [nzText]="iconSymbol(position)"
-            [nzSize]="32"
-            nzGap='4'
-            [nzSrc]="getIconUrl(position)">
-          </nz-avatar>
-        </div>
-        <div class="d-flex flex-row flex-fill align-self-stretch list-item-bordered-part">
-          <div class="d-flex flex-column flex-fill align-self-center">
+@if (viewModel$ | async; as viewModel) {
+  <tga-list>
+    @if (viewModel.viewData) {
+      @for (position of viewModel.viewData; track position) {
+        <tga-list-item>
+          <div class="d-flex flex-row align-items-center flex-gap-10 user-select-none">
             <div>
-              <span>{{ positionTitle(position) }}</span>
+              <nz-avatar
+                #avatar
+                [nzText]="iconSymbol(position)"
+                [nzSize]="32"
+                nzGap='4'
+                [nzSrc]="getIconUrl(position)">
+              </nz-avatar>
             </div>
-            @if (showLots(position)) {
-              <div>
-                <span class="text-subtitle-color">{{ position.qtyTFutureBatch | number }} л.</span>
+            <div class="d-flex flex-row flex-fill align-self-stretch list-item-bordered-part">
+              <div class="d-flex flex-column flex-fill align-self-center">
+                <div>
+                  <span>{{ positionTitle(position) }}</span>
+                </div>
+                @if (showLots(position)) {
+                  <div>
+                    <span class="text-subtitle-color">{{ position.qtyTFutureBatch | number }} л.</span>
+                  </div>
+                }
               </div>
-            }
-          </div>
 
-          <div class="d-flex align-items-center">
-            {{ position.volume | number: '1.0-2' }} ₽
+              <div class="d-flex align-items-center">
+                {{ position.volume | number: '1.0-2' }} ₽
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </tga-list-item>
-  } @empty {
-    <tga-list-item>
-      <span>В Вашем портфеле нет позиций.</span>
-    </tga-list-item>
-  }
-</tga-list>
+        </tga-list-item>
+      } @empty {
+        <tga-list-item>
+          <span>В Вашем портфеле нет позиций.</span>
+        </tga-list-item>
+      }
+    } @else {
+      <tga-list-item>
+        <nz-skeleton
+          [nzActive]="true"
+          [nzAvatar]="{shape: 'circle'}"
+          [nzParagraph]="{rows: 1}"
+          [nzRound]="true"
+        ></nz-skeleton>
+      </tga-list-item>
+    }
+  </tga-list>
+}
+
 

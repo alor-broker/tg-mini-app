@@ -1,30 +1,24 @@
-﻿@descriptions-prefix-cls: ~'ant-descriptions';
+﻿@descriptions-bg: @item-hover-bg;
 
 .@{descriptions-prefix-cls} {
-  @tg-bg-color: var(--mini-app-bg-color);
-  @tg-bg-secondary-color: var(--mini-app-secondary-bg-color);
-  @tg-text-color: var(--mini-app-text-color);
   @tg-section-separator-color: var(--mini-app-section-separator-color);
 
-  &-bordered .@{descriptions-prefix-cls}-view {
-    border-color: @tg-section-separator-color;
+  &-item-label {
+
+  }
+
+  &-bordered {
+    .@{descriptions-prefix-cls}-view {
+      border-color: @tg-section-separator-color;
+    }
 
     .@{descriptions-prefix-cls}-row {
       border-color: @tg-section-separator-color;
+    }
 
-      .@{descriptions-prefix-cls}-item {
-        &-label {
-          color: @tg-text-color;
-          border-color: @tg-section-separator-color;
-          background-color: @tg-bg-secondary-color;
-
-        }
-
-        &-content {
-          color: @tg-text-color;
-          background-color: @tg-bg-color;
-        }
-      }
+    .@{descriptions-prefix-cls}-item-label,
+    .@{descriptions-prefix-cls}-item-content {
+      border-color:  @tg-section-separator-color;
     }
   }
 }
