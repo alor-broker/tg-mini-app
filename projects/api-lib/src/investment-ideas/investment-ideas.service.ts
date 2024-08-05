@@ -30,7 +30,7 @@ export class InvestmentIdeasService extends BaseHttpApiService {
   getInvestmentIdeas(filters: InvestmentIdeasFilters = {}, options?: ApiRequestOptions): ApiResponse<InvestmentIdea[]> {
     return this.sendRequest(
       (config) => this.httpClient.get<InvestmentIdea[]>(
-        `${config.superAppUrl}/signals`,
+        `${config.superAppUrl}/autofollow/signals`,
         {
           params: filters as any
         }
@@ -46,7 +46,7 @@ export class InvestmentIdeasService extends BaseHttpApiService {
 
   getAuthors(options?: ApiRequestOptions): ApiResponse<InvestmentIdeaAuthor[]> {
     return this.sendRequest(
-      (config) => this.httpClient.get<InvestmentIdeaAuthor[]>(`${config.superAppUrl}/authors`),
+      (config) => this.httpClient.get<InvestmentIdeaAuthor[]>(`${config.superAppUrl}/autofollow/authors`),
       options
     )
   }
