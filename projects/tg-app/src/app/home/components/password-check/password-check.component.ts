@@ -50,8 +50,6 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.checkPassword();
-
     this.passwordCheckService.passwordCheckParams$
       .pipe(
         takeUntilDestroyed(this.destroyRef)
@@ -60,6 +58,8 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
         this.passwordControl.reset('');
 
         if (!params.isChecked) {
+          this.checkPassword();
+
           if (params.isBackVisible) {
             this.backButtonService.show();
             this.backButtonService.onClick(this.onBack);
