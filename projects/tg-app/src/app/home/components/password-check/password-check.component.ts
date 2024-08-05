@@ -142,7 +142,7 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
       )
       .subscribe(isAuthenticated => {
         if (isAuthenticated) {
-          RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.home);
+          this.passwordCheckService.passwordChecked(true);
         }
       });
   }
