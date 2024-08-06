@@ -15,6 +15,7 @@ export const routes: Routes = [
   },
   {
     path: RoutesHelper.appRoutes.home,
+    canActivate: [AuthGuard.canActivate],
     component: HomePageComponent,
   },
   {

@@ -66,9 +66,6 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
           } else {
             this.backButtonService.hide();
           }
-        } else {
-          this.backButtonService.offClick(this.onBack);
-          this.backButtonService.hide();
         }
       });
 
@@ -112,6 +109,7 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
               }
 
               if (v === val) {
+                this.hideBackButton();
                 this.passwordCheckService.passwordChecked(true);
               } else {
                 this.passwordError = true;
@@ -142,6 +140,7 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
       )
       .subscribe(isAuthenticated => {
         if (isAuthenticated) {
+          this.hideBackButton();
           this.passwordCheckService.passwordChecked(true);
         }
       });
@@ -152,8 +151,12 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
   }
 
   onBack = () => {
+    this.hideBackButton();
+    this.passwordCheckService.passwordChecked(false)
+  }
+
+  private hideBackButton() {
     this.backButtonService.offClick(this.onBack);
     this.backButtonService.hide();
-    this.passwordCheckService.passwordChecked(false)
   }
 }

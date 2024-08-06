@@ -1,23 +1,20 @@
-@if (isLoading | async) {
-  <h1>Loading...</h1>
-} @else {
-  <tga-sections>
-    <tga-section-panel>
-      <div>
-        <div class="header d-flex justify-content-between">
-          <button
-            nz-button
-            nzSize="large"
-            nzType="text"
-            routerLink="/settings"
-          >
-            <span nz-icon nzType="setting" nzTheme="outline"></span>
-          </button>
+<tga-sections>
+  <tga-section-panel>
+    <div>
+      <div class="header d-flex justify-content-between">
+        <button
+          nz-button
+          nzSize="large"
+          nzType="text"
+          routerLink="/settings"
+        >
+          <span nz-icon nzType="setting" nzTheme="outline"></span>
+        </button>
 
-          <div>
-            <tga-portfolio-selection></tga-portfolio-selection>
-          </div>
+        <div>
+          <tga-portfolio-selection></tga-portfolio-selection>
         </div>
+      </div>
 
       <div class="portfolio-summary">
         <tga-portfolio-evaluation></tga-portfolio-evaluation>
@@ -41,93 +38,92 @@
     </div>
   </tga-section-panel>
 
-    <tga-section-panel>
-      <nz-collapse nzExpandIconPosition="end">
-        <nz-collapse-panel nzHeader="Позиции">
-          <tga-positions-list></tga-positions-list>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </tga-section-panel>
+  <tga-section-panel>
+    <nz-collapse nzExpandIconPosition="end">
+      <nz-collapse-panel nzHeader="Позиции">
+        <tga-positions-list></tga-positions-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </tga-section-panel>
 
-    <tga-section-panel>
-      <nz-collapse nzExpandIconPosition="end">
-        <nz-collapse-panel nzHeader="Сделки">
-          <tga-trades-list (selectItem)="openSubview(SubviewTypes.Trade, $event)"></tga-trades-list>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </tga-section-panel>
+  <tga-section-panel>
+    <nz-collapse nzExpandIconPosition="end">
+      <nz-collapse-panel nzHeader="Сделки">
+        <tga-trades-list (selectItem)="openSubview(SubviewTypes.Trade, $event)"></tga-trades-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </tga-section-panel>
 
-    <tga-section-panel>
-      <nz-collapse nzExpandIconPosition="end">
-        <nz-collapse-panel nzHeader="Заявки">
-          <tga-orders-list (selectItem)="openSubview(SubviewTypes.Order, $event)"></tga-orders-list>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </tga-section-panel>
+  <tga-section-panel>
+    <nz-collapse nzExpandIconPosition="end">
+      <nz-collapse-panel nzHeader="Заявки">
+        <tga-orders-list (selectItem)="openSubview(SubviewTypes.Order, $event)"></tga-orders-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </tga-section-panel>
 
-    <tga-section-panel>
-      <nz-collapse nzExpandIconPosition="end">
-        <nz-collapse-panel nzHeader="Стоп-заявки">
-          <tga-stop-orders-list (selectItem)="openSubview(SubviewTypes.Order, $event)"></tga-stop-orders-list>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </tga-section-panel>
-  </tga-sections>
+  <tga-section-panel>
+    <nz-collapse nzExpandIconPosition="end">
+      <nz-collapse-panel nzHeader="Стоп-заявки">
+        <tga-stop-orders-list (selectItem)="openSubview(SubviewTypes.Order, $event)"></tga-stop-orders-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </tga-section-panel>
+</tga-sections>
 
 
-  @if (drawerContext$ | async; as drawerContext) {
-    <nz-drawer
-      [nzTitle]="drawerTitle"
-      nzPlacement="bottom"
-      nzHeight="100%"
-      [nzClosable]="false"
-      [nzVisible]="drawerContext.isVisible"
-      (nzOnClose)="closeSubview()"
-    >
-      <ng-container *nzDrawerContent>
+@if (drawerContext$ | async; as drawerContext) {
+  <nz-drawer
+    [nzTitle]="drawerTitle"
+    nzPlacement="bottom"
+    nzHeight="100%"
+    [nzClosable]="false"
+    [nzVisible]="drawerContext.isVisible"
+    (nzOnClose)="closeSubview()"
+  >
+    <ng-container *nzDrawerContent>
+      @switch (drawerContext.itemType) {
+        @case (SubviewTypes.InvestingIdeas) {
+          <tga-investment-ideas (onBack)="closeSubview()"></tga-investment-ideas>
+        }
+        @case (SubviewTypes.Order) {
+          <tga-order-item [order]="drawerContext.data" (onBack)="closeSubview()"></tga-order-item>
+        }
+        @case (SubviewTypes.Trade) {
+          <tga-trade-item [trade]="drawerContext.data" (onBack)="closeSubview()"></tga-trade-item>
+        }
+      }
+    </ng-container>
+  </nz-drawer>
+
+  <ng-template #drawerTitle>
+    <div class="d-flex align-items-center">
+      @if (!isBackButtonAvailable) {
+        <button
+          nz-button
+          nzType="text"
+          class="mr-15"
+          (click)="closeSubview()"
+        >
+          <span nz-icon nzType="left" nzTheme="outline"></span>
+        </button>
+      }
+
+      <h3 class="mb-0">
         @switch (drawerContext.itemType) {
           @case (SubviewTypes.InvestingIdeas) {
-            <tga-investment-ideas (onBack)="closeSubview()"></tga-investment-ideas>
+            Инвестиционные идеи
           }
           @case (SubviewTypes.Order) {
-            <tga-order-item [order]="drawerContext.data" (onBack)="closeSubview()"></tga-order-item>
+            Заявка №{{ drawerContext.data.id }}
           }
           @case (SubviewTypes.Trade) {
-            <tga-trade-item [trade]="drawerContext.data" (onBack)="closeSubview()"></tga-trade-item>
+            Сделка №{{ drawerContext.data.id }}
           }
         }
-      </ng-container>
-    </nz-drawer>
-
-    <ng-template #drawerTitle>
-      <div class="d-flex align-items-center">
-        @if (!isBackButtonAvailable) {
-          <button
-            nz-button
-            nzType="text"
-            class="mr-15"
-            (click)="closeSubview()"
-          >
-            <span nz-icon nzType="left" nzTheme="outline"></span>
-          </button>
-        }
-
-        <h3 class="mb-0">
-          @switch (drawerContext.itemType) {
-            @case (SubviewTypes.InvestingIdeas) {
-              Инвестиционные идеи
-            }
-            @case (SubviewTypes.Order) {
-              Заявка №{{ drawerContext.data.id }}
-            }
-            @case (SubviewTypes.Trade) {
-              Сделка №{{ drawerContext.data.id }}
-            }
-          }
-        </h3>
-      </div>
-    </ng-template>
-  }
-
-  <tga-password-check></tga-password-check>
+      </h3>
+    </div>
+  </ng-template>
 }
+
+<tga-password-check></tga-password-check>
