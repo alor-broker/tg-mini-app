@@ -10,6 +10,10 @@ export const routes: Routes = [
     loadComponent: () => import('./authentication/pages/sso-callback-page/sso-callback-page.component').then(mod => mod.SsoCallbackPageComponent)
   },
   {
+    path: RoutesHelper.appRoutes.authentication.unlock,
+    loadComponent: () => import('./authentication/pages/unlock-page/unlock-page.component').then(mod => mod.UnlockPageComponent)
+  },
+  {
     path: RoutesHelper.appRoutes.authentication.createPassword,
     loadComponent: () => import('./authentication/pages/create-password-page/create-password-page.component').then(mod => mod.CreatePasswordPageComponent)
   },

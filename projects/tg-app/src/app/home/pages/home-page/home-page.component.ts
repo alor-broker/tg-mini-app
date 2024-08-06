@@ -29,7 +29,6 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 import { StopOrdersListComponent } from "../../components/stop-orders-list/stop-orders-list.component";
 import { LinksComponent } from "../../components/links/links.component";
 import { RouterLink } from "@angular/router";
-import { PasswordCheckComponent } from "../../components/password-check/password-check.component";
 import { InvestmentIdeasPreviewComponent } from "../../components/investment-ideas-preview/investment-ideas-preview.component";
 
 enum SelectedItemType {
@@ -68,7 +67,6 @@ interface DrawerContext {
     StopOrdersListComponent,
     LinksComponent,
     RouterLink,
-    PasswordCheckComponent,
     InvestmentIdeasPreviewComponent
   ],
   templateUrl: './home-page.component.html',

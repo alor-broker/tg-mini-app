@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PasswordCheckComponent } from './password-check.component';
+import { UnlockPageComponent } from './unlock-page.component';
 
 describe('PasswordCheckComponent', () => {
-  let component: PasswordCheckComponent;
-  let fixture: ComponentFixture<PasswordCheckComponent>;
+  let component: UnlockPageComponent;
+  let fixture: ComponentFixture<UnlockPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PasswordCheckComponent]
+      imports: [UnlockPageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PasswordCheckComponent);
+    fixture = TestBed.createComponent(UnlockPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

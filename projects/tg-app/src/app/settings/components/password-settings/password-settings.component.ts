@@ -1,19 +1,14 @@
 import {
   Component,
   DestroyRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output
+  OnInit
 } from '@angular/core';
 import { NzButtonComponent } from "ng-zorro-antd/button";
-import { NzDrawerComponent, NzDrawerContentDirective } from "ng-zorro-antd/drawer";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { NzSwitchComponent } from "ng-zorro-antd/switch";
 import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
 import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
-import { BackButtonService, ModalService, StorageService } from "@environment-services-lib";
+import { ModalService, StorageService } from "@environment-services-lib";
 import { Router } from "@angular/router";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
@@ -27,12 +22,10 @@ import { switchMap } from "rxjs";
   standalone: true,
   imports: [
     NzButtonComponent,
-    NzDrawerComponent,
     NzIconDirective,
     NzSwitchComponent,
     SectionPanelComponent,
     SectionsComponent,
-    NzDrawerContentDirective,
     ReactiveFormsModule,
     NzFormItemComponent,
     NzFormDirective,
@@ -42,16 +35,11 @@ import { switchMap } from "rxjs";
   templateUrl: './password-settings.component.html',
   styleUrl: './password-settings.component.less'
 })
-export class PasswordSettingsComponent implements OnInit, OnChanges {
-
-  @Input() isOpened = false;
-  @Output() onBackClicked = new EventEmitter();
+export class PasswordSettingsComponent implements OnInit {
 
   biometryAccessControl = new FormControl();
-  isBackButtonAvailable = false;
 
   constructor(
-    private readonly backButtonService: BackButtonService,
     private readonly router: Router,
     private readonly storageService: StorageService,
     private readonly modalService: ModalService,
@@ -60,8 +48,6 @@ export class PasswordSettingsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.isBackButtonAvailable = this.backButtonService.isAvailable;
-
     this.storageService.getItem(StorageKeys.AppBiometryAccess)
       .subscribe(value => {
         if (value == null) {
@@ -80,19 +66,6 @@ export class PasswordSettingsComponent implements OnInit, OnChanges {
         this.storageService.setItem(StorageKeys.AppBiometryAccess, (value ?? false).toString())
           .subscribe();
       });
-  }
-
-  ngOnChanges() {
-    if (this.isOpened) {
-      this.backButtonService.show();
-      this.backButtonService.onClick(this.onBack);
-    }
-  }
-
-  onBack = () => {
-    this.backButtonService.hide();
-    this.backButtonService.offClick(this.onBack);
-    this.onBackClicked.emit();
   }
 
   changePassword() {

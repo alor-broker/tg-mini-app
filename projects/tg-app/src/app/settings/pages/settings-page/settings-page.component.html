@@ -7,7 +7,7 @@
         nz-button
         nzType="text"
         class="mr-15"
-        (click)="onBack()"
+        (click)="isPasswordSettingsOpened ? onBackSettings() : onBackHome()"
       >
         <span nz-icon nzType="left" nzTheme="outline"></span>
       </button>
@@ -39,9 +39,32 @@
   }
 </div>
 
-<tga-password-settings
-  [isOpened]="isPasswordSettingsOpened"
-  (onBackClicked)="passwordSettingsBackClicked()"
-></tga-password-settings>
+<nz-drawer
+  [nzTitle]="drawerTitle"
+  nzPlacement="bottom"
+  nzHeight="100%"
+  [nzClosable]="false"
+  [nzVisible]="isPasswordSettingsOpened"
+  nzWrapClassName="password-settings"
+>
+  <ng-container *nzDrawerContent>
+    <tga-password-settings></tga-password-settings>
+  </ng-container>
+</nz-drawer>
 
-<tga-password-check></tga-password-check>
+<ng-template #drawerTitle>
+  <div class="d-flex align-items-center">
+    @if (!isBackButtonAvailable) {
+      <button
+        nz-button
+        nzType="text"
+        class="mr-15"
+        (click)="onBackSettings()"
+      >
+        <span nz-icon nzType="left" nzTheme="outline"></span>
+      </button>
+    }
+
+    <h3 class="mb-0"> Код-пароль и биометрия </h3>
+  </div>
+</ng-template>

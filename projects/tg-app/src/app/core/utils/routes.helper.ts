@@ -5,7 +5,8 @@ export class RoutesHelper {
     home: 'home',
     settings: 'settings',
     authentication: {
-      createPassword: 'password-create'
+      createPassword: 'password-create',
+      unlock: 'unlock'
     }
   }
 

@@ -1,19 +1,17 @@
 import { ChangeDetectorRef, Component, DestroyRef, OnDestroy, OnInit } from '@angular/core';
-import { AsyncPipe } from "@angular/common";
+import { AsyncPipe, Location } from "@angular/common";
 import { NzButtonComponent } from "ng-zorro-antd/button";
-import { PasswordFormComponent } from "../../../authentication/components/password-form/password-form.component";
+import { PasswordFormComponent } from "../../components/password-form/password-form.component";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { filter, Observable, shareReplay } from "rxjs";
-import { Router } from "@angular/router";
+import { BehaviorSubject, filter, Observable, shareReplay, take, tap } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { switchMap } from "rxjs/operators";
 import { BackButtonService, BiometryService, StorageService } from "@environment-services-lib";
-import { PasswordCheckService } from "../../services/password-check.service";
-import { NzDrawerComponent, NzDrawerContentDirective } from "ng-zorro-antd/drawer";
 import { NzIconDirective } from "ng-zorro-antd/icon";
-import { PasswordCheckParams } from "../../services/password-check-service.model";
 import { StorageKeys } from "../../../core/utils/storage-keys";
+import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
 
 @Component({
   selector: 'tga-password-check',
@@ -23,18 +21,19 @@ import { StorageKeys } from "../../../core/utils/storage-keys";
     AsyncPipe,
     ReactiveFormsModule,
     NzButtonComponent,
-    NzDrawerComponent,
-    NzIconDirective,
-    NzDrawerContentDirective
+    NzIconDirective
   ],
-  templateUrl: './password-check.component.html',
-  styleUrl: './password-check.component.less'
+  templateUrl: './unlock-page.component.html',
+  styleUrl: './unlock-page.component.less'
 })
-export class PasswordCheckComponent implements OnInit, OnDestroy {
+export class UnlockPageComponent implements OnInit, OnDestroy {
+  isLoading$ = new BehaviorSubject(true);
   passwordControl = new FormControl('');
   isBiometryAvailable$!: Observable<boolean>;
+
   isBackButtonAvailable = false;
-  passwordCheckParams$!: Observable<PasswordCheckParams>;
+  isCancelable = false;
+  redirectUrl!: string;
 
   passwordError = false;
 
@@ -42,35 +41,39 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
     private readonly biometryService: BiometryService,
     private readonly storageService: StorageService,
     private readonly backButtonService: BackButtonService,
+    private readonly apiTokenProviderService: ApiTokenProviderService,
     private readonly router: Router,
-    private readonly passwordCheckService: PasswordCheckService,
+    private readonly route: ActivatedRoute,
+    private readonly location: Location,
     private readonly cdr: ChangeDetectorRef,
     private readonly destroyRef: DestroyRef
   ) {
   }
 
   ngOnInit() {
-    this.passwordCheckService.passwordCheckParams$
+    this.apiTokenProviderService.apiToken$
       .pipe(
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
+        switchMap(() => this.route.queryParams),
+        take(1),
+        tap(() => this.isLoading$.next(false)),
       )
       .subscribe(params => {
-        this.passwordControl.reset('');
+        this.isCancelable = params['isCancellable'];
+        this.redirectUrl = params['redirectUrl'] ?? RoutesHelper.urlForRoot(RoutesHelper.appRoutes.home);
 
-        if (!params.isChecked) {
-          this.checkPassword();
-
-          if (params.isBackVisible) {
-            this.backButtonService.show();
-            this.backButtonService.onClick(this.onBack);
-          } else {
-            this.backButtonService.hide();
-          }
+        if (this.isCancelable) {
+          this.backButtonService.show();
+          this.backButtonService.onClick(this.onBack);
+        } else {
+          this.backButtonService.hide();
         }
+
+        this.checkPassword();
+        this.cdr.detectChanges();
       });
 
     this.isBackButtonAvailable = this.backButtonService.isAvailable;
-    this.passwordCheckParams$ = this.passwordCheckService.passwordCheckParams$;
   }
 
   ngOnDestroy() {
@@ -86,7 +89,7 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
           }
 
           if (JSON.parse(val!) == null) {
-            this.passwordCheckService.passwordChecked(true);
+            this.passwordChecked();
             return;
           }
 
@@ -110,7 +113,7 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
 
               if (v === val) {
                 this.hideBackButton();
-                this.passwordCheckService.passwordChecked(true);
+                this.passwordChecked();
               } else {
                 this.passwordError = true;
                 this.passwordControl.setValue('');
@@ -141,7 +144,7 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
       .subscribe(isAuthenticated => {
         if (isAuthenticated) {
           this.hideBackButton();
-          this.passwordCheckService.passwordChecked(true);
+          this.passwordChecked();
         }
       });
   }
@@ -152,11 +155,15 @@ export class PasswordCheckComponent implements OnInit, OnDestroy {
 
   onBack = () => {
     this.hideBackButton();
-    this.passwordCheckService.passwordChecked(false)
+    this.location.back();
   }
 
   private hideBackButton() {
     this.backButtonService.offClick(this.onBack);
     this.backButtonService.hide();
+  }
+
+  private passwordChecked() {
+    this.router.navigate([this.redirectUrl], { queryParams: { checked: true } })
   }
 }

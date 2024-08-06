@@ -3,12 +3,10 @@ import { NzButtonComponent } from "ng-zorro-antd/button";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { BackButtonService, LinksService } from "@environment-services-lib";
 import { NzTypographyComponent } from "ng-zorro-antd/typography";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
-import { PasswordCheckService } from "../../../home/services/password-check.service";
-import { filter, take } from "rxjs";
-import { PasswordCheckComponent } from "../../../home/components/password-check/password-check.component";
+import { take } from "rxjs";
 import { AsyncPipe } from "@angular/common";
 import { InvestmentIdeasComponent } from "../../../home/components/investment-ideas/investment-ideas.component";
 import { OrderItemComponent } from "../../../home/components/order-item/order-item.component";
@@ -17,6 +15,7 @@ import { SectionsComponent } from "../../../core/components/sections/sections/se
 import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
 import { NzSwitchComponent } from "ng-zorro-antd/switch";
 import { PasswordSettingsComponent } from "../../components/password-settings/password-settings.component";
+import { NzDrawerComponent, NzDrawerContentDirective } from "ng-zorro-antd/drawer";
 
 interface SettingsButton {
   icon: string;
@@ -33,7 +32,6 @@ interface SettingsButton {
     NzButtonComponent,
     NzIconDirective,
     NzTypographyComponent,
-    PasswordCheckComponent,
     AsyncPipe,
     InvestmentIdeasComponent,
     OrderItemComponent,
@@ -41,7 +39,9 @@ interface SettingsButton {
     SectionsComponent,
     SectionPanelComponent,
     NzSwitchComponent,
-    PasswordSettingsComponent
+    PasswordSettingsComponent,
+    NzDrawerComponent,
+    NzDrawerContentDirective
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.less'
@@ -57,19 +57,14 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
         title: 'Код-пароль и биометрия',
         className: 'reset-password-icon',
         action: () => {
-          this.backButtonService.offClick(this.onBack);
-          this.passwordCheckService.checkPassword(true);
-
-          this.passwordCheckService.passwordCheckParams$
-            .pipe(
-              filter(p => p.isChecked),
-              take(1)
-            )
-            .subscribe(params => {
-              if (params.isSuccess) {
-                this.isPasswordSettingsOpened = true;
-              } else {
-                this.setBackBtn();
+          this.backButtonService.offClick(this.onBackHome);
+          this.router.navigate(
+            [RoutesHelper.urlForRoot(RoutesHelper.appRoutes.authentication.unlock)],
+            {
+              queryParams: {
+                redirectUrl: `${RoutesHelper.urlForRoot(RoutesHelper.appRoutes.settings)}`,
+                redirectUrlParams: [],
+                isCancellable: true
               }
             })
         }
@@ -108,8 +103,8 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly apiTokenProviderService: ApiTokenProviderService,
-    private readonly passwordCheckService: PasswordCheckService,
     private readonly linksService: LinksService,
     private readonly backButtonService: BackButtonService,
     private readonly cdr: ChangeDetectorRef
@@ -117,29 +112,54 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.setBackBtn();
+    this.route.queryParams
+      .pipe(
+        take(1)
+      )
+      .subscribe(params => {
+        this.isPasswordSettingsOpened = params['checked'] ?? false;
+
+        if (this.isPasswordSettingsOpened) {
+          this.setBackSettingsBtn();
+        } else {
+          this.setBackHomeBtn();
+        }
+
+        this.cdr.detectChanges();
+      })
   }
 
   ngOnDestroy() {
-    this.backButtonService.offClick(this.onBack);
+    this.backButtonService.offClick(this.onBackHome);
   }
 
-  onBack = () => {
+  onBackHome = () => {
     this.backButtonService.hide();
     RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.home)
   }
 
-  passwordSettingsBackClicked() {
+  onBackSettings = () => {
+    this.backButtonService.hide();
+    this.backButtonService.offClick(this.onBackSettings);
     this.isPasswordSettingsOpened = false;
-    this.setBackBtn();
+    this.setBackHomeBtn();
     this.cdr.detectChanges();
   }
 
-  private setBackBtn() {
+  private setBackHomeBtn() {
     this.isBackButtonAvailable = this.backButtonService.isAvailable;
 
     if (this.isBackButtonAvailable) {
-      this.backButtonService.onClick(this.onBack);
+      this.backButtonService.onClick(this.onBackHome);
+      this.backButtonService.show();
+    }
+  }
+
+  private setBackSettingsBtn() {
+    this.isBackButtonAvailable = this.backButtonService.isAvailable;
+
+    if (this.isBackButtonAvailable) {
+      this.backButtonService.onClick(this.onBackSettings);
       this.backButtonService.show();
     }
   }
