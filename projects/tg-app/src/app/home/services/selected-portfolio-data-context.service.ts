@@ -28,6 +28,8 @@ import { CollectionsHelper } from "../../core/utils/collections.helper";
   providedIn: 'root'
 })
 export class SelectedPortfolioDataContextService implements OnDestroy {
+  private isDefaultSelectionChecked = false;
+
   private availablePortfolios$: Observable<Portfolio[]> | null = null;
   private readonly currentSelection$ = new BehaviorSubject<Portfolio | null>(null);
 
@@ -44,19 +46,7 @@ export class SelectedPortfolioDataContextService implements OnDestroy {
   }
 
   get selectedPortfolio$(): Observable<Portfolio> {
-    this.currentSelection$.pipe(
-      take(1)
-    ).subscribe(portfolio => {
-      if (portfolio == null) {
-        this.getAvailablePortfolios().pipe(
-          take(1)
-        ).subscribe(portfolios => {
-          if (portfolios.length > 0) {
-            this.currentSelection$.next(portfolios[0]);
-          }
-        });
-      }
-    });
+    this.checkPortfolioDefaultSelection();
 
     return this.currentSelection$.pipe(
       filter((x): x is Portfolio => !!x),
@@ -116,6 +106,28 @@ export class SelectedPortfolioDataContextService implements OnDestroy {
     }
 
     return this.availablePortfolios$
+  }
+
+  private checkPortfolioDefaultSelection(): void {
+    if(this.isDefaultSelectionChecked) {
+      return;
+    }
+
+    this.isDefaultSelectionChecked = true;
+
+    this.currentSelection$.pipe(
+      take(1)
+    ).subscribe(portfolio => {
+      if (portfolio == null) {
+        this.getAvailablePortfolios().pipe(
+          take(1)
+        ).subscribe(portfolios => {
+          if (portfolios.length > 0) {
+            this.currentSelection$.next(portfolios[0]);
+          }
+        });
+      }
+    });
   }
 
   private getPortfolioMarket(clientPortfolio: ClientPortfolio): PortfolioMarket | null {
