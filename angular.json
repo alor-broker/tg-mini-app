@@ -21,6 +21,9 @@
             "production": {
               "tsConfig": "projects/api-lib/tsconfig.lib.prod.json"
             },
+            "devContour": {
+              "tsConfig": "projects/api-lib/tsconfig.lib.prod.json"
+            },
             "development": {
               "tsConfig": "projects/api-lib/tsconfig.lib.json"
             }
@@ -54,6 +57,9 @@
             "production": {
               "tsConfig": "projects/environment-services-lib/tsconfig.lib.prod.json"
             },
+            "devContour": {
+              "tsConfig": "projects/environment-services-lib/tsconfig.lib.prod.json"
+            },
             "development": {
               "tsConfig": "projects/environment-services-lib/tsconfig.lib.json"
             }
@@ -85,6 +91,9 @@
           },
           "configurations": {
             "production": {
+              "tsConfig": "projects/shared-components-lib/tsconfig.lib.prod.json"
+            },
+            "devContour": {
               "tsConfig": "projects/shared-components-lib/tsconfig.lib.prod.json"
             },
             "development": {
@@ -173,6 +182,27 @@
               ],
               "outputHashing": "all"
             },
+            "devContour": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2MB",
+                  "maximumError": "2.5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kB",
+                  "maximumError": "4kB"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "projects/tg-app/src/environments/environment.ts",
+                  "with": "projects/tg-app/src/environments/environment.dev.ts"
+                }
+              ]
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -180,7 +210,7 @@
               "fileReplacements": [
                 {
                   "replace": "projects/tg-app/src/environments/environment.ts",
-                  "with": "projects/tg-app/src/environments/environment.development.ts"
+                  "with": "projects/tg-app/src/environments/environment.dev.ts"
                 }
               ]
             }

@@ -34,6 +34,7 @@ import { RouterLink } from "@angular/router";
 import { PasswordCheckComponent } from "../../components/password-check/password-check.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
+import { InvestmentIdeasPreviewComponent } from "../../components/investment-ideas-preview/investment-ideas-preview.component";
 
 enum SelectedItemType {
   InvestingIdeas = 'investingIdeas',
@@ -71,7 +72,8 @@ interface DrawerContext {
     StopOrdersListComponent,
     LinksComponent,
     RouterLink,
-    PasswordCheckComponent
+    PasswordCheckComponent,
+    InvestmentIdeasPreviewComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'
@@ -96,7 +98,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // TODO: убрать, когда появятся http-запросы (сделано для возможности перекидывать на SSO
+    // TODO: ������, ����� �������� http-������� (������� ��� ����������� ������������ �� SSO
     this.apiTokenProviderService.apiToken$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
