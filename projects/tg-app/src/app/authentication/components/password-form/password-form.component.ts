@@ -15,9 +15,7 @@ import {
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NzIconDirective } from "ng-zorro-antd/icon";
-import {
-  PlatformInfoService
-} from "@environment-services-lib";
+import { HapticFeedbackService, HapticStyle, PlatformInfoService } from "@environment-services-lib";
 
 @Component({
   selector: 'tga-password-form',
@@ -52,6 +50,7 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
   constructor(
     private readonly cdr: ChangeDetectorRef,
     private readonly platformInfoService: PlatformInfoService,
+    private readonly hapticFeedbackService: HapticFeedbackService,
     private readonly destroyRef: DestroyRef
   ) {
   }
@@ -103,6 +102,24 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   addNumber(num: string) {
+    switch (num) {
+      case '1':
+        this.hapticFeedbackService.impactOccurred(HapticStyle.Light);
+        break;
+       case '2':
+        this.hapticFeedbackService.impactOccurred(HapticStyle.Medium);
+        break;
+       case '3':
+        this.hapticFeedbackService.impactOccurred(HapticStyle.Heavy);
+        break;
+       case '4':
+        this.hapticFeedbackService.impactOccurred(HapticStyle.Rigid);
+        break;
+       case '5':
+        this.hapticFeedbackService.impactOccurred(HapticStyle.Soft);
+        break;
+    }
+
     this.passwordControl.setValue((this.passwordControl.value ?? '') + num);
   }
 
