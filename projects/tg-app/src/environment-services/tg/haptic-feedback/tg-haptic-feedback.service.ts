@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { HapticFeedbackService, ImpactHapticStyle } from "@environment-services-lib";
+import { HapticFeedbackService, ImpactHapticStyle, NotificationHapticStyle } from "@environment-services-lib";
 import { HapticFeedback, NotificationType, TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
 @Injectable({
@@ -23,7 +23,17 @@ export class TgHapticFeedbackService extends HapticFeedbackService {
     this.hapticFeedbackCtx?.impactOccurred(style);
   }
 
-  override notificationOccurred(style: NotificationType) {
-    this.hapticFeedbackCtx?.notificationOccurred(style);
+  override notificationOccurred(style: NotificationHapticStyle) {
+    switch (style) {
+      case NotificationHapticStyle.Error:
+        this.hapticFeedbackCtx?.notificationOccurred(NotificationType.Error);
+        break;
+      case NotificationHapticStyle.Warning:
+        this.hapticFeedbackCtx?.notificationOccurred(NotificationType.Warning);
+        break;
+      case NotificationHapticStyle.Success:
+        this.hapticFeedbackCtx?.notificationOccurred(NotificationType.Success);
+        break;
+    }
   }
 }

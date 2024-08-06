@@ -5,3 +5,9 @@ export enum ImpactHapticStyle {
   Rigid = 'rigid',
   Soft = 'soft'
 }
+
+export enum NotificationHapticStyle {
+  Error = 'error',
+  Success = 'success',
+  Warning = 'warning'
+}
