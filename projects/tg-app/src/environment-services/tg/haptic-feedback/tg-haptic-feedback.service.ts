@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { HapticFeedbackService, HapticStyle } from "@environment-services-lib";
-import { HapticFeedback, TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
+import { HapticFeedbackService, ImpactHapticStyle } from "@environment-services-lib";
+import { HapticFeedback, NotificationType, TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,11 @@ export class TgHapticFeedbackService extends HapticFeedbackService {
     }
   }
 
-  override impactOccurred(style: HapticStyle) {
+  override impactOccurred(style: ImpactHapticStyle) {
     this.hapticFeedbackCtx?.impactOccurred(style);
+  }
+
+  override notificationOccurred(style: NotificationType) {
+    this.hapticFeedbackCtx?.notificationOccurred(style);
   }
 }

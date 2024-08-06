@@ -8,10 +8,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { switchMap } from "rxjs/operators";
-import { BackButtonService, BiometryService, StorageService } from "@environment-services-lib";
+import { BackButtonService, BiometryService, HapticFeedbackService, StorageService } from "@environment-services-lib";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { StorageKeys } from "../../../core/utils/storage-keys";
 import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
+import { NotificationType } from "@m1cron-labs/ng-telegram-mini-app";
 
 @Component({
   selector: 'tga-password-check',
@@ -42,6 +43,7 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
     private readonly storageService: StorageService,
     private readonly backButtonService: BackButtonService,
     private readonly apiTokenProviderService: ApiTokenProviderService,
+    private readonly hapticFeedbackService: HapticFeedbackService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly location: Location,
@@ -115,6 +117,8 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
                 this.hideBackButton();
                 this.passwordChecked();
               } else {
+                this.hapticFeedbackService.notificationOccurred(NotificationType.Error);
+
                 this.passwordError = true;
                 this.passwordControl.setValue('');
                 this.cdr.detectChanges();
