@@ -23,6 +23,8 @@
     @if (isCancelable && !isBackButtonAvailable) {
       <button
         nz-button
+        nzType="text"
+        (click)="onBack()"
       >
         Отмена
       </button>
