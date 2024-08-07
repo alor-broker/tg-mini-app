@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   OnInit
@@ -38,11 +39,13 @@ import { switchMap } from "rxjs";
 export class PasswordSettingsComponent implements OnInit {
 
   biometryAccessControl = new FormControl();
+  isPasswordAvailable = false;
 
   constructor(
     private readonly router: Router,
     private readonly storageService: StorageService,
     private readonly modalService: ModalService,
+    private readonly cdr: ChangeDetectorRef,
     private readonly destroyRef: DestroyRef
   ) {
   }
@@ -57,6 +60,15 @@ export class PasswordSettingsComponent implements OnInit {
 
         this.biometryAccessControl.setValue(JSON.parse(value) as boolean, { emitEvent: false });
       });
+
+    this.storageService.getItem(StorageKeys.AppPassword)
+      .subscribe(pass => {
+        if (pass == null) {
+          return;
+        }
+
+        this.isPasswordAvailable = JSON.parse(pass) != null;
+      })
 
     this.biometryAccessControl.valueChanges
       .pipe(
@@ -77,6 +89,9 @@ export class PasswordSettingsComponent implements OnInit {
       .pipe(
         switchMap(() => this.modalService.showMessage('Пароль успешно сброшен'))
       )
-      .subscribe();
+      .subscribe(() => {
+        this.isPasswordAvailable = false;
+        this.cdr.detectChanges();
+      });
   }
 }
