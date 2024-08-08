@@ -1,33 +1,29 @@
-@if (isLoading$ | async) {
-  <div class="d-flex justify-content-center align-items-center h-100 w-100">
-    <span nz-icon nzType="loading" nzTheme="outline" class="loading"></span>
-  </div>
-} @else {
-  <div class="h-100 d-flex flex-column align-items-center justify-content-center flex-gap-15 user-select-none">
-    <h2> Войти по код-паролю </h2>
+<div class="h-100 d-flex flex-column align-items-center justify-content-center flex-gap-15 user-select-none">
+  <h2> Войти по код-паролю </h2>
 
-    <span class="text-destructive-color">
-            @if (passwordError) {
-              Неверный пароль
-            } @else {
-              &nbsp;
-            }
-          </span>
+  <span class="text-destructive-color">
+          @if (passwordError) {
+            Неверный пароль
+          } @else {
+            &nbsp;
+          }
+        </span>
 
-    <tga-password-form
-      [formControl]="passwordControl"
-      [isBiometryButtonVisible]="(isBiometryAvailable$ | async) ?? false"
-      (onBiometryButtonClicked)="scanBiometry()"
-    />
+  <tga-password-form
+    [formControl]="passwordControl"
+    [isBiometryButtonVisible]="(isBiometryAvailable$ | async) ?? false"
+    (onBiometryButtonClicked)="scanBiometry()"
+  />
 
-    @if (isCancelable && !isBackButtonAvailable) {
-      <button
-        nz-button
-        nzType="text"
-        (click)="onBack()"
-      >
-        Отмена
-      </button>
-    }
-  </div>
-}
+  @if (isCancelable && !isBackButtonAvailable) {
+    <button
+      nz-button
+      nzType="text"
+      (click)="onBack()"
+    >
+      Отмена
+    </button>
+  }
+</div>
+
+<tga-page-loader [isVisible]="(isLoading$ | async) ?? false"></tga-page-loader>

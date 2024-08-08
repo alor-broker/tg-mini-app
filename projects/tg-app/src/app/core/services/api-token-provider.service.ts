@@ -85,7 +85,7 @@ export class ApiTokenProviderService {
 
     this.storageService.getItem(StorageKeys.SsoToken)
       .subscribe(token => {
-        if (token == null || token.length === 0) {
+        if (token == null) {
           this.updateUserState({
             ssoToken: {
               refreshToken: ''

@@ -1,24 +1,14 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  OnInit
-} from '@angular/core';
-import {
-  FormControl,
-  ReactiveFormsModule
-} from "@angular/forms";
+import { ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import {
   BiometryService,
+  HapticFeedbackService,
+  NotificationHapticStyle,
   StorageService
 } from "@environment-services-lib";
 import { Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import {
-  of,
-  switchMap,
-  tap
-} from "rxjs";
+import { of, switchMap, tap } from "rxjs";
 import { PasswordFormComponent } from "../../components/password-form/password-form.component";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { NzButtonComponent } from "ng-zorro-antd/button";
@@ -50,6 +40,7 @@ export class CreatePasswordPageComponent implements OnInit {
   constructor(
     private readonly storageService: StorageService,
     private readonly biometryService: BiometryService,
+    private readonly hapticFeedbackService: HapticFeedbackService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef,
     private readonly destroyRef: DestroyRef,
@@ -88,6 +79,7 @@ export class CreatePasswordPageComponent implements OnInit {
               }
             )
         } else {
+          this.hapticFeedbackService.notificationOccurred(NotificationHapticStyle.Error);
           this.passwordCtrl.setValue('');
           this.cdr.detectChanges();
         }
@@ -109,11 +101,13 @@ export class CreatePasswordPageComponent implements OnInit {
             return this.biometryService.requestAccess('Для входа по биометрии предоставьте доступ')
           }
 
-          return of(false);
+          return of(null);
         }),
         tap(isAccepted => {
-          this.storageService.setItem(StorageKeys.AppBiometryAccess, JSON.stringify(isAccepted))
-            .subscribe();
+          if (isAccepted != null) {
+            this.storageService.setItem(StorageKeys.AppBiometryAccess, JSON.stringify(isAccepted))
+              .subscribe();
+          }
         })
       )
       .subscribe(() => {

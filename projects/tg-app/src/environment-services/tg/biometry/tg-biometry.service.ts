@@ -1,22 +1,21 @@
 import { Inject, Injectable } from '@angular/core';
-import { BiometryService } from "@environment-services-lib";
+import { BiometryService, PlatformInfoService } from "@environment-services-lib";
 import { Observable, of, switchMap } from "rxjs";
 import { BiometricManager, TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
 @Injectable()
 export class TgBiometryService extends BiometryService {
-
-  private readonly unavailablePlatforms = ['windows', 'macos', 'web'];
   private readonly biometricManager: BiometricManager | null = null;
 
   constructor(
-    @Inject(TelegramWebApp) private readonly tgWebApp: WebApp
+    @Inject(TelegramWebApp) private readonly tgWebApp: WebApp,
+    private readonly platformIfoService: PlatformInfoService
   ) {
     super();
 
     if (
       tgWebApp.isVersionAtLeast('7.2') &&
-      !this.unavailablePlatforms.includes(tgWebApp.platform)
+      !this.platformIfoService.isDesktopPlatform()
     ) {
       this.biometricManager = tgWebApp.BiometricManager;
     }

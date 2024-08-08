@@ -1,7 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
-  DestroyRef,
+  DestroyRef, OnDestroy,
   OnInit
 } from '@angular/core';
 import { NzButtonComponent } from "ng-zorro-antd/button";
@@ -16,7 +16,9 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent } from "ng-zorro-antd/form";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { StorageKeys } from "../../../core/utils/storage-keys";
-import { switchMap } from "rxjs";
+import { BehaviorSubject, switchMap, tap } from "rxjs";
+import { AsyncPipe } from "@angular/common";
+import { PageLoaderComponent } from "../../../core/components/page-loader/page-loader.component";
 
 @Component({
   selector: 'tga-password-settings',
@@ -31,13 +33,16 @@ import { switchMap } from "rxjs";
     NzFormItemComponent,
     NzFormDirective,
     NzFormLabelComponent,
-    NzFormControlComponent
+    NzFormControlComponent,
+    AsyncPipe,
+    PageLoaderComponent
   ],
   templateUrl: './password-settings.component.html',
   styleUrl: './password-settings.component.less'
 })
-export class PasswordSettingsComponent implements OnInit {
+export class PasswordSettingsComponent implements OnInit, OnDestroy {
 
+  isLoading$ = new BehaviorSubject(true);
   biometryAccessControl = new FormControl();
   isPasswordAvailable = false;
 
@@ -52,23 +57,22 @@ export class PasswordSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.storageService.getItem(StorageKeys.AppBiometryAccess)
-      .subscribe(value => {
-        if (value == null) {
-          this.biometryAccessControl.setValue(false, { emitEvent: false });
-          return;
-        }
+      .pipe(
+        tap(biometryAccess => {
+          const isBiometryAvailable = biometryAccess == null ? false : (JSON.parse(biometryAccess) as boolean);
+          this.biometryAccessControl.setValue(isBiometryAvailable, { emitEvent: false });
+        }),
+        switchMap(() => this.storageService.getItem(StorageKeys.AppPassword)),
+        tap(pass => {
+          if (pass == null) {
+            return;
+          }
 
-        this.biometryAccessControl.setValue(JSON.parse(value) as boolean, { emitEvent: false });
-      });
-
-    this.storageService.getItem(StorageKeys.AppPassword)
-      .subscribe(pass => {
-        if (pass == null) {
-          return;
-        }
-
-        this.isPasswordAvailable = JSON.parse(pass) != null;
-      })
+          this.isPasswordAvailable = JSON.parse(pass) != null;
+        }),
+        tap(() => this.isLoading$.next(false))
+      )
+      .subscribe();
 
     this.biometryAccessControl.valueChanges
       .pipe(
@@ -78,6 +82,10 @@ export class PasswordSettingsComponent implements OnInit {
         this.storageService.setItem(StorageKeys.AppBiometryAccess, (value ?? false).toString())
           .subscribe();
       });
+  }
+
+  ngOnDestroy() {
+    this.isLoading$.complete();
   }
 
   changePassword() {
