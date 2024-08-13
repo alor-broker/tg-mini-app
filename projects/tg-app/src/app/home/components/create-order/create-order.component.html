@@ -1,0 +1,34 @@
+<tga-sections>
+  <tga-section-panel class="p-15">
+    <tga-instrument-select
+      (instrumentSelected)="selectInstrument($event)"
+    ></tga-instrument-select>
+
+    @if (selectedInstrument != null) {
+      <div class="d-flex align-items-center flex-gap-5 mb-10 mt-15">
+        <nz-avatar
+          [nzText]="selectedInstrument.symbol"
+          [nzSize]="50"
+          nzGap='4'
+          [nzSrc]="getIconUrl(selectedInstrument.symbol)">
+        </nz-avatar>
+
+        <div class="d-flex">
+          <h1 class="lh-1 mb-0">{{ selectedInstrument.symbol }}</h1>
+          <div class="d-flex flex-column justify-content-center fs-sm">
+            <span class="lh-1"> {{ selectedInstrument.exchange }} </span>
+            @if (selectedInstrument.instrumentGroup) {
+              <span class="text-subtitle-color lh-1 fs-sm"> {{ selectedInstrument.instrumentGroup }} </span>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <nz-tabset nzSize="small">
+      <nz-tab nzTitle="Лимитная">
+        <tga-limit-order [instrument]="selectedInstrument"></tga-limit-order>
+      </nz-tab>
+    </nz-tabset>
+  </tga-section-panel>
+</tga-sections>

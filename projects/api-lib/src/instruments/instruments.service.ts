@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiConfigProvider, ApiErrorsTracker, ApiRequestOptions, ApiResponse } from "@api-lib";
+import { ApiConfigProvider, ApiErrorsTracker, ApiRequestOptions, ApiResponse, SearchFilter } from "@api-lib";
 import { HttpClient } from "@angular/common/http";
 import { BaseHttpApiService } from "../base-http-api.service";
 import { Instrument, InstrumentKey, InstrumentResponse } from "./instruments-service.model";
@@ -19,6 +19,31 @@ export class InstrumentsService extends BaseHttpApiService {
       errorsTracker,
       httpClient
     );
+  }
+
+  searchInstruments(filters: SearchFilter, options?: ApiRequestOptions): ApiResponse<Instrument[]> {
+    return this.sendRequest<Instrument[], InstrumentResponse[]>(
+      (config) => this.httpClient.get<InstrumentResponse[]>(
+        `${this.getInstrumentsUrl(config.apiUrl)}`,
+        {
+          params: {
+            ...filters,
+            IncludeUnknownBoards: false
+          }
+        }
+      ),
+      options,
+      (res) => res.map(r => ({
+        symbol: r.symbol,
+        shortName: r.shortname,
+        exchange: r.exchange,
+        description: r.description,
+        instrumentGroup: r.board ?? r.primary_board,
+        isin: r.ISIN,
+        currency: r.currency,
+        minstep: r.minstep ?? 0.01
+      }))
+    )
   }
 
   getInstrument(instrument: InstrumentKey, options?: ApiRequestOptions): ApiResponse<Instrument> {

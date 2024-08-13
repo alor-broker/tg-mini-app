@@ -11,6 +11,15 @@ export enum TradingStatus {
   ClosingPriceAuctionPeriod = 120
 }
 
+export interface SearchFilter {
+  query: string;
+  limit: number;
+  sector?: string;
+  cficode?: string;
+  exchange?: string;
+  instrumentGroup?: string;
+}
+
 export interface InstrumentKey {
   symbol: string;
   exchange: string;
