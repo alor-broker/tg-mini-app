@@ -2,12 +2,12 @@
   <h2> Войти по код-паролю </h2>
 
   <span class="text-destructive-color">
-          @if (passwordError) {
-            Неверный пароль
-          } @else {
-            &nbsp;
-          }
-        </span>
+    @if (passwordError) {
+      Неверный пароль
+    } @else {
+      &nbsp;
+    }
+  </span>
 
   <tga-password-form
     [formControl]="passwordControl"
