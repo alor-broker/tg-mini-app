@@ -93,7 +93,7 @@
           <tga-trade-item [trade]="drawerContext.data" (onBack)="closeSubview()"></tga-trade-item>
         }
         @case (SubviewTypes.CreateOrder) {
-          <tga-create-order></tga-create-order>
+          <tga-create-order (onBack)="closeSubview()"></tga-create-order>
         }
       }
     </ng-container>

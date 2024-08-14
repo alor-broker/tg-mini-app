@@ -50,6 +50,10 @@
     </nz-form-item>
   </form>
 
+  <tga-order-evaluation
+    [evaluationProperties]="evaluationRequest$ | async"
+  ></tga-order-evaluation>
+
   <tga-submit-order-buttons
     [disabled]="form.invalid"
     (onSubmit)="submitOrder($event)"

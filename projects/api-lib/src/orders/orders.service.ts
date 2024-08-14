@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BaseHttpApiService } from "../base-http-api.service";
-import { ApiConfigProvider, ApiErrorsTracker, NewLimitOrder } from "@api-lib";
+import {
+  ApiConfigProvider,
+  ApiErrorsTracker,
+  ApiResponse,
+  NewLimitOrder,
+  NewOrderResponse
+} from "@api-lib";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({
@@ -20,9 +26,9 @@ export class OrdersService extends BaseHttpApiService{
     );
   }
 
-  submitLimitOrder(order: NewLimitOrder, portfolio: string) {
-    return this.sendRequest(
-      (config) => this.httpClient.post(
+  submitLimitOrder(order: NewLimitOrder, portfolio: string): ApiResponse<NewOrderResponse> {
+    return this.sendRequest<NewOrderResponse>(
+      (config) => this.httpClient.post<NewOrderResponse>(
         `${config.apiUrl}/commandapi/warptrans/TRADE/v2/client/orders/actions/limit`,
         {
           ...order,

@@ -4,7 +4,14 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { NzInputNumberComponent } from "ng-zorro-antd/input-number";
 import { InputNumberComponent } from "../../../../core/components/input-number/input-number.component";
 import { inputNumberValidation } from "../../../../core/utils/validation-options";
-import { Instrument, InstrumentKey, NewLimitOrder, OrdersService, Side } from "@api-lib";
+import {
+  EvaluationRequest,
+  Instrument,
+  InstrumentKey,
+  NewLimitOrder,
+  OrdersService,
+  Side
+} from "@api-lib";
 import { BehaviorSubject, filter, switchMap, take } from "rxjs";
 import { SectionsComponent } from "../../../../core/components/sections/sections/sections/sections.component";
 import { SectionPanelComponent } from "../../../../core/components/sections/section-panel/section-panel.component";
@@ -14,6 +21,8 @@ import { SubmitOrderButtonsComponent } from "../submit-order-buttons/submit-orde
 import { SelectedPortfolioDataContextService } from "../../../services/selected-portfolio-data-context.service";
 import { mapWith } from "../../../../core/utils/observable-helper";
 import { AsyncPipe } from "@angular/common";
+import { OrderEvaluationComponent } from "../order-evaluation/order-evaluation.component";
+import { ModalService } from "@environment-services-lib";
 
 @Component({
   selector: 'tga-limit-order',
@@ -29,13 +38,15 @@ import { AsyncPipe } from "@angular/common";
     SectionsComponent,
     SectionPanelComponent,
     SubmitOrderButtonsComponent,
-    AsyncPipe
+    AsyncPipe,
+    OrderEvaluationComponent
   ],
   templateUrl: './limit-order.component.html',
   styleUrl: './limit-order.component.less'
 })
 export class LimitOrderComponent implements OnInit, OnDestroy {
   private readonly formBuilder = inject(FormBuilder);
+  readonly evaluationRequest$ = new BehaviorSubject<EvaluationRequest | null>(null);
 
   @Input({ required: true }) set instrument(instr: Instrument | null) {
     this.selectedInstrument$.next(instr);
@@ -44,7 +55,7 @@ export class LimitOrderComponent implements OnInit, OnDestroy {
   selectedInstrument$ = new BehaviorSubject<Instrument | null>(null);
 
   form = this.formBuilder.group({
-    quantity: this.formBuilder.control(
+    quantity: this.formBuilder.control<number | null>(
       null,
       [
         Validators.required,
@@ -52,7 +63,7 @@ export class LimitOrderComponent implements OnInit, OnDestroy {
         Validators.max(inputNumberValidation.max)
       ]
     ),
-    price: this.formBuilder.control(
+    price: this.formBuilder.control<number | null>(
       null,
       [
         Validators.required,
@@ -65,34 +76,19 @@ export class LimitOrderComponent implements OnInit, OnDestroy {
   constructor(
     private readonly selectedPortfolioDataContextService: SelectedPortfolioDataContextService,
     private readonly ordersService: OrdersService,
+    private readonly modalService: ModalService,
     private readonly destroyRef: DestroyRef
   ) {
   }
 
   ngOnInit() {
     this.subscribeToInstrumentChange();
+    this.getEvaluationSub();
   }
 
   ngOnDestroy() {
     this.selectedInstrument$.complete();
-  }
-
-  private subscribeToInstrumentChange() {
-    let priceStepMultiplicityValidator = TgaValidators.stepMultiplicity(0);
-
-    this.selectedInstrument$
-      .pipe(
-        filter(i => i != null),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(i => {
-        this.form.controls['price'].removeValidators(priceStepMultiplicityValidator);
-
-        priceStepMultiplicityValidator = TgaValidators.stepMultiplicity(i.minstep);
-        this.form.controls['price'].addValidators(priceStepMultiplicityValidator);
-
-        this.form.updateValueAndValidity({ onlySelf: false });
-      });
+    this.evaluationRequest$.complete();
   }
 
   submitOrder(side: Side) {
@@ -113,11 +109,63 @@ export class LimitOrderComponent implements OnInit, OnDestroy {
             side
           };
 
-          return this.ordersService.submitLimitOrder(req, portfolio.portfolioKey.portfolio)
+          return this.ordersService.submitLimitOrder(
+            req,
+            portfolio.portfolioKey.portfolio
+          )
         })
       )
       .subscribe(res => {
-        console.log(res);
+        if (res != null) {
+          this.modalService.showMessage(`Лимитная заявка успешно выставленаб её номер на бирже ${ res?.orderNumber }`, 'Заявка выставлена');
+        }
+      })
+  }
+
+  private subscribeToInstrumentChange() {
+    let priceStepMultiplicityValidator = TgaValidators.stepMultiplicity(0);
+
+    this.selectedInstrument$
+      .pipe(
+        filter(i => i != null),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(i => {
+        this.form.controls['price'].removeValidators(priceStepMultiplicityValidator);
+
+        priceStepMultiplicityValidator = TgaValidators.stepMultiplicity(i.minstep);
+        this.form.controls['price'].addValidators(priceStepMultiplicityValidator);
+
+        this.form.updateValueAndValidity({ onlySelf: false });
+      });
+  }
+
+  private getEvaluationSub() {
+    this.form.valueChanges
+      .pipe(
+        mapWith(
+          () => this.selectedInstrument$,
+          (formValue, selectedInstrument) => ({ formValue, selectedInstrument })
+        ),
+        mapWith(
+          () => this.selectedPortfolioDataContextService.selectedPortfolio$,
+          (data, selectedPortfolio) => ({ ...data, selectedPortfolio: selectedPortfolio.portfolioKey.portfolio })
+        ),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(({ formValue, selectedInstrument, selectedPortfolio }) => {
+        if (this.form.invalid || selectedInstrument == null) {
+          this.evaluationRequest$.next(null);
+          return;
+        }
+
+        this.evaluationRequest$.next({
+          portfolio: selectedPortfolio,
+          instrument: selectedInstrument,
+          instrumentCurrency: selectedInstrument.currency,
+          price: formValue.price as number,
+          lotQuantity: formValue.quantity as number
+        });
       })
   }
 }

@@ -31,3 +31,9 @@ export * from './instruments/instruments-service.model';
 
 export * from './orders/orders.service';
 export * from './orders/orders-service.model';
+
+export * from './evaluation/evaluation.service';
+export * from './evaluation/evaluation-service.model';
+
+export * from './quotes/quotes.service';
+export * from './quotes/quotes-service.model';

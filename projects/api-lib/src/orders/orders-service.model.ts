@@ -10,3 +10,8 @@ export interface NewOrder {
 export interface NewLimitOrder extends NewOrder {
   price: number;
 }
+
+export interface NewOrderResponse {
+  message: string;
+  orderNumber: string;
+}
