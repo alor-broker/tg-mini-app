@@ -11,6 +11,8 @@ import { OrderStatusPipe } from "../../../core/pipes/order-status.pipe";
 import { OrderSidePipe } from "../../../core/pipes/order-side.pipe";
 import { OrderTypePipe } from "../../../core/pipes/order-type.pipe";
 import { OrderConditionPipe } from "../../../core/pipes/order-condition.pipe";
+import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
+import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
 
 
 @Component({
@@ -25,6 +27,8 @@ import { OrderConditionPipe } from "../../../core/pipes/order-condition.pipe";
     OrderTypePipe,
     OrderConditionPipe,
     NgClass,
+    SectionsComponent,
+    SectionPanelComponent,
   ],
   templateUrl: './order-item.component.html'
 })

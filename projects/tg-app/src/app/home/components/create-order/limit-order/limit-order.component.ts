@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent } from "ng-zorro-antd/form";
-import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from "@angular/forms";
 import { NzInputNumberComponent } from "ng-zorro-antd/input-number";
 import { InputNumberComponent } from "../../../../core/components/input-number/input-number.component";
 import { inputNumberValidation } from "../../../../core/utils/validation-options";
@@ -23,6 +23,7 @@ import { mapWith } from "../../../../core/utils/observable-helper";
 import { AsyncPipe } from "@angular/common";
 import { OrderEvaluationComponent } from "../order-evaluation/order-evaluation.component";
 import { ModalService } from "@environment-services-lib";
+import { OrderApiErrorsTracker } from "../../../utils/order-api-errors-tracker";
 
 @Component({
   selector: 'tga-limit-order',
@@ -46,6 +47,9 @@ import { ModalService } from "@environment-services-lib";
 })
 export class LimitOrderComponent implements OnInit, OnDestroy {
   private readonly formBuilder = inject(FormBuilder);
+
+  private orderApiErrorsTracker!: OrderApiErrorsTracker;
+
   readonly evaluationRequest$ = new BehaviorSubject<EvaluationRequest | null>(null);
 
   @Input({ required: true }) set instrument(instr: Instrument | null) {
@@ -82,6 +86,8 @@ export class LimitOrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.orderApiErrorsTracker = new OrderApiErrorsTracker(this.modalService);
+
     this.subscribeToInstrumentChange();
     this.getEvaluationSub();
   }
@@ -111,19 +117,22 @@ export class LimitOrderComponent implements OnInit, OnDestroy {
 
           return this.ordersService.submitLimitOrder(
             req,
-            portfolio.portfolioKey.portfolio
+            portfolio.portfolioKey.portfolio,
+            {
+              errorTracker: this.orderApiErrorsTracker
+            }
           )
         })
       )
       .subscribe(res => {
         if (res != null) {
-          this.modalService.showMessage(`Лимитная заявка успешно выставленаб её номер на бирже ${ res?.orderNumber }`, 'Заявка выставлена');
+          this.modalService.showMessage(`Лимитная заявка успешно выставлена, её номер на бирже ${ res?.orderNumber }`, 'Заявка выставлена');
         }
       })
   }
 
   private subscribeToInstrumentChange() {
-    let priceStepMultiplicityValidator = TgaValidators.stepMultiplicity(0);
+    let priceStepMultiplicityValidator: ValidatorFn;
 
     this.selectedInstrument$
       .pipe(
@@ -131,10 +140,10 @@ export class LimitOrderComponent implements OnInit, OnDestroy {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(i => {
-        this.form.controls['price'].removeValidators(priceStepMultiplicityValidator);
+        this.form.controls.price.removeValidators(priceStepMultiplicityValidator);
 
         priceStepMultiplicityValidator = TgaValidators.stepMultiplicity(i.minstep);
-        this.form.controls['price'].addValidators(priceStepMultiplicityValidator);
+        this.form.controls.price.addValidators(priceStepMultiplicityValidator);
 
         this.form.updateValueAndValidity({ onlySelf: false });
       });
@@ -162,7 +171,6 @@ export class LimitOrderComponent implements OnInit, OnDestroy {
         this.evaluationRequest$.next({
           portfolio: selectedPortfolio,
           instrument: selectedInstrument,
-          instrumentCurrency: selectedInstrument.currency,
           price: formValue.price as number,
           lotQuantity: formValue.quantity as number
         });

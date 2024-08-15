@@ -3,17 +3,25 @@
     <tga-instrument-select
       (instrumentSelected)="selectInstrument($event)"
     ></tga-instrument-select>
+  </tga-section-panel>
 
-    @if (selectedInstrument != null) {
+  @if (selectedInstrument != null) {
+    <tga-section-panel class="p-15">
       <tga-instrument-info
         [instrument]="selectedInstrument"
       ></tga-instrument-info>
-    }
+    </tga-section-panel>
 
-    <nz-tabset nzSize="small">
-      <nz-tab nzTitle="Лимитная">
-        <tga-limit-order [instrument]="selectedInstrument"></tga-limit-order>
-      </nz-tab>
-    </nz-tabset>
-  </tga-section-panel>
+    <tga-section-panel class="p-15">
+      <nz-tabset nzSize="small">
+        <nz-tab nzTitle="Лимитная">
+          <tga-limit-order [instrument]="selectedInstrument"></tga-limit-order>
+        </nz-tab>
+      </nz-tabset>
+    </tga-section-panel>
+  } @else {
+    <tga-section-panel class="p-15">
+      <span class="text-subtitle-color">Выберите инструмент</span>
+    </tga-section-panel>
+  }
 </tga-sections>

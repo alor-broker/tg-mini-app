@@ -3,11 +3,13 @@ import { BaseHttpApiService } from "../base-http-api.service";
 import {
   ApiConfigProvider,
   ApiErrorsTracker,
+  ApiRequestOptions,
   ApiResponse,
   NewLimitOrder,
   NewOrderResponse
 } from "@api-lib";
 import { HttpClient } from "@angular/common/http";
+import { GuidGenerator } from "../utils/guid";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +28,7 @@ export class OrdersService extends BaseHttpApiService{
     );
   }
 
-  submitLimitOrder(order: NewLimitOrder, portfolio: string): ApiResponse<NewOrderResponse> {
+  submitLimitOrder(order: NewLimitOrder, portfolio: string, options?: ApiRequestOptions): ApiResponse<NewOrderResponse> {
     return this.sendRequest<NewOrderResponse>(
       (config) => this.httpClient.post<NewOrderResponse>(
         `${config.apiUrl}/commandapi/warptrans/TRADE/v2/client/orders/actions/limit`,
@@ -36,10 +38,11 @@ export class OrdersService extends BaseHttpApiService{
         },
         {
           headers: {
-            'X-REQID': new Date().getTime().toString()
+            'X-REQID': GuidGenerator.newGuid()
           }
         }
       ),
+      options
     )
   }
 }

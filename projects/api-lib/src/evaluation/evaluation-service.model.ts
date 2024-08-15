@@ -5,7 +5,6 @@ export interface EvaluationRequest {
   lotQuantity: number;
   instrument: InstrumentKey;
   portfolio: string;
-  instrumentCurrency?: string;
 }
 
 export interface Evaluation {

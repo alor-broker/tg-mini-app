@@ -12,8 +12,8 @@
       <h1 class="lh-1 mb-0 ml-10 symbol-title">{{ data.instrument.symbol }}</h1>
       <div class="d-flex flex-column justify-content-center fs-sm mr-10">
         <span class="lh-1"> {{ data.instrument.exchange }} </span>
-        @if (data.instrument.instrumentGroup) {
-          <span class="text-subtitle-color lh-1 fs-sm"> {{ data.instrument.instrumentGroup }} </span>
+        @if (data.instrument.board) {
+          <span class="text-subtitle-color lh-1 fs-sm"> {{ data.instrument.board }} </span>
         }
       </div>
       <h1 class="lh-1 mb-0">{{ data.lastQuote?.last_price }}</h1>

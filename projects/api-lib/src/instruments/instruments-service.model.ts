@@ -23,40 +23,21 @@ export interface SearchFilter {
 export interface InstrumentKey {
   symbol: string;
   exchange: string;
-  instrumentGroup?: string | null;
-  isin?: string;
+  board?: string | null;
+  ISIN?: string;
 }
 
 export interface Instrument extends InstrumentKey {
-  shortName: string;
-  description: string;
-  currency: string;
-  minstep: number;
-  lotsize?: number;
-  pricestep?: number;
-  cfiCode?: string;
-  type?: string;
-  marginbuy?: number;
-  marginsell?: number;
-  expirationDate?: Date;
-  tradingStatus?: TradingStatus;
-}
-
-export interface InstrumentResponse {
-  symbol: string;
   shortname: string;
-  exchange: string;
   description: string;
-  board?: string;
   primary_board: string;
-  ISIN: string;
   currency: string;
   type?: string;
   lotsize?: number;
   facevalue?: number;
   cfiCode?: string;
   cancellation?: Date;
-  minstep?: number;
+  minstep: number;
   rating?: number;
   marginbuy?: number;
   marginsell?: number;

@@ -4,13 +4,13 @@
       nzTitle="Стоимость"
       [nzSpan]="2"
     >
-      {{ evaluation.orderEvaluation | currency: evaluation.currency:'symbol-narrow' }}
+      {{ evaluation.orderEvaluation | currency: currency:'symbol-narrow' }}
     </nz-descriptions-item>
     <nz-descriptions-item
       nzTitle="Комиссия"
       [nzSpan]="2"
     >
-      {{ evaluation.commission | currency: evaluation.currency:'symbol-narrow' }}
+      {{ evaluation.commission | currency: currency:'symbol-narrow' }}
     </nz-descriptions-item>
     <nz-descriptions-item
       nzTitle="К покупке"

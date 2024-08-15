@@ -27,7 +27,9 @@ export class InputNumberComponent implements ControlValueAccessor {
   @Input() allowNegative = false;
   @Input() allowDecimal = true;
 
-  @ViewChild('inputElement', {static: true}) inputElement!: ElementRef<HTMLInputElement>;
+  @ViewChild('inputElement', {static: true})
+  inputElement!: ElementRef<HTMLInputElement>;
+
   value?: number | null;
   displayValue?: string | null;
 

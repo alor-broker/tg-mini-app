@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { NzInputDirective, NzInputGroupComponent } from "ng-zorro-antd/input";
 import {
   NzAutocompleteComponent,
@@ -36,7 +36,7 @@ import { NzTagComponent } from "ng-zorro-antd/tag";
     }
   ]
 })
-export class InstrumentSelectComponent implements ControlValueAccessor, OnInit {
+export class InstrumentSelectComponent implements ControlValueAccessor, OnInit, OnDestroy {
 
   @Output() instrumentSelected = new EventEmitter<Instrument | null>();
 
@@ -77,6 +77,10 @@ export class InstrumentSelectComponent implements ControlValueAccessor, OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.filter$.complete();
+  }
+
   onSelect(event: NzOptionSelectionChange, val: Instrument): void {
     if (event.isUserInput) {
       this.emitValue(val);
@@ -114,6 +118,10 @@ export class InstrumentSelectComponent implements ControlValueAccessor, OnInit {
     }
 
     this.filter$.next(filter);
+  }
+
+  getInstrumentString(instrument: Instrument) {
+    return `${instrument.symbol}_${instrument.exchange}${instrument.board == null ? '' : '_' + instrument.board}`
   }
 
   writeValue(instrument: Instrument | null) {

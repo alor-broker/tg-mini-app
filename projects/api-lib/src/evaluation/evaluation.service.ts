@@ -29,7 +29,7 @@ export class EvaluationService extends BaseHttpApiService {
           portfolio: req.portfolio,
           ticker: req.instrument.symbol,
           exchange: req.instrument.exchange,
-          board: req.instrument.instrumentGroup,
+          board: req.instrument.board,
           price: req.price,
           lotQuantity: req.lotQuantity,
           includeLimitOrders: true

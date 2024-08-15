@@ -11,13 +11,13 @@
         <span class="fs-sm text-subtitle-color">Разм.лота: 1</span>
 
         <ng-template #quantityError>
-          @if (form.controls['quantity'].errors?.['required']) {
+          @if (form.controls.quantity.errors?.['required']) {
             <span>Поле обязательно для заполнения</span>
           }
-          @if (form.controls['quantity'].errors?.['min']) {
+          @if (form.controls.quantity.errors?.['min']) {
             <span>Слишком мало</span>
           }
-          @if (form.controls['quantity'].errors?.['max']) {
+          @if (form.controls.quantity.errors?.['max']) {
             <span>Слишком много</span>
           }
         </ng-template>
@@ -33,16 +33,16 @@
         <tga-input-number formControlName="price" placeholder="0"></tga-input-number>
 
         <ng-template #priceError>
-          @if (form.controls['price'].errors?.['required']) {
+          @if (form.controls.price.errors?.['required']) {
             <span>Поле обязательно для заполнения</span>
           }
-          @if (form.controls['price'].errors?.['min']) {
+          @if (form.controls.price.errors?.['min']) {
             <span>Слишком мало</span>
           }
-          @if (form.controls['price'].errors?.['max']) {
+          @if (form.controls.price.errors?.['max']) {
             <span>Слишком много</span>
           }
-          @if (form.controls['price'].errors?.['priceStepMultiplicity']; as err) {
+          @if (form.controls.price.errors?.['priceStepMultiplicity']; as err) {
             <span>Цена должна быть кратна шагу цены ({{ err.step }})</span>
           }
         </ng-template>
@@ -52,12 +52,11 @@
 
   <tga-order-evaluation
     [evaluationProperties]="evaluationRequest$ | async"
+    [currency]="instrument.currency"
   ></tga-order-evaluation>
 
   <tga-submit-order-buttons
     [disabled]="form.invalid"
     (onSubmit)="submitOrder($event)"
   ></tga-submit-order-buttons>
-} @else {
-  <span class="text-subtitle-color">Выберите инструмент</span>
 }

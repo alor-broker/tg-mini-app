@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Instrument } from "@api-lib";
 import { InstrumentIconSourceService } from "../../../../core/services/instrument-icon-source.service";
 import { NzAvatarComponent } from "ng-zorro-antd/avatar";
@@ -20,7 +20,7 @@ import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-a
   templateUrl: './instrument-info.component.html',
   styleUrl: './instrument-info.component.less'
 })
-export class InstrumentInfoComponent implements OnInit {
+export class InstrumentInfoComponent implements OnInit, OnDestroy {
 
   private instrument$ = new BehaviorSubject<null | Instrument>(null);
   viewData$!: Observable<{ instrument: Instrument, lastQuote: Quote | null }>;
@@ -45,6 +45,10 @@ export class InstrumentInfoComponent implements OnInit {
           (instrument, lastQuote) => ({ instrument, lastQuote })
         )
       )
+  }
+
+  ngOnDestroy() {
+    this.instrument$.complete();
   }
 
   getIconUrl(symbol: string): string {
