@@ -30,13 +30,11 @@ import { StopOrdersListComponent } from "../../components/stop-orders-list/stop-
 import { LinksComponent } from "../../components/links/links.component";
 import { RouterLink } from "@angular/router";
 import { InvestmentIdeasPreviewComponent } from "../../components/investment-ideas-preview/investment-ideas-preview.component";
-import { CreateOrderComponent } from "../../components/create-order/create-order.component";
 
 enum SelectedItemType {
   InvestingIdeas = 'investingIdeas',
   Order = 'order',
-  Trade = 'trade',
-  CreateOrder = 'CreateOrder'
+  Trade = 'trade'
 }
 
 interface DrawerContext {
@@ -69,8 +67,7 @@ interface DrawerContext {
     StopOrdersListComponent,
     LinksComponent,
     RouterLink,
-    InvestmentIdeasPreviewComponent,
-    CreateOrderComponent
+    InvestmentIdeasPreviewComponent
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.less'

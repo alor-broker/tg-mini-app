@@ -9,6 +9,10 @@ import {
   WebApp
 } from "@m1cron-labs/ng-telegram-mini-app";
 import { CssVarExportService } from "./core/services/css-var-export.service";
+import { registerLocaleData } from "@angular/common";
+import ru from '@angular/common/locales/ru';
+
+registerLocaleData(ru);
 
 @Component({
   selector: 'app-root',

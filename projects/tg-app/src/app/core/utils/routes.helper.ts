@@ -4,6 +4,7 @@ export class RoutesHelper {
   static appRoutes = {
     home: 'home',
     settings: 'settings',
+    createOrder: 'create-order',
     authentication: {
       createPassword: 'password-create',
       unlock: 'unlock'

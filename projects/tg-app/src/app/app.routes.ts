@@ -3,6 +3,7 @@ import { RoutesHelper } from "./core/utils/routes.helper";
 import { HomePageComponent } from "./home/pages/home-page/home-page.component";
 import { AuthGuard } from "./core/guards/auth-guard";
 import { SettingsPageComponent } from "./settings/pages/settings-page/settings-page.component";
+import { CreateOrderComponent } from "./create-order/pages/create-order/create-order.component";
 
 export const routes: Routes = [
   {
@@ -25,6 +26,11 @@ export const routes: Routes = [
   {
     path: RoutesHelper.appRoutes.settings,
     component: SettingsPageComponent,
+    canActivate: [AuthGuard.canActivate]
+  },
+  {
+    path: RoutesHelper.appRoutes.createOrder,
+    component: CreateOrderComponent,
     canActivate: [AuthGuard.canActivate]
   },
   {

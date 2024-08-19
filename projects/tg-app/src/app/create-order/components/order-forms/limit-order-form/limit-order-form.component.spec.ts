@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LimitOrderComponent } from './limit-order.component';
+import { LimitOrderFormComponent } from './limit-order-form.component';
 
 describe('LimitOrderComponent', () => {
-  let component: LimitOrderComponent;
-  let fixture: ComponentFixture<LimitOrderComponent>;
+  let component: LimitOrderFormComponent;
+  let fixture: ComponentFixture<LimitOrderFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LimitOrderComponent]
+      imports: [LimitOrderFormComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LimitOrderComponent);
+    fixture = TestBed.createComponent(LimitOrderFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

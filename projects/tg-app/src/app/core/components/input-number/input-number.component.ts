@@ -21,7 +21,6 @@ import { NzInputDirective } from "ng-zorro-antd/input";
 })
 export class InputNumberComponent implements ControlValueAccessor {
 
-  @Input() step = 1;
   @Input() placeholder = '';
   @Input() readonly = false;
   @Input() allowNegative = false;

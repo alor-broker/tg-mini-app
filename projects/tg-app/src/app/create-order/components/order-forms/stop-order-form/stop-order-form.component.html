@@ -1,0 +1,125 @@
+@if (orderMeta$ | async; as orderMeta) {
+  <form [formGroup]="form" [nzLayout]="'vertical'" nz-form>
+    <nz-form-item>
+      <nz-form-label nzFor="quantity" nzRequired>
+        Кол-во
+      </nz-form-label>
+      <nz-form-control [nzErrorTip]="quantityError">
+
+        <tga-input-number formControlName="quantity" placeholder="0"></tga-input-number>
+
+        <span class="fs-sm text-subtitle-color">Разм.лота: {{ orderMeta.instrument.lotsize }}</span>
+
+        <ng-template #quantityError>
+          @if (form.controls.quantity.errors?.required) {
+            <span>Поле обязательно для заполнения</span>
+          }
+          @if (form.controls.quantity.errors?.min) {
+            <span>Слишком мало</span>
+          }
+          @if (form.controls.quantity.errors?.max) {
+            <span>Слишком много</span>
+          }
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzFor="price" nzRequired>
+        Условие
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Выберите условие">
+        <nz-select formControlName="condition">
+          <nz-option nzLabel="Больше" [nzValue]="conditionType.More"></nz-option>
+          <nz-option nzLabel="Больше или равно" [nzValue]="conditionType.MoreOrEqual"></nz-option>
+          <nz-option nzLabel="Меньше" [nzValue]="conditionType.Less"></nz-option>
+          <nz-option nzLabel="Меньше или равно" [nzValue]="conditionType.LessOrEqual"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzFor="triggerPrice" nzRequired>
+        Сигнальная цена
+      </nz-form-label>
+      <nz-form-control [nzErrorTip]="triggerPriceError">
+
+        <tga-input-number formControlName="triggerPrice" placeholder="0"></tga-input-number>
+
+        <ng-template #triggerPriceError>
+          @if (form.controls.triggerPrice.errors?.required) {
+            <span>Поле обязательно для заполнения</span>
+          }
+          @if (form.controls.triggerPrice.errors?.min) {
+            <span>Слишком мало</span>
+          }
+          @if (form.controls.triggerPrice.errors?.max) {
+            <span>Слишком много</span>
+          }
+          @if (form.controls.triggerPrice.errors?.priceStepMultiplicity; as err) {
+            <span>Цена должна быть кратна шагу цены ({{ err.step }})</span>
+          }
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzFor="stopEndUnixTime">Действ. до</nz-form-label>
+      <nz-form-control nzErrorTip="Введите дату">
+        <nz-date-picker
+          class="w-100"
+          [nzDisabledDate]="disabledDate"
+          nzPlaceHolder="Введите дату"
+          formControlName="stopEndUnixTime"
+          nzFormat="yyyy-MM-dd HH:mm:ss"
+          nzShowTime
+        >
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzFor="withLimit" nzRequired>
+        Тип стопа
+      </nz-form-label>
+      <nz-form-control>
+        <nz-radio-group formControlName="withLimit">
+          <label [nzValue]="true" nz-radio-button>Limit</label>
+          <label [nzValue]="false" nz-radio-button>Market</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    @if (form.controls.withLimit.value) {
+      <nz-form-item>
+        <nz-form-label nzFor="price" nzRequired>
+          Цена
+        </nz-form-label>
+        <nz-form-control [nzErrorTip]="priceError">
+
+          <tga-input-number formControlName="price" placeholder="0"></tga-input-number>
+
+          <ng-template #priceError>
+            @if (form.controls.price.errors?.required) {
+              <span>Поле обязательно для заполнения</span>
+            }
+            @if (form.controls.price.errors?.min) {
+              <span>Слишком мало</span>
+            }
+            @if (form.controls.price.errors?.max) {
+              <span>Слишком много</span>
+            }
+            @if (form.controls.price.errors?.priceStepMultiplicity; as err) {
+              <span>Цена должна быть кратна шагу цены ({{ err.step }})</span>
+            }
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    }
+  </form>
+
+  <tga-submit-order-buttons
+    [disabled]="form.invalid"
+    (onSubmit)="submitOrder($event)"
+  ></tga-submit-order-buttons>
+}

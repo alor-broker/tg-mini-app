@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { LinksService } from "@environment-services-lib";
 import { environment } from "../../../../environments/environment";
 import { NzIconDirective } from "ng-zorro-antd/icon";
+import { Router } from "@angular/router";
+import { RoutesHelper } from "../../../core/utils/routes.helper";
 
 @Component({
   selector: 'tga-links',
@@ -14,11 +16,12 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 })
 export class LinksComponent {
 
-  @Output() onCreateOrderClicked = new EventEmitter();
-
   readonly externalLinks = environment.externalLinks;
 
-  constructor(private readonly linksService: LinksService) {
+  constructor(
+    private readonly linksService: LinksService,
+    private readonly router: Router
+  ) {
   }
 
   openInBrowser(url: string): void {
@@ -27,5 +30,9 @@ export class LinksComponent {
 
   openInApplication(url: string): void {
     this.linksService.openApplicationLink(url);
+  }
+
+  openOrderCreate() {
+    RoutesHelper.openFromRoot(this.router, RoutesHelper.appRoutes.createOrder);
   }
 }
