@@ -20,7 +20,7 @@
         <tga-portfolio-evaluation></tga-portfolio-evaluation>
       </div>
       <div class="m-15">
-        <tga-links (onCreateOrderClicked)="openSubview(SubviewTypes.CreateOrder)"></tga-links>
+        <tga-links></tga-links>
       </div>
     </div>
   </tga-section-panel>
@@ -92,9 +92,6 @@
         @case (SubviewTypes.Trade) {
           <tga-trade-item [trade]="drawerContext.data" (onBack)="closeSubview()"></tga-trade-item>
         }
-        @case (SubviewTypes.CreateOrder) {
-          <tga-create-order (onBack)="closeSubview()"></tga-create-order>
-        }
       }
     </ng-container>
   </nz-drawer>
@@ -122,9 +119,6 @@
           }
           @case (SubviewTypes.Trade) {
             Сделка №{{ drawerContext.data.id }}
-          }
-          @case (SubviewTypes.CreateOrder) {
-            Создать заявку
           }
         }
       </h3>

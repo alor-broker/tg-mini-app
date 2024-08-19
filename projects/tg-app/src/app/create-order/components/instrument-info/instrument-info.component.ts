@@ -1,11 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Instrument } from "@api-lib";
-import { InstrumentIconSourceService } from "../../../../core/services/instrument-icon-source.service";
+import { Instrument, QuotesService, Quote } from "@api-lib";
+import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 import { NzAvatarComponent } from "ng-zorro-antd/avatar";
 import { BehaviorSubject, filter, Observable } from "rxjs";
 import { AsyncPipe } from "@angular/common";
-import { QuotesService, Quote } from "@api-lib";
-import { mapWith } from "../../../../core/utils/observable-helper";
+import { mapWith } from "../../../core/utils/observable-helper";
 import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
 
 @Component({

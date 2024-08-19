@@ -2,22 +2,22 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent } from "ng-zorro-antd/form";
 import { ReactiveFormsModule, Validators } from "@angular/forms";
 import { NzInputNumberComponent } from "ng-zorro-antd/input-number";
-import { InputNumberComponent } from "../../../../../core/components/input-number/input-number.component";
-import { inputNumberValidation } from "../../../../../core/utils/validation-options";
+import { InputNumberComponent } from "../../../../core/components/input-number/input-number.component";
+import { inputNumberValidation } from "../../../../core/utils/validation-options";
 import {
   EvaluationRequest,
   Instrument,
-  InstrumentKey,
-  NewLimitOrder, NewOrderResponse,
+  NewLimitOrder,
+  NewOrderResponse,
   OrdersService,
   Side
 } from "@api-lib";
 import { BehaviorSubject, Observable } from "rxjs";
-import { SectionsComponent } from "../../../../../core/components/sections/sections/sections/sections.component";
-import { SectionPanelComponent } from "../../../../../core/components/sections/section-panel/section-panel.component";
+import { SectionsComponent } from "../../../../core/components/sections/sections/sections/sections.component";
+import { SectionPanelComponent } from "../../../../core/components/sections/section-panel/section-panel.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { SubmitOrderButtonsComponent } from "../../submit-order-buttons/submit-order-buttons.component";
-import { mapWith } from "../../../../../core/utils/observable-helper";
+import { mapWith } from "../../../../core/utils/observable-helper";
 import { AsyncPipe } from "@angular/common";
 import { OrderEvaluationComponent } from "../../order-evaluation/order-evaluation.component";
 import { BaseOrderFormComponent } from "../base-order-form.component";
@@ -40,7 +40,10 @@ import { BaseOrderFormComponent } from "../base-order-form.component";
     OrderEvaluationComponent
   ],
   templateUrl: './limit-order-form.component.html',
-  styleUrl: './limit-order-form.component.less'
+  styleUrls: [
+    './limit-order-form.component.less',
+    '../base-order-form.component.less'
+  ]
 })
 export class LimitOrderFormComponent extends BaseOrderFormComponent implements OnInit, OnDestroy {
 
@@ -93,7 +96,7 @@ export class LimitOrderFormComponent extends BaseOrderFormComponent implements O
     const req: NewLimitOrder = {
       quantity: quantity!,
       price: price!,
-      instrument: instrument as InstrumentKey,
+      instrument: this.toInstrumentKey(instrument),
       side
     };
 
@@ -127,7 +130,7 @@ export class LimitOrderFormComponent extends BaseOrderFormComponent implements O
 
         this.evaluationRequest$.next({
           portfolio: portfolio,
-          instrument: instrument,
+          instrument: this.toInstrumentKey(instrument),
           price: formValue.price as number,
           lotQuantity: formValue.quantity as number
         });

@@ -31,55 +31,42 @@ export class OrdersService extends BaseHttpApiService{
 
   submitLimitOrder(order: NewLimitOrder, portfolio: string, options?: ApiRequestOptions): ApiResponse<NewOrderResponse> {
     return this.sendRequest<NewOrderResponse>(
-      (config) => this.httpClient.post<NewOrderResponse>(
-        `${this.getBaseOrdersUrl(config)}/limit`,
-        {
-          ...order,
-          user: { portfolio }
-        },
-        {
-          headers: {
-            'X-REQID': GuidGenerator.newGuid()
-          }
-        }
-      ),
+      (config) => this.getOrderRequest(order, portfolio, config, 'limit'),
       options
     )
   }
 
   submitStopMarketOrder(order: NewStopMarketOrder, portfolio: string, options?: ApiRequestOptions): ApiResponse<NewOrderResponse> {
     return this.sendRequest<NewOrderResponse>(
-      (config) => this.httpClient.post<NewOrderResponse>(
-        `${this.getBaseOrdersUrl(config)}/stop`,
-        {
-          ...order,
-          user: { portfolio }
-        },
-        {
-          headers: {
-            'X-REQID': GuidGenerator.newGuid()
-          }
-        }
-      ),
+      (config) => this.getOrderRequest(order, portfolio, config, 'stop'),
       options
     )
   }
 
   submitStopLimitOrder(order: NewStopLimitOrder, portfolio: string, options?: ApiRequestOptions): ApiResponse<NewOrderResponse> {
     return this.sendRequest<NewOrderResponse>(
-      (config) => this.httpClient.post<NewOrderResponse>(
-        `${this.getBaseOrdersUrl(config)}/stopLimit`,
-        {
-          ...order,
-          user: { portfolio }
-        },
-        {
-          headers: {
-            'X-REQID': GuidGenerator.newGuid()
-          }
-        }
-      ),
+      (config) => this.getOrderRequest(order, portfolio, config, 'stopLimit'),
       options
+    )
+  }
+
+  private getOrderRequest(
+    order: NewLimitOrder | NewStopMarketOrder | NewStopLimitOrder,
+    portfolio: string,
+    config: ApiConfig,
+    orderType: string
+  ) {
+    return this.httpClient.post<NewOrderResponse>(
+      `${this.getBaseOrdersUrl(config)}/${orderType}`,
+      {
+        ...order,
+        user: { portfolio }
+      },
+      {
+        headers: {
+          'X-REQID': GuidGenerator.newGuid()
+        }
+      }
     )
   }
 

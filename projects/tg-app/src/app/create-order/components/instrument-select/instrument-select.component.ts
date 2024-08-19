@@ -8,7 +8,7 @@ import {
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
 import { Instrument, InstrumentsService, SearchFilter } from "@api-lib";
 import { BehaviorSubject, debounceTime, Observable, of } from "rxjs";
-import { MarketService } from "../../../../core/services/market.service";
+import { MarketService } from "../../../core/services/market.service";
 import { map, switchMap } from "rxjs/operators";
 import { AsyncPipe } from "@angular/common";
 import { NzTagComponent } from "ng-zorro-antd/tag";

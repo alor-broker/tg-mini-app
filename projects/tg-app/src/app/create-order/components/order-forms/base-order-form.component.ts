@@ -1,15 +1,15 @@
 import { Component, DestroyRef, inject, Input, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, Validators } from "@angular/forms";
-import { OrderApiErrorsTracker } from "../../../utils/order-api-errors-tracker";
-import { Instrument, NewOrderResponse, Side } from "@api-lib";
+import { Instrument, InstrumentKey, NewOrderResponse, Side } from "@api-lib";
 import { BehaviorSubject, filter, Observable, take } from "rxjs";
 import { ModalService } from "@environment-services-lib";
-import { SelectedPortfolioDataContextService } from "../../../services/selected-portfolio-data-context.service";
-import { mapWith } from "../../../../core/utils/observable-helper";
-import { inputNumberValidation } from "../../../../core/utils/validation-options";
-import { TgaValidators } from "../../../../core/utils/validators";
+import { SelectedPortfolioDataContextService } from "../../../home/services/selected-portfolio-data-context.service";
+import { mapWith } from "../../../core/utils/observable-helper";
+import { inputNumberValidation } from "../../../core/utils/validation-options";
+import { TgaValidators } from "../../../core/utils/validators";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { switchMap } from "rxjs/operators";
+import { OrderApiErrorsTracker } from "../../../home/utils/order-api-errors-tracker";
 
 interface OrderMeta {
   instrument: Instrument;
@@ -22,9 +22,9 @@ interface OrderMeta {
 export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
 
   private readonly selectedPortfolioDataContextService = inject(SelectedPortfolioDataContextService);
-  protected readonly formBuilder = inject(FormBuilder);
-  protected readonly modalService = inject(ModalService);
-  protected readonly destroyRef = inject(DestroyRef);
+  protected readonly formBuilder: FormBuilder = inject(FormBuilder);
+  protected readonly modalService: ModalService = inject(ModalService);
+  protected readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   @Input({ required: true }) set instrument(instr: Instrument | null) {
     this.selectedInstrument$.next(instr);
@@ -95,5 +95,14 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
     ]);
 
     target.updateValueAndValidity();
+  }
+
+  protected toInstrumentKey(instrument: Instrument): InstrumentKey {
+    return {
+      symbol: instrument.symbol,
+      exchange: instrument.exchange,
+      ISIN: instrument.ISIN,
+      board: instrument.board
+    }
   }
 }

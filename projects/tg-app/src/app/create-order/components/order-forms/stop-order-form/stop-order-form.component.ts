@@ -10,17 +10,17 @@ import {
   OrdersService,
   Side
 } from "@api-lib";
-import { inputNumberValidation } from "../../../../../core/utils/validation-options";
+import { inputNumberValidation } from "../../../../core/utils/validation-options";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AsyncPipe } from "@angular/common";
-import { InputNumberComponent } from "../../../../../core/components/input-number/input-number.component";
+import { InputNumberComponent } from "../../../../core/components/input-number/input-number.component";
 import { NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent } from "ng-zorro-antd/form";
 import { SubmitOrderButtonsComponent } from "../../submit-order-buttons/submit-order-buttons.component";
 import { NzOptionComponent, NzSelectComponent } from "ng-zorro-antd/select";
 import { NzDatePickerComponent } from "ng-zorro-antd/date-picker";
-import { DateHelper } from "../../../../../core/utils/date.helper";
 import { NzRadioComponent, NzRadioGroupComponent } from "ng-zorro-antd/radio";
 import { BaseOrderFormComponent } from "../base-order-form.component";
+import moment from "moment";
 
 @Component({
   selector: 'tga-stop-order-form',
@@ -42,7 +42,10 @@ import { BaseOrderFormComponent } from "../base-order-form.component";
     NzRadioComponent
   ],
   templateUrl: './stop-order-form.component.html',
-  styleUrl: './stop-order-form.component.less'
+  styleUrls: [
+    './stop-order-form.component.less',
+    '../base-order-form.component.less'
+  ]
 })
 export class StopOrderFormComponent extends BaseOrderFormComponent implements OnInit {
   conditionType = LessMore;
@@ -56,7 +59,7 @@ export class StopOrderFormComponent extends BaseOrderFormComponent implements On
         Validators.max(inputNumberValidation.max)
       ]
     ),
-    price: this.formBuilder.control<number | null>({ value: null, disabled: true }),
+    price: this.formBuilder.control<number | null>(null),
     triggerPrice: this.formBuilder.control<number | null>(null),
     condition: this.formBuilder.nonNullable.control(LessMore.More),
     stopEndUnixTime: this.formBuilder.control<Date | null>(null),
@@ -88,8 +91,8 @@ export class StopOrderFormComponent extends BaseOrderFormComponent implements On
     const orderReq= {
       ...formValue,
       side,
-      stopEndUnixTime: formValue.stopEndUnixTime == null ? undefined : DateHelper.toUnixTime(formValue.stopEndUnixTime),
-      instrument: instrument
+      stopEndUnixTime: formValue.stopEndUnixTime == null ? undefined : moment(formValue.stopEndUnixTime).unix(),
+      instrument: this.toInstrumentKey(instrument)
     };
 
     if (formValue.withLimit) {
@@ -108,8 +111,8 @@ export class StopOrderFormComponent extends BaseOrderFormComponent implements On
   }
 
   disabledDate = (date: Date): boolean => {
-    const today = DateHelper.startOfDay(new Date());
-    return DateHelper.toUnixTime(date) < DateHelper.toUnixTime(today);
+    const today = moment().startOf('day');
+    return moment(date).unix() < today.unix();
   };
 
   protected override changeInstrument(instrument: Instrument, portfolio: string) {
