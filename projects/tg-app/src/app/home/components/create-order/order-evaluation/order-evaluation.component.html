@@ -1,0 +1,28 @@
+@if (evaluation$ | async; as evaluation) {
+  <nz-descriptions nzBordered nzSize="small" class="mb-15">
+    <nz-descriptions-item
+      nzTitle="Стоимость"
+      [nzSpan]="2"
+    >
+      {{ evaluation.orderEvaluation | currency: currency:'symbol-narrow' }}
+    </nz-descriptions-item>
+    <nz-descriptions-item
+      nzTitle="Комиссия"
+      [nzSpan]="2"
+    >
+      {{ evaluation.commission | currency: currency:'symbol-narrow' }}
+    </nz-descriptions-item>
+    <nz-descriptions-item
+      nzTitle="К покупке"
+      [nzSpan]="2"
+    >
+      {{ evaluation.quantityToBuy }} / {{ evaluation.notMarginQuantityToBuy }}
+    </nz-descriptions-item>
+    <nz-descriptions-item
+      nzTitle="К продаже"
+      [nzSpan]="2"
+    >
+      {{ evaluation.quantityToSell }} / {{ evaluation.notMarginQuantityToSell }}
+    </nz-descriptions-item>
+  </nz-descriptions>
+}

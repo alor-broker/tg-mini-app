@@ -102,12 +102,12 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
       ? parts[0]
       : defaultExchange!;
     const symbol = parts.length > 1 ? parts[1] : parts[0];
-    const instrumentGroup = parts[2];
+    const board = parts[2];
 
     return {
       exchange: exchange.toUpperCase(),
       symbol,
-      instrumentGroup
+      board
     };
   }
 
@@ -196,7 +196,7 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
                   idea.symbol,
                   this.instrumentsService.getInstrument(this.instrumentKeyFromTicker(idea.symbol, defaultExchange!))
                     .pipe(
-                      map(i => i?.shortName ?? '')
+                      map(i => i?.shortname ?? '')
                     )
                 )
               }

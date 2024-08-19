@@ -1,0 +1,30 @@
+<div (mousedown)='$event.stopPropagation()'>
+  <input #searchInput
+         (blur)="checkInstrumentSelection()"
+         (mousedown)="$event.stopPropagation()"
+         (input)="filterChanged(searchInput.value)"
+         [nzAutocomplete]="auto"
+         nz-input
+         [formControl]="searchControl"
+         placeholder="Поиск инструмента"
+  />
+
+  <nz-autocomplete #auto>
+    @for (option of (filteredInstruments$ | async); track getInstrumentString(option)) {
+      <nz-auto-option
+        [nzLabel]="option.symbol"
+        [nzValue]="option.symbol"
+        (selectionChange)="onSelect($event, option)"
+      >
+        <span>
+          <nz-tag>{{ option.symbol }}</nz-tag>
+          <span>{{ option.shortname }}&nbsp;</span>
+          @if (option.board) {
+            <nz-tag>{{ option.board }}</nz-tag>
+          }
+          <nz-tag>{{ option.exchange }}</nz-tag>
+        </span>
+      </nz-auto-option>
+    }
+  </nz-autocomplete>
+</div>

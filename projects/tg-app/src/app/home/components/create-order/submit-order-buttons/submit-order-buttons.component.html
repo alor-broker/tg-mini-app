@@ -1,0 +1,18 @@
+<div class="d-flex flex-gap-5">
+  <button
+    nz-button
+    class="flex-fill buy-bg border-none"
+    [disabled]="disabled"
+    (click)="onSubmit.emit(side.Buy)"
+  >
+    Купить
+  </button>
+  <button
+    nz-button
+    class="flex-fill sell-bg border-none"
+    [disabled]="disabled"
+    (click)="onSubmit.emit(side.Sell)"
+  >
+    Продать
+  </button>
+</div>

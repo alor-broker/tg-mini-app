@@ -1,0 +1,62 @@
+@if (selectedInstrument$ | async; as instrument) {
+  <form [formGroup]="form" [nzLayout]="'vertical'" nz-form>
+    <nz-form-item>
+      <nz-form-label nzFor="quantity" nzRequired>
+        Кол-во
+      </nz-form-label>
+      <nz-form-control [nzErrorTip]="quantityError" class="mb-10">
+
+        <tga-input-number formControlName="quantity" placeholder="0"></tga-input-number>
+
+        <span class="fs-sm text-subtitle-color">Разм.лота: 1</span>
+
+        <ng-template #quantityError>
+          @if (form.controls.quantity.errors?.['required']) {
+            <span>Поле обязательно для заполнения</span>
+          }
+          @if (form.controls.quantity.errors?.['min']) {
+            <span>Слишком мало</span>
+          }
+          @if (form.controls.quantity.errors?.['max']) {
+            <span>Слишком много</span>
+          }
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzFor="price" nzRequired>
+        Цена
+      </nz-form-label>
+      <nz-form-control [nzErrorTip]="priceError" class="mb-10">
+
+        <tga-input-number formControlName="price" placeholder="0"></tga-input-number>
+
+        <ng-template #priceError>
+          @if (form.controls.price.errors?.['required']) {
+            <span>Поле обязательно для заполнения</span>
+          }
+          @if (form.controls.price.errors?.['min']) {
+            <span>Слишком мало</span>
+          }
+          @if (form.controls.price.errors?.['max']) {
+            <span>Слишком много</span>
+          }
+          @if (form.controls.price.errors?.['priceStepMultiplicity']; as err) {
+            <span>Цена должна быть кратна шагу цены ({{ err.step }})</span>
+          }
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <tga-order-evaluation
+    [evaluationProperties]="evaluationRequest$ | async"
+    [currency]="instrument.currency"
+  ></tga-order-evaluation>
+
+  <tga-submit-order-buttons
+    [disabled]="form.invalid"
+    (onSubmit)="submitOrder($event)"
+  ></tga-submit-order-buttons>
+}

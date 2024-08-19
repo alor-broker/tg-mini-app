@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { LinksService } from "@environment-services-lib";
 import { environment } from "../../../../environments/environment";
 import { NzIconDirective } from "ng-zorro-antd/icon";
@@ -13,6 +13,9 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
   styleUrl: './links.component.less'
 })
 export class LinksComponent {
+
+  @Output() onCreateOrderClicked = new EventEmitter();
+
   readonly externalLinks = environment.externalLinks;
 
   constructor(private readonly linksService: LinksService) {
