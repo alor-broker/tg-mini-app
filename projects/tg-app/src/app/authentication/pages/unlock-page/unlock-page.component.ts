@@ -3,7 +3,7 @@ import { AsyncPipe, Location } from "@angular/common";
 import { NzButtonComponent } from "ng-zorro-antd/button";
 import { PasswordFormComponent } from "../../components/password-form/password-form.component";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { BehaviorSubject, filter, Observable, shareReplay, take, tap } from "rxjs";
+import { BehaviorSubject, filter, Observable, shareReplay, take } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
@@ -18,6 +18,7 @@ import {
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { StorageKeys } from "../../../core/utils/storage-keys";
 import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
+import { PageLoaderComponent } from "../../../core/components/page-loader/page-loader.component";
 
 @Component({
   selector: 'tga-password-check',
@@ -27,7 +28,8 @@ import { ApiTokenProviderService } from "../../../core/services/api-token-provid
     AsyncPipe,
     ReactiveFormsModule,
     NzButtonComponent,
-    NzIconDirective
+    NzIconDirective,
+    PageLoaderComponent
   ],
   templateUrl: './unlock-page.component.html',
   styleUrl: './unlock-page.component.less'
@@ -63,7 +65,6 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
         takeUntilDestroyed(this.destroyRef),
         switchMap(() => this.route.queryParams),
         take(1),
-        tap(() => this.isLoading$.next(false)),
       )
       .subscribe(params => {
         this.isCancelable = params['isCancellable'];
@@ -85,13 +86,14 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.backButtonService.offClick(this.onBack);
+    this.isLoading$.complete();
   }
 
   checkPassword() {
     this.storageService.getItem(StorageKeys.AppPassword)
       .subscribe(
         (val: string | null) => {
-          if (val == null || val === '') {
+          if (val == null) {
             this.resetPassword();
           }
 
@@ -99,6 +101,8 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
             this.passwordChecked();
             return;
           }
+
+          this.isLoading$.next(false);
 
           this.passwordControl.valueChanges
             .pipe(
@@ -138,6 +142,7 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
   initIdentification() {
     this.isBiometryAvailable$ = this.biometryService.isBiometryAvailable()
       .pipe(
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1)
       );
 
@@ -147,7 +152,6 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
   scanBiometry() {
     this.isBiometryAvailable$
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
         filter(isAvailable => isAvailable),
         switchMap(() => this.biometryService.authenticate('Вход по биометрии'))
       )

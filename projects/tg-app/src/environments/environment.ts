@@ -1,8 +1,8 @@
 export const environment = {
-  apiUrl: 'https://apidev.alor.ru',
-  userDataUrl: 'https://lk-api-dev.alorbroker.ru',
-  ssoUrl: 'https://login-dev.alor.ru',
-  superAppUrl: 'https://tgminiapp-dev.alor.ru/superapp',
+  apiUrl: 'https://api.alor.ru',
+  userDataUrl: 'https://lk-api.alor.ru',
+  ssoUrl: 'https://login.alor.ru',
+  superAppUrl: 'https://tgminiapp.alor.ru/superapp',
 
   externalLinks: {
     astras: "https://astras.alor.ru",

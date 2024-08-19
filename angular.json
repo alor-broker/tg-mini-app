@@ -180,12 +180,6 @@
                   "maximumError": "4kB"
                 }
               ],
-              "fileReplacements": [
-                {
-                  "replace": "projects/tg-app/src/environments/environment.ts",
-                  "with": "projects/tg-app/src/environments/environment.prod.ts"
-                }
-              ],
               "outputHashing": "all"
             },
             "devContour": {
