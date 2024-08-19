@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Instrument, QuotesService, Quote } from "@api-lib";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 import { NzAvatarComponent } from "ng-zorro-antd/avatar";
@@ -20,6 +20,9 @@ import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-a
   styleUrl: './instrument-info.component.less'
 })
 export class InstrumentInfoComponent implements OnInit, OnDestroy {
+
+  @Output()
+  priceSelected = new EventEmitter<number>();
 
   private instrument$ = new BehaviorSubject<null | Instrument>(null);
   viewData$!: Observable<{ instrument: Instrument, lastQuote: Quote | null }>;
@@ -52,5 +55,13 @@ export class InstrumentInfoComponent implements OnInit, OnDestroy {
 
   getIconUrl(symbol: string): string {
     return this.instrumentIconSourceService.getIconUrl(symbol);
+  }
+
+  selectPrice(price: number | null) {
+    if (price == null) {
+      return;
+    }
+
+    this.priceSelected.emit(price)
   }
 }

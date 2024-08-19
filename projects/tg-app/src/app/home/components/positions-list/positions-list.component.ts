@@ -26,6 +26,8 @@ import { ListComponent } from "../../../core/components/list/list/list.component
 import { ViewModel } from "../../../core/models/view-model.model";
 import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
+import { Router } from "@angular/router";
+import { RoutesHelper } from "../../../core/utils/routes.helper";
 
 @Component({
   selector: 'tga-positions-list',
@@ -47,7 +49,8 @@ export class PositionsListComponent implements OnInit {
   constructor(
     private readonly selectedPortfolioDataContextService: SelectedPortfolioDataContextService,
     private readonly apiPortfolioPositionsService: PortfolioPositionsService,
-    private readonly instrumentIconSourceService: InstrumentIconSourceService
+    private readonly instrumentIconSourceService: InstrumentIconSourceService,
+    private readonly router: Router
   ) {
   }
 
@@ -97,5 +100,19 @@ export class PositionsListComponent implements OnInit {
 
   getIconUrl(position: PortfolioPosition): string {
     return this.instrumentIconSourceService.getIconUrl(position.symbol);
+  }
+
+  createOrder(position: PortfolioPosition) {
+    RoutesHelper.openFromRoot(
+      this.router,
+      RoutesHelper.appRoutes.createOrder,
+      {
+        instrument: this.getTickerString(position)
+      }
+    )
+  }
+
+  private getTickerString(position: PortfolioPosition): string {
+    return `${position.exchange}:${position.symbol}`
   }
 }

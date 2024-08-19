@@ -5,7 +5,7 @@
         class="avatar"
         [nzText]="data.instrument.symbol"
         [nzSize]="50"
-        nzGap='4'
+        nzGap="4"
         [nzSrc]="getIconUrl(data.instrument.symbol)">
       </nz-avatar>
 
@@ -25,11 +25,11 @@
       nzSize="small"
     >
       <nz-descriptions-item nzTitle="Изм.">
-        <span [class]='(data.lastQuote?.change ?? 0) < 0 ? "sell-color" : "buy-color"'
+        <span [class]="(data.lastQuote?.change ?? 0) < 0 ? 'sell-color' : 'buy-color'"
            class="upper-row">{{ data.lastQuote?.change }}</span>
       </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Дн.%">
-        <span [class]='(data.lastQuote?.change ?? 0) < 0 ? "sell-color" : "buy-color"'
+        <span [class]="(data.lastQuote?.change ?? 0) < 0 ? 'sell-color' : 'buy-color'"
            class="lower-row">{{ data.lastQuote?.change_percent }}</span>
       </nz-descriptions-item>
 
@@ -41,10 +41,20 @@
       </nz-descriptions-item>
 
       <nz-descriptions-item nzTitle="Ask">
-        <span class='sell-color selectable upper-row'>{{ data.lastQuote?.ask }}</span>
+        <span
+          class="sell-color selectable upper-row cursor-pointer"
+          (click)="selectPrice(data.lastQuote?.ask ?? null)"
+        >
+          {{ data.lastQuote?.ask }}
+        </span>
       </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Bid">
-        <span class='buy-color selectable lower-row'>{{ data.lastQuote?.bid }}</span>
+        <span
+          class="buy-color selectable lower-row cursor-pointer"
+          (click)="selectPrice(data.lastQuote?.bid ?? null)"
+        >
+          {{ data.lastQuote?.bid }}
+        </span>
       </nz-descriptions-item>
     </nz-descriptions>
   </div>

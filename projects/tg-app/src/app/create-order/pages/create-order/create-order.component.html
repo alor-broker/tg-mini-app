@@ -1,6 +1,7 @@
 <tga-sections>
   <tga-section-panel class="p-15">
     <tga-instrument-select
+      [formControl]="instrumentSelectControl"
       (instrumentSelected)="selectInstrument($event)"
     ></tga-instrument-select>
   </tga-section-panel>
@@ -9,6 +10,7 @@
     <tga-section-panel class="p-15">
       <tga-instrument-info
         [instrument]="selectedInstrument"
+        (priceSelected)="priceSelected($event)"
       ></tga-instrument-info>
     </tga-section-panel>
 
