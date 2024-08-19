@@ -42,7 +42,6 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
 
   passwordControl = new FormControl('');
   isDesktopPlatform = false;
-  private desktopPlatforms = ['windows', 'macos', 'web'];
 
   onChange?: (val: string) => void;
   onTouch?: () => void;
@@ -75,7 +74,7 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
         this.cdr.detectChanges();
       });
 
-    this.isDesktopPlatform = this.desktopPlatforms.includes(this.platformInfoService.getPlatformName());
+    this.isDesktopPlatform = this.platformInfoService.isDesktopPlatform();
   }
 
   ngOnChanges() {
@@ -116,8 +115,6 @@ export class PasswordFormComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   biometryButtonClicked() {
-    if (this.isBiometryButtonVisible) {
-      this.onBiometryButtonClicked.emit();
-    }
+    this.onBiometryButtonClicked.emit();
   }
 }

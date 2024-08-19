@@ -88,6 +88,7 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
     this.backButtonService.offClick(this.onBackButtonCallback);
     this.isLoading$.complete();
     this.isOldIdeasRequested$.complete();
+    this.showDisclaimer$.complete();
   }
 
   private onBackButtonCallback = () => {
@@ -135,9 +136,8 @@ export class InvestmentIdeasComponent implements OnInit, OnDestroy {
 
   checkShowDisclaimer() {
     this.storageService.getItem(StorageKeys.InvestmentIdeasDisclaimer)
-      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(val => {
-        if (val == null || val.length === 0) {
+        if (val == null) {
           this.showDisclaimer$.next(true);
         }
       })
