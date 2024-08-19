@@ -15,7 +15,10 @@
     <tga-section-panel class="p-15">
       <nz-tabset nzSize="small">
         <nz-tab nzTitle="Лимитная">
-          <tga-limit-order [instrument]="selectedInstrument"></tga-limit-order>
+          <tga-limit-order-form [instrument]="selectedInstrument"></tga-limit-order-form>
+        </nz-tab>
+        <nz-tab nzTitle="Стоп">
+          <tga-stop-order-form [instrument]="selectedInstrument"></tga-stop-order-form>
         </nz-tab>
       </nz-tabset>
     </tga-section-panel>

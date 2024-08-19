@@ -16,6 +16,7 @@ import {
 } from "@angular/common/http";
 import { provideAnimations } from "@angular/platform-browser/animations";
 import { ApiTokenInterceptor } from "./core/interceptors/api-token-interceptor";
+import { NZ_I18N, ru_RU } from "ng-zorro-antd/i18n";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +31,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     //-----
     ApplicationProviders,
+    {
+      provide: NZ_I18N,
+      useValue: ru_RU
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiTokenInterceptor,

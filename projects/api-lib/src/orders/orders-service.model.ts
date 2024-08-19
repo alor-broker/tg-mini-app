@@ -1,4 +1,4 @@
-import { Side } from "../models/api.enums";
+import { LessMore, Side } from "../models/api.enums";
 import { InstrumentKey } from "../instruments/instruments-service.model";
 
 export interface NewOrder {
@@ -8,6 +8,16 @@ export interface NewOrder {
 }
 
 export interface NewLimitOrder extends NewOrder {
+  price: number;
+}
+
+export interface NewStopMarketOrder extends NewOrder {
+  triggerPrice: number;
+  condition: LessMore;
+  stopEndUnixTime?: number;
+}
+
+export interface NewStopLimitOrder extends NewStopMarketOrder {
   price: number;
 }
 

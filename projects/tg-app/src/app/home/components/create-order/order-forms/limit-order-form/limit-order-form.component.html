@@ -1,4 +1,4 @@
-@if (selectedInstrument$ | async; as instrument) {
+@if (orderMeta$ | async; as orderMeta) {
   <form [formGroup]="form" [nzLayout]="'vertical'" nz-form>
     <nz-form-item>
       <nz-form-label nzFor="quantity" nzRequired>
@@ -8,7 +8,7 @@
 
         <tga-input-number formControlName="quantity" placeholder="0"></tga-input-number>
 
-        <span class="fs-sm text-subtitle-color">Разм.лота: 1</span>
+        <span class="fs-sm text-subtitle-color">Разм.лота: {{ orderMeta.instrument.lotsize }}</span>
 
         <ng-template #quantityError>
           @if (form.controls.quantity.errors?.['required']) {
@@ -52,7 +52,7 @@
 
   <tga-order-evaluation
     [evaluationProperties]="evaluationRequest$ | async"
-    [currency]="instrument.currency"
+    [currency]="orderMeta.instrument.currency"
   ></tga-order-evaluation>
 
   <tga-submit-order-buttons
