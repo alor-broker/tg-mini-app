@@ -7,6 +7,8 @@ export interface NewOrder {
   quantity: number;
 }
 
+export interface NewMarketOrder extends NewOrder {}
+
 export interface NewLimitOrder extends NewOrder {
   price: number;
 }
