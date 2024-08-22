@@ -2,15 +2,16 @@ import { Component, DestroyRef, inject, Input, OnDestroy, OnInit } from "@angula
 import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { Instrument, InstrumentKey, NewOrderResponse, Side } from "@api-lib";
 import { BehaviorSubject, filter, Observable, take } from "rxjs";
-import { ModalService } from "@environment-services-lib";
+import { LinksService, ModalService } from "@environment-services-lib";
 import { SelectedPortfolioDataContextService } from "../../../home/services/selected-portfolio-data-context.service";
 import { mapWith } from "../../../core/utils/observable-helper";
 import { inputNumberValidation } from "../../../core/utils/validation-options";
 import { TgaValidators } from "../../../core/utils/validators";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { switchMap } from "rxjs/operators";
-import { OrderApiErrorsTracker } from "../../../home/utils/order-api-errors-tracker";
+import { OrderApiErrorsTracker } from "../../utils/order-api-errors-tracker";
 import { CommonParameters, CommonParametersService } from "../../sevices/commom-parameters/common-parameters.service";
+import { Clipboard } from "@angular/cdk/clipboard";
 
 interface OrderMeta {
   instrument: Instrument;
@@ -26,6 +27,8 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly modalService: ModalService = inject(ModalService);
   protected readonly commonParametersService: CommonParametersService = inject(CommonParametersService);
+  protected readonly clipboard: Clipboard = inject(Clipboard);
+  protected readonly linksService: LinksService = inject(LinksService);
   protected readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   @Input({ required: true }) set instrument(instr: Instrument | null) {
@@ -41,7 +44,11 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
   abstract get canSubmit(): boolean;
 
   ngOnInit() {
-    this.orderApiErrorsTracker = new OrderApiErrorsTracker(this.modalService);
+    this.orderApiErrorsTracker = new OrderApiErrorsTracker(
+      this.modalService,
+      this.clipboard,
+      this.linksService
+    );
 
     this.orderMeta$ = this.selectedInstrument$
       .pipe(
@@ -74,7 +81,10 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
       take(1)
     ).subscribe(res => {
       if (res != null) {
-        this.modalService.showMessage(`Заявка успешно выставлена, её номер на бирже ${ res.orderNumber }`, 'Заявка выставлена')
+        this.modalService.showMessage({
+            message: `Заявка успешно выставлена, её номер на бирже ${ res.orderNumber }`,
+            title: 'Заявка выставлена'
+          })
           .subscribe();
       }
     });

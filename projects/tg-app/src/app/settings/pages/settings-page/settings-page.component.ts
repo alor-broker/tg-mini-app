@@ -16,6 +16,7 @@ import { SectionPanelComponent } from "../../../core/components/sections/section
 import { NzSwitchComponent } from "ng-zorro-antd/switch";
 import { PasswordSettingsComponent } from "../../components/password-settings/password-settings.component";
 import { NzDrawerComponent, NzDrawerContentDirective } from "ng-zorro-antd/drawer";
+import { environment } from "../../../../environments/environment";
 
 interface SettingsButton {
   icon: string;
@@ -76,7 +77,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
         title: 'Телеграм АЛОР',
         className: 'alor-tg-icon',
         action: () => {
-          this.linksService.openApplicationLink('https://t.me/alorbroker')
+          this.linksService.openApplicationLink(environment.externalLinks.tgAlor)
         }
       },
       {
@@ -84,7 +85,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
         title: 'Поддержка',
         className: 'support-icon',
         action: () => {
-          this.linksService.openApplicationLink('https://t.me/alor_broker')
+          this.linksService.openApplicationLink(environment.externalLinks.tgAlorSupport)
         },
       }
     ],

@@ -10,5 +10,6 @@ export * from './back-button/back-button.service';
 export * from './links/links-service';
 export * from './platform-info/platform-info.service';
 export * from './modal/modal.service';
+export * from './modal/modal-service.model';
 export * from './haptic-feedback/haptic-feedback.service';
 export * from './haptic-feedback/haptic-feedback-service.model';
