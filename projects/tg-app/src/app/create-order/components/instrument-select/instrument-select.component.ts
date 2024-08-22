@@ -12,6 +12,7 @@ import { MarketService } from "../../../core/services/market.service";
 import { map, switchMap } from "rxjs/operators";
 import { AsyncPipe } from "@angular/common";
 import { NzTagComponent } from "ng-zorro-antd/tag";
+import { NzIconDirective } from "ng-zorro-antd/icon";
 
 @Component({
   selector: 'tga-instrument-select',
@@ -24,7 +25,8 @@ import { NzTagComponent } from "ng-zorro-antd/tag";
     NzAutocompleteOptionComponent,
     NzInputDirective,
     AsyncPipe,
-    NzTagComponent
+    NzTagComponent,
+    NzIconDirective
   ],
   templateUrl: './instrument-select.component.html',
   styleUrl: './instrument-select.component.less',

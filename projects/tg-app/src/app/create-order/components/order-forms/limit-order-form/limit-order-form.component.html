@@ -8,7 +8,7 @@
 
         <tga-input-number formControlName="quantity" placeholder="0"></tga-input-number>
 
-        <span class="fs-sm text-subtitle-color">Разм.лота: {{ orderMeta.instrument.lotsize }}</span>
+        <span class="fs-sm text-subtitle-color">Разм.лота: {{ orderMeta.instrument.lotsize }} шт.</span>
 
         <ng-template #quantityError>
           @if (form.controls.quantity.errors?.required) {

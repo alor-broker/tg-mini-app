@@ -1,13 +1,19 @@
 <div (mousedown)='$event.stopPropagation()'>
-  <input #searchInput
-         (blur)="checkInstrumentSelection()"
-         (mousedown)="$event.stopPropagation()"
-         (input)="filterChanged(searchInput.value)"
-         [nzAutocomplete]="auto"
-         nz-input
-         [formControl]="searchControl"
-         placeholder="Поиск инструмента"
-  />
+  <nz-input-group [nzSuffix]="suffixIconSearch">
+    <input #searchInput
+           (blur)="checkInstrumentSelection()"
+           (mousedown)="$event.stopPropagation()"
+           (input)="filterChanged(searchInput.value)"
+           [nzAutocomplete]="auto"
+           nz-input
+           [formControl]="searchControl"
+           placeholder="Поиск инструмента"
+    />
+  </nz-input-group>
+
+  <ng-template #suffixIconSearch>
+    <span nz-icon nzType="search" nzTheme="outline"></span>
+  </ng-template>
 
   <nz-autocomplete #auto>
     @for (option of (filteredInstruments$ | async); track getInstrumentString(option)) {
