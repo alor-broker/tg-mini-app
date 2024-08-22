@@ -1,19 +1,19 @@
-<tga-sections>
+<tga-sections class="h-100">
   <tga-section-panel class="p-15">
     <tga-instrument-select
       [formControl]="instrumentSelectControl"
       (instrumentSelected)="selectInstrument($event)"
     ></tga-instrument-select>
-  </tga-section-panel>
 
-  @if (selectedInstrument != null) {
-    <tga-section-panel class="p-15">
+    @if (selectedInstrument != null) {
       <tga-instrument-info
         [instrument]="selectedInstrument"
         (priceSelected)="priceSelected($event)"
       ></tga-instrument-info>
-    </tga-section-panel>
+    }
+  </tga-section-panel>
 
+  @if (selectedInstrument != null) {
     <tga-section-panel class="p-15">
       <nz-tabset nzSize="small">
         <nz-tab nzTitle="Лимитная">
@@ -28,7 +28,7 @@
       </nz-tabset>
     </tga-section-panel>
   } @else {
-    <tga-section-panel class="p-15">
+    <tga-section-panel class="p-15 h-100 d-flex justify-content-center align-items-center">
       <span class="text-subtitle-color">Выберите инструмент</span>
     </tga-section-panel>
   }
