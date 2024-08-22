@@ -11,8 +11,8 @@ export class RoutesHelper {
     }
   }
 
-  static openFromRoot(router: Router, route: string): void {
-    router.navigate([this.urlForRoot(route)])
+  static openFromRoot(router: Router, route: string, queryParams?: { [param: string]: string }): void {
+    router.navigate([this.urlForRoot(route)], { queryParams })
   }
 
   static urlForRoot(route: string): string {

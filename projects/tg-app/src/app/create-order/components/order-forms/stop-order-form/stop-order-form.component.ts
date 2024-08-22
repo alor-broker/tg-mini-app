@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Observable } from "rxjs";
+import { distinctUntilChanged, Observable } from "rxjs";
 import {
   Instrument,
   LessMore,
@@ -21,6 +21,8 @@ import { NzDatePickerComponent } from "ng-zorro-antd/date-picker";
 import { NzRadioComponent, NzRadioGroupComponent } from "ng-zorro-antd/radio";
 import { BaseOrderFormComponent } from "../base-order-form.component";
 import moment from "moment";
+import { CommonParameters } from "../../../sevices/commom-parameters/common-parameters.service";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'tga-stop-order-form',
@@ -115,9 +117,31 @@ export class StopOrderFormComponent extends BaseOrderFormComponent implements On
     return moment(date).unix() < today.unix();
   };
 
-  protected override changeInstrument(instrument: Instrument, portfolio: string) {
+  protected override changeInstrument(instrument: Instrument) {
     this.setPriceValidators(this.form.controls.triggerPrice, instrument);
     this.setPriceValidators(this.form.controls.price, instrument);
+  }
+
+  protected override initCommonParametersChange() {
+    super.initCommonParametersChange();
+
+    this.form.valueChanges
+      .pipe(
+        map(({ quantity, triggerPrice }) => ({ quantity, price: triggerPrice })),
+        distinctUntilChanged((prev, curr) => prev.price === curr.price && prev.quantity === curr.quantity),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(params => this.commonParametersService.setParameters(params))
+  }
+
+  protected override commonParametersChange(params: Partial<CommonParameters>) {
+    if (params.quantity != null) {
+      this.form.controls.quantity.setValue(params.quantity);
+    }
+
+    if (params.price != null) {
+      this.form.controls.triggerPrice.setValue(params.price);
+    }
   }
 
   private subscribeToFormControlsChange() {

@@ -10,6 +10,7 @@ import { TgaValidators } from "../../../core/utils/validators";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { switchMap } from "rxjs/operators";
 import { OrderApiErrorsTracker } from "../../../home/utils/order-api-errors-tracker";
+import { CommonParameters, CommonParametersService } from "../../sevices/commom-parameters/common-parameters.service";
 
 interface OrderMeta {
   instrument: Instrument;
@@ -24,6 +25,7 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
   private readonly selectedPortfolioDataContextService = inject(SelectedPortfolioDataContextService);
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly modalService: ModalService = inject(ModalService);
+  protected readonly commonParametersService: CommonParametersService = inject(CommonParametersService);
   protected readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   @Input({ required: true }) set instrument(instr: Instrument | null) {
@@ -40,6 +42,7 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.orderApiErrorsTracker = new OrderApiErrorsTracker(this.modalService);
+
     this.orderMeta$ = this.selectedInstrument$
       .pipe(
         filter(i => i != null),
@@ -53,6 +56,7 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
       );
 
     this.initInstrumentChange();
+    this.initCommonParametersChange();
   }
 
   ngOnDestroy() {
@@ -84,6 +88,16 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
   }
 
   protected abstract changeInstrument(instrument: Instrument, portfolio: string): void;
+
+  protected initCommonParametersChange() {
+    this.commonParametersService.parameters$
+      .pipe(
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(params => this.commonParametersChange(params))
+  }
+
+  protected abstract commonParametersChange(params: Partial<CommonParameters>): void;
 
   protected setPriceValidators(target: FormControl<number | null>, newInstrument: Instrument): void {
     target.clearValidators();

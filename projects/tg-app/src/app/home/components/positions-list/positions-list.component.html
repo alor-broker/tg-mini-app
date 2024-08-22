@@ -3,7 +3,10 @@
     @if (viewModel.viewData) {
       @for (position of viewModel.viewData; track position) {
         <tga-list-item>
-          <div class="d-flex flex-row align-items-center flex-gap-10 user-select-none">
+          <div
+            class="d-flex flex-row align-items-center flex-gap-10 user-select-none cursor-pointer"
+            (click)="createOrder(position)"
+          >
             <div>
               <nz-avatar
                 #avatar
