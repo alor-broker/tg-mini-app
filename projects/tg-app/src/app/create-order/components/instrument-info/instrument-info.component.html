@@ -25,15 +25,16 @@
       nzSize="small"
     >
       <nz-descriptions-item nzTitle="Изм.">
-        <span [class]="(data.lastQuote?.change ?? 0) < 0 ? 'sell-color' : 'buy-color'"
-           class="upper-row">{{ data.lastQuote?.change }}</span>
+        <span [class]="(data.lastQuote?.change ?? 0) < 0 ? 'sell-color' : 'buy-color'">
+          {{ data.lastQuote?.change }}
+        </span>
       </nz-descriptions-item>
       <nz-descriptions-item nzTitle="High">
-        <span class="upper-row">{{ data.lastQuote?.high_price }}</span>
+        <span>{{ data.lastQuote?.high_price }}</span>
       </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Ask">
         <span
-          class="sell-color selectable upper-row cursor-pointer"
+          class="sell-color cursor-pointer"
           (click)="selectPrice(data.lastQuote?.ask ?? null)"
         >
           {{ data.lastQuote?.ask }}
@@ -41,15 +42,16 @@
       </nz-descriptions-item>
 
       <nz-descriptions-item nzTitle="Дн.%">
-        <span [class]="(data.lastQuote?.change ?? 0) < 0 ? 'sell-color' : 'buy-color'"
-           class="lower-row">{{ data.lastQuote?.change_percent }}</span>
+        <span [class]="(data.lastQuote?.change ?? 0) < 0 ? 'sell-color' : 'buy-color'">
+          {{ data.lastQuote?.change_percent }}
+        </span>
       </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Low">
-        <span class="lower-row">{{ data.lastQuote?.low_price }}</span>
+        <span>{{ data.lastQuote?.low_price }}</span>
       </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Bid">
         <span
-          class="buy-color selectable lower-row cursor-pointer"
+          class="buy-color cursor-pointer"
           (click)="selectPrice(data.lastQuote?.bid ?? null)"
         >
           {{ data.lastQuote?.bid }}
