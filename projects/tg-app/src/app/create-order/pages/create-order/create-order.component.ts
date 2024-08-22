@@ -14,6 +14,7 @@ import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { CommonParametersService } from "../../sevices/commom-parameters/common-parameters.service";
 import { of, switchMap, take } from "rxjs";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { MarketOrderFormComponent } from "../../components/order-forms/market-order-form/market-order-form.component";
 
 @Component({
   selector: 'tga-create-order',
@@ -28,7 +29,8 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
     InstrumentInfoComponent,
     StopOrderFormComponent,
     LimitOrderFormComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MarketOrderFormComponent
   ],
   providers: [ CommonParametersService ],
   templateUrl: './create-order.component.html',

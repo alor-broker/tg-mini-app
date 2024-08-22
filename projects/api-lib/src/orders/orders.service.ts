@@ -7,7 +7,10 @@ import {
   ApiRequestOptions,
   ApiResponse,
   NewLimitOrder,
-  NewOrderResponse, NewStopLimitOrder, NewStopMarketOrder
+  NewMarketOrder,
+  NewOrderResponse,
+  NewStopLimitOrder,
+  NewStopMarketOrder
 } from "@api-lib";
 import { HttpClient } from "@angular/common/http";
 import { GuidGenerator } from "../utils/guid";
@@ -36,6 +39,13 @@ export class OrdersService extends BaseHttpApiService{
     )
   }
 
+  submitMarketOrder(order: NewMarketOrder, portfolio: string, options?: ApiRequestOptions): ApiResponse<NewOrderResponse> {
+    return this.sendRequest<NewOrderResponse>(
+      (config) => this.getOrderRequest(order, portfolio, config, 'market'),
+      options
+    )
+  }
+
   submitStopMarketOrder(order: NewStopMarketOrder, portfolio: string, options?: ApiRequestOptions): ApiResponse<NewOrderResponse> {
     return this.sendRequest<NewOrderResponse>(
       (config) => this.getOrderRequest(order, portfolio, config, 'stop'),
@@ -51,7 +61,7 @@ export class OrdersService extends BaseHttpApiService{
   }
 
   private getOrderRequest(
-    order: NewLimitOrder | NewStopMarketOrder | NewStopLimitOrder,
+    order: NewLimitOrder | NewMarketOrder | NewStopMarketOrder | NewStopLimitOrder,
     portfolio: string,
     config: ApiConfig,
     orderType: string

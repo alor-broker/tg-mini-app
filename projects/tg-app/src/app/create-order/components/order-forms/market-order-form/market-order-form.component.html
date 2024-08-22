@@ -1,0 +1,37 @@
+@if (orderMeta$ | async; as orderMeta) {
+  <form [formGroup]="form" [nzLayout]="'vertical'" nz-form>
+    <nz-form-item>
+      <nz-form-label nzFor="quantity" nzRequired>
+        Кол-во
+      </nz-form-label>
+      <nz-form-control [nzErrorTip]="quantityError">
+
+        <tga-input-number formControlName="quantity" placeholder="0"></tga-input-number>
+
+        <span class="fs-sm text-subtitle-color">Разм.лота: {{ orderMeta.instrument.lotsize }}</span>
+
+        <ng-template #quantityError>
+          @if (form.controls.quantity.errors?.required) {
+            <span>Поле обязательно для заполнения</span>
+          }
+          @if (form.controls.quantity.errors?.min) {
+            <span>Слишком мало</span>
+          }
+          @if (form.controls.quantity.errors?.max) {
+            <span>Слишком много</span>
+          }
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <tga-order-evaluation
+    [evaluationProperties]="evaluationRequest$ | async"
+    [currency]="orderMeta.instrument.currency"
+  ></tga-order-evaluation>
+
+  <tga-submit-order-buttons
+    [disabled]="form.invalid"
+    (onSubmit)="submitOrder($event)"
+  ></tga-submit-order-buttons>
+}

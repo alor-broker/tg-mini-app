@@ -74,7 +74,8 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
       take(1)
     ).subscribe(res => {
       if (res != null) {
-        this.modalService.showMessage(`Заявка успешно выставлена, её номер на бирже ${ res?.orderNumber }`, 'Заявка выставлена');
+        this.modalService.showMessage(`Заявка успешно выставлена, её номер на бирже ${ res.orderNumber }`, 'Заявка выставлена')
+          .subscribe();
       }
     });
   }
