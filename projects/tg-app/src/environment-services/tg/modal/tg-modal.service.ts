@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 import { Observable } from "rxjs";
-import { ModalService } from "@environment-services-lib";
+import { ModalParams, ModalService } from "@environment-services-lib";
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +14,13 @@ export class TgModalService extends ModalService {
     super();
   }
 
-  override showMessage(message: string, title?: string): Observable<void> {
-    return new Observable<void>(subscriber => {
+  override showMessage(params: ModalParams): Observable<string> {
+    return new Observable<string>(subscriber => {
       this.tgWebApp.showPopup({
-        title,
-        message,
-        buttons: [{ text: 'ОК' }]
-      }, () => {
-        subscriber.next();
+        ...params,
+        buttons: (params.buttons?.length ?? 0 > 0) ? params.buttons : [{ text: 'OK' }]
+      }, (buttonId?: string) => {
+        subscriber.next(buttonId);
         subscriber.complete();
       });
     })

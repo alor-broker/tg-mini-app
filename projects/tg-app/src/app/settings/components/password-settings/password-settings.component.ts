@@ -95,7 +95,7 @@ export class PasswordSettingsComponent implements OnInit, OnDestroy {
   turnOffPassword() {
     this.storageService.setItem(StorageKeys.AppPassword, JSON.stringify(null))
       .pipe(
-        switchMap(() => this.modalService.showMessage('Пароль успешно сброшен'))
+        switchMap(() => this.modalService.showMessage({ message: 'Пароль успешно сброшен' }))
       )
       .subscribe(() => {
         this.isPasswordAvailable = false;

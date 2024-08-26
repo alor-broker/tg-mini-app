@@ -107,7 +107,7 @@ export class PositionsListComponent implements OnInit {
       this.router,
       RoutesHelper.appRoutes.createOrder,
       {
-        instrument: this.getTickerString(position)
+        ticker: this.getTickerString(position)
       }
     )
   }
