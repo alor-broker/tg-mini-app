@@ -11,24 +11,17 @@ enum ButtonId {
 
 export class OrderApiErrorsTracker extends ApiErrorsTracker {
 
-  private _modalService: ModalService;
-  private _clipboard: Clipboard;
-  private _linksService: LinksService;
-
   constructor(
-    modalService: ModalService,
-    clipboard: Clipboard,
-    linksService: LinksService,
+    private readonly modalService: ModalService,
+    private readonly clipboard: Clipboard,
+    private readonly linksService: LinksService,
   ) {
     super();
-    this._modalService = modalService;
-    this._clipboard = clipboard;
-    this._linksService = linksService;
   }
 
   override track(error: Error): void {
     if (error instanceof HttpErrorResponse) {
-      this._modalService.showMessage({
+      this.modalService.showMessage({
           message:
             `Код ошибки: ${error.error.code}\n` +
             `Текст ошибки: ${error.error.message}\n\n` +
@@ -51,11 +44,11 @@ export class OrderApiErrorsTracker extends ApiErrorsTracker {
         .subscribe(buttonId => {
           switch (buttonId) {
             case ButtonId.Copy:
-              this._clipboard.copy(JSON.stringify(error));
+              this.clipboard.copy(JSON.stringify(error.error));
               break;
             case ButtonId.Support:
-              this._clipboard.copy(JSON.stringify(error));
-              this._linksService.openApplicationLink(environment.externalLinks.tgAlorSupport)
+              this.clipboard.copy(JSON.stringify(error.error));
+              this.linksService.openApplicationLink(environment.externalLinks.tgAlorSupport)
           }
         });
     }
