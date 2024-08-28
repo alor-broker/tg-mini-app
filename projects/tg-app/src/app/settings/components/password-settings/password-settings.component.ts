@@ -19,6 +19,7 @@ import { StorageKeys } from "../../../core/utils/storage-keys";
 import { BehaviorSubject, switchMap, tap } from "rxjs";
 import { AsyncPipe } from "@angular/common";
 import { PageLoaderComponent } from "../../../core/components/page-loader/page-loader.component";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-password-settings',
@@ -35,7 +36,8 @@ import { PageLoaderComponent } from "../../../core/components/page-loader/page-l
     NzFormLabelComponent,
     NzFormControlComponent,
     AsyncPipe,
-    PageLoaderComponent
+    PageLoaderComponent,
+    TranslocoDirective
   ],
   templateUrl: './password-settings.component.html',
   styleUrl: './password-settings.component.less'

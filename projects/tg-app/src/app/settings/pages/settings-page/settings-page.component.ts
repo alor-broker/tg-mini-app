@@ -17,11 +17,12 @@ import { NzSwitchComponent } from "ng-zorro-antd/switch";
 import { PasswordSettingsComponent } from "../../components/password-settings/password-settings.component";
 import { NzDrawerComponent, NzDrawerContentDirective } from "ng-zorro-antd/drawer";
 import { environment } from "../../../../environments/environment";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 interface SettingsButton {
   icon: string;
   className: string;
-  title: string;
+  titleId: string;
   type?: 'secondary' | 'warning' | 'danger' | 'success';
   action: () => void;
 }
@@ -42,7 +43,8 @@ interface SettingsButton {
     NzSwitchComponent,
     PasswordSettingsComponent,
     NzDrawerComponent,
-    NzDrawerContentDirective
+    NzDrawerContentDirective,
+    TranslocoDirective
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.less'
@@ -55,7 +57,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     [
       {
         icon: 'key',
-        title: 'Код-пароль и биометрия',
+        titleId: 'password',
         className: 'reset-password-icon',
         action: () => {
           this.backButtonService.offClick(this.onBackHome);
@@ -74,7 +76,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     [
       {
         icon: 'notification',
-        title: 'Телеграм АЛОР',
+        titleId: 'alorTg',
         className: 'alor-tg-icon',
         action: () => {
           this.linksService.openApplicationLink(environment.externalLinks.tgAlor)
@@ -82,7 +84,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
       },
       {
         icon: 'message',
-        title: 'Поддержка',
+        titleId: 'supportTg',
         className: 'support-icon',
         action: () => {
           this.linksService.openApplicationLink(environment.externalLinks.tgAlorSupport)
@@ -92,7 +94,7 @@ export class SettingsPageComponent implements OnInit, OnDestroy {
     [
       {
         icon: 'logout',
-        title: 'Выйти',
+        titleId: 'exit',
         className: 'logout-icon',
         type: 'danger',
         action: () => {

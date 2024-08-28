@@ -14,6 +14,7 @@ import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { CommonParametersService } from "../../sevices/commom-parameters/common-parameters.service";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { MarketOrderFormComponent } from "../../components/order-forms/market-order-form/market-order-form.component";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-create-order',
@@ -29,7 +30,8 @@ import { MarketOrderFormComponent } from "../../components/order-forms/market-or
     StopOrderFormComponent,
     LimitOrderFormComponent,
     ReactiveFormsModule,
-    MarketOrderFormComponent
+    MarketOrderFormComponent,
+    TranslocoDirective
   ],
   providers: [ CommonParametersService ],
   templateUrl: './create-order.component.html',

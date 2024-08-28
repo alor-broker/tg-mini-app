@@ -1,10 +1,13 @@
 @if (viewModel$ | async; as viewModel) {
-  <div class="d-flex flex-column justify-content-center align-items-center user-select-none">
+  <div
+    *transloco="let t; scope: 'home/portfolio-evaluation'"
+    class="d-flex flex-column justify-content-center align-items-center user-select-none"
+  >
     <div class="text-subtitle-color label">
       @if (viewModel.isUpdating) {
         <span nz-icon nzType="loading" nzTheme="outline" class="loading"></span>
       }
-      Стоимость портфеля
+      {{ t('homePortfolioEvaluation.portfolioCost') }}
     </div>
     <h1
       class="text-center lh-1-2 fw-medium"

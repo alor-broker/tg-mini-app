@@ -23,6 +23,7 @@ import { BaseOrderFormComponent } from "../base-order-form.component";
 import moment from "moment";
 import { CommonParameters } from "../../../sevices/commom-parameters/common-parameters.service";
 import { map } from "rxjs/operators";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-stop-order-form',
@@ -41,7 +42,8 @@ import { map } from "rxjs/operators";
     NzOptionComponent,
     NzDatePickerComponent,
     NzRadioGroupComponent,
-    NzRadioComponent
+    NzRadioComponent,
+    TranslocoDirective
   ],
   templateUrl: './stop-order-form.component.html',
   styleUrls: [

@@ -1,9 +1,12 @@
-<div class="h-100 d-flex flex-column align-items-center justify-content-center flex-gap-15 user-select-none">
-  <h2> Войти по код-паролю </h2>
+<div
+  *transloco="let t; scope: 'authentication/unlock-page'"
+  class="h-100 d-flex flex-column align-items-center justify-content-center flex-gap-15 user-select-none"
+>
+  <h2> {{ t('authenticationUnlockPage.loginTitle') }} </h2>
 
   <span class="text-destructive-color">
     @if (passwordError) {
-      Неверный пароль
+      {{ t('authenticationUnlockPage.invalidPasswordError') }}
     } @else {
       &nbsp;
     }
@@ -21,7 +24,7 @@
       nzType="text"
       (click)="onBack()"
     >
-      Отмена
+      {{ t('authenticationUnlockPage.cancelBtn') }}
     </button>
   }
 </div>

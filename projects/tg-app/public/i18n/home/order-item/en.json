@@ -1,0 +1,28 @@
+{
+  "statusLabel": "Status",
+  "tickerLabel": "Ticker",
+  "exchangeLabel": "Exchange",
+  "orderTypeLabel": "Order type",
+  "sideLabel": "Side",
+  "quantityLabel": "Quantity",
+  "triggerPriceLabel": "Trigger price",
+  "conditionLabel": "Condition",
+  "priceLabel": "Price",
+  "transTimeLabel": "Time",
+  "endTimeLabel": "End time",
+  "volumeLabel": "Volume",
+
+  "status": {
+    "canceled":  "Cancelled",
+    "filled": "Filled",
+    "working":  "Working",
+    "rejected": "Rejected"
+  },
+
+  "orderType": {
+    "limit": "Limit",
+    "market": "Market",
+    "stoplimit": "Stop-limit",
+    "stop": "Stop"
+  }
+}

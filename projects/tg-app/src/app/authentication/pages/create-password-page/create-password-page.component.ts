@@ -13,6 +13,7 @@ import { PasswordFormComponent } from "../../components/password-form/password-f
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { NzButtonComponent } from "ng-zorro-antd/button";
 import { StorageKeys } from "../../../core/utils/storage-keys";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 enum PasswordPhase {
   Create = 'create',
@@ -22,11 +23,12 @@ enum PasswordPhase {
 @Component({
   selector: 'tga-create-password-page',
   standalone: true,
-    imports: [
-        PasswordFormComponent,
-        ReactiveFormsModule,
-        NzButtonComponent
-    ],
+  imports: [
+    PasswordFormComponent,
+    ReactiveFormsModule,
+    NzButtonComponent,
+    TranslocoDirective
+  ],
   templateUrl: './create-password-page.component.html',
   styleUrl: './create-password-page.component.less'
 })

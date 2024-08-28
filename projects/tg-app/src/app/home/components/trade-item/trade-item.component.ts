@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DatePipe } from "@angular/common";
 import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
-import { OrderSidePipe } from "../../../core/pipes/order-side.pipe";
 import { PortfolioTrade, Side } from "@api-lib";
 import { BackButtonService } from "@environment-services-lib";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-trade-item',
@@ -12,7 +12,7 @@ import { BackButtonService } from "@environment-services-lib";
     DatePipe,
     NzDescriptionsComponent,
     NzDescriptionsItemComponent,
-    OrderSidePipe,
+    TranslocoDirective
   ],
   templateUrl: './trade-item.component.html'
 })

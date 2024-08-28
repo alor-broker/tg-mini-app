@@ -1,5 +1,6 @@
 import {
   ApplicationConfig,
+  isDevMode,
   provideZoneChangeDetection
 } from '@angular/core';
 import {
@@ -17,6 +18,8 @@ import {
 import { provideAnimations } from "@angular/platform-browser/animations";
 import { ApiTokenInterceptor } from "./core/interceptors/api-token-interceptor";
 import { NZ_I18N, ru_RU } from "ng-zorro-antd/i18n";
+import { provideTransloco } from "@jsverse/transloco";
+import { TranslocoHttpLoader } from "./transloco-http-loader";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +33,15 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimations(),
     //-----
+    provideTransloco({
+      config: {
+        availableLangs: ['en', 'ru'],
+        defaultLang: 'ru',
+        reRenderOnLangChange: true,
+        prodMode: !isDevMode(),
+      },
+      loader: TranslocoHttpLoader
+    }),
     ApplicationProviders,
     {
       provide: NZ_I18N,

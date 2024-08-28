@@ -6,7 +6,9 @@ import {
   BackButtonService,
   LinksService,
   PlatformInfoService,
-  ModalService, HapticFeedbackService
+  ModalService,
+  HapticFeedbackService,
+  LanguageService
 } from "@environment-services-lib";
 import { TgThemingService } from "./theming/tg-theming.service";
 import { TgStorageService } from "./storage/tg-storage.service";
@@ -16,6 +18,7 @@ import { TgLinksService } from "./links/tg-links.service";
 import { TgPlatformInfoService } from "./platform-info/tg-platform-info.service";
 import { TgModalService } from "./modal/tg-modal.service";
 import { TgHapticFeedbackService } from "./haptic-feedback/tg-haptic-feedback.service";
+import { TgLanguageService } from "./language/tg-language.service";
 
 export const EnvironmentServicesProviders: Provider[] = [
   {
@@ -49,5 +52,9 @@ export const EnvironmentServicesProviders: Provider[] = [
   {
     provide: HapticFeedbackService,
     useClass: TgHapticFeedbackService
+  },
+  {
+    provide: LanguageService,
+    useClass: TgLanguageService
   }
 ];

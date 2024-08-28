@@ -13,6 +13,7 @@ import { map, switchMap } from "rxjs/operators";
 import { AsyncPipe } from "@angular/common";
 import { NzTagComponent } from "ng-zorro-antd/tag";
 import { NzIconDirective } from "ng-zorro-antd/icon";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-instrument-select',
@@ -26,7 +27,8 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
     NzInputDirective,
     AsyncPipe,
     NzTagComponent,
-    NzIconDirective
+    NzIconDirective,
+    TranslocoDirective
   ],
   templateUrl: './instrument-select.component.html',
   styleUrl: './instrument-select.component.less',

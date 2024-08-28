@@ -19,6 +19,7 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 import { StorageKeys } from "../../../core/utils/storage-keys";
 import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
 import { PageLoaderComponent } from "../../../core/components/page-loader/page-loader.component";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-password-check',
@@ -29,7 +30,8 @@ import { PageLoaderComponent } from "../../../core/components/page-loader/page-l
     ReactiveFormsModule,
     NzButtonComponent,
     NzIconDirective,
-    PageLoaderComponent
+    PageLoaderComponent,
+    TranslocoDirective
   ],
   templateUrl: './unlock-page.component.html',
   styleUrl: './unlock-page.component.less'

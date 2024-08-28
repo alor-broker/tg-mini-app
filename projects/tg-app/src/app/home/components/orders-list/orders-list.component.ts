@@ -32,6 +32,7 @@ import { ListItemComponent } from "../../../core/components/list/list-item/list-
 import { ViewModel } from "../../../core/models/view-model.model";
 import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-orders-list',
@@ -45,7 +46,8 @@ import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
     NzIconDirective,
     ListComponent,
     ListItemComponent,
-    NzSkeletonComponent
+    NzSkeletonComponent,
+    TranslocoDirective
   ],
   templateUrl: './orders-list.component.html',
   styleUrl: './orders-list.component.less'

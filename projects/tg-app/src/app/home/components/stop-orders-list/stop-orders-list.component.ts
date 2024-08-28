@@ -34,6 +34,7 @@ import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { ViewModel } from "../../../core/models/view-model.model";
 import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-stop-orders-list',
@@ -47,7 +48,8 @@ import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
     NzIconDirective,
     NzTypographyComponent,
     NgClass,
-    NzSkeletonComponent
+    NzSkeletonComponent,
+    TranslocoDirective
   ],
   templateUrl: './stop-orders-list.component.html',
   styleUrl: './stop-orders-list.component.less'

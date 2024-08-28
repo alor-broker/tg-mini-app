@@ -16,6 +16,7 @@ import {
 import { AsyncPipe } from "@angular/common";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { NzTypographyComponent } from "ng-zorro-antd/typography";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-investment-ideas-preview',
@@ -23,7 +24,8 @@ import { NzTypographyComponent } from "ng-zorro-antd/typography";
   imports: [
     AsyncPipe,
     NzSkeletonComponent,
-    NzTypographyComponent
+    NzTypographyComponent,
+    TranslocoDirective
   ],
   templateUrl: './investment-ideas-preview.component.html',
   styleUrl: './investment-ideas-preview.component.less'

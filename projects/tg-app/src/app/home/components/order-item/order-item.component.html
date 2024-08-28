@@ -1,7 +1,11 @@
 <tga-sections>
   <tga-section-panel class="p-15">
-    <nz-descriptions nzBordered nzSize="small">
-      <nz-descriptions-item nzTitle="Статус">
+    <nz-descriptions
+      *transloco="let t; scope: 'home/order-item'"
+      nzBordered
+      nzSize="small"
+    >
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.statusLabel')">
         <span
           [ngClass]="{
             'buy-color': order.status === orderStatus.Filled,
@@ -9,36 +13,62 @@
             'text-accent-color': order.status === orderStatus.Working
           }"
         >
-          {{ order.status | orderStatus }}
+          {{ t('homeOrderItem.status.' + order.status) }}
         </span>
       </nz-descriptions-item>
 
-      <nz-descriptions-item nzTitle="Тикер">{{ order.symbol }}</nz-descriptions-item>
-
-      <nz-descriptions-item nzTitle="Биржа">{{ order.exchange }}</nz-descriptions-item>
-
-      <nz-descriptions-item nzTitle="Тип заявки">{{ order.type | orderType }}</nz-descriptions-item>
-
-      <nz-descriptions-item nzTitle="Сторона">
-        <span [class]="order.side === orderSide.Buy ? 'buy-color' : 'sell-color'">{{ order.side | orderSide }}</span>
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.tickerLabel')">
+        {{ order.symbol }}
       </nz-descriptions-item>
 
-      <nz-descriptions-item nzTitle="Количество">{{ order.filledQtyUnits }}/{{ order.qtyUnits }}</nz-descriptions-item>
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.exchangeLabel')">
+        {{ order.exchange }}
+      </nz-descriptions-item>
+
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.orderTypeLabel')">
+        {{ t('homeOrderItem.orderType.' + order.type) }}
+      </nz-descriptions-item>
+
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.sideLabel')">
+        <span
+          *transloco="let tHome; scope: 'home'"
+          [class]="order.side === orderSide.Buy ? 'buy-color' : 'sell-color'"
+        >
+          {{ tHome('home.side.' + order.side) }}
+        </span>
+      </nz-descriptions-item>
+
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.quantityLabel')">
+        {{ order.filledQtyUnits }}/{{ order.qtyUnits }}
+      </nz-descriptions-item>
 
       @if (order.type === orderType.StopMarket || order.type === orderType.StopLimit) {
-        <nz-descriptions-item nzTitle="Сигн. цена">{{ getOrderStopPrice() }}</nz-descriptions-item>
-        <nz-descriptions-item nzTitle="Условие">{{ getOrderCondition() | orderCondition }}</nz-descriptions-item>
+        <nz-descriptions-item [nzTitle]="t('homeOrderItem.triggerPriceLabel')">
+          {{ getOrderStopPrice() }}
+        </nz-descriptions-item>
+
+        <nz-descriptions-item [nzTitle]="t('homeOrderItem.conditionLabel')">
+          {{ getOrderCondition() | orderCondition }}
+        </nz-descriptions-item>
       }
 
       @if (order.type === orderType.StopLimit || order.type === orderType.Limit) {
-        <nz-descriptions-item nzTitle="Цена">{{ order.price }}</nz-descriptions-item>
+        <nz-descriptions-item [nzTitle]="t('homeOrderItem.priceLabel')">
+          {{ order.price }}
+        </nz-descriptions-item>
       }
 
-      <nz-descriptions-item nzTitle="Время">{{ order.transTime | date : 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.transTimeLabel')">
+        {{ order.transTime | date : 'dd.MM.yyyy HH:mm' }}
+      </nz-descriptions-item>
 
-      <nz-descriptions-item nzTitle="Действ. до">{{ order.endTime | date : 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.endTimeLabel')">
+        {{ order.endTime | date : 'dd.MM.yyyy HH:mm' }}
+      </nz-descriptions-item>
 
-      <nz-descriptions-item nzTitle="Объём">{{ order.volume }}</nz-descriptions-item>
+      <nz-descriptions-item [nzTitle]="t('homeOrderItem.volumeLabel')">
+        {{ order.volume }}
+      </nz-descriptions-item>
     </nz-descriptions>
   </tga-section-panel>
 </tga-sections>

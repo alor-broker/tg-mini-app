@@ -25,6 +25,7 @@ import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { ViewModel } from "../../../core/models/view-model.model";
 import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzIconDirective } from "ng-zorro-antd/icon";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-portfolio-evaluation',
@@ -33,7 +34,8 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
     AsyncPipe,
     DecimalPipe,
     NzTypographyComponent,
-    NzIconDirective
+    NzIconDirective,
+    TranslocoDirective
   ],
   templateUrl: './portfolio-evaluation.component.html',
   styleUrl: './portfolio-evaluation.component.less'
