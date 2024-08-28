@@ -151,6 +151,11 @@
                 "glob": "**/*",
                 "input": "projects/tg-app/public/custom_icons/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/tg-app/public",
+                "output": "/assets/"
               }
             ],
             "styles": [

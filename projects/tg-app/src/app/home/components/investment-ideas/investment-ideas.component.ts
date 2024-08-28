@@ -27,6 +27,7 @@ import { NzButtonComponent } from "ng-zorro-antd/button";
 import { NzAlertComponent } from "ng-zorro-antd/alert";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { StorageKeys } from "../../../core/utils/storage-keys";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 
 interface InvestmentIdeaExtended extends InvestmentIdea {
@@ -47,7 +48,8 @@ interface InvestmentIdeaExtended extends InvestmentIdea {
     NzIconDirective,
     AsyncPipe,
     NzButtonComponent,
-    NzAlertComponent
+    NzAlertComponent,
+    TranslocoDirective
   ],
   templateUrl: './investment-ideas.component.html',
   styleUrl: './investment-ideas.component.less'

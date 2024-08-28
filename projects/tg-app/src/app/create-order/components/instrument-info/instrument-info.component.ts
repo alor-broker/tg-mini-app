@@ -6,6 +6,7 @@ import { BehaviorSubject, filter, Observable } from "rxjs";
 import { AsyncPipe } from "@angular/common";
 import { mapWith } from "../../../core/utils/observable-helper";
 import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-instrument-info',
@@ -14,7 +15,8 @@ import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-a
     NzAvatarComponent,
     AsyncPipe,
     NzDescriptionsComponent,
-    NzDescriptionsItemComponent
+    NzDescriptionsItemComponent,
+    TranslocoDirective
   ],
   templateUrl: './instrument-info.component.html',
   styleUrl: './instrument-info.component.less'

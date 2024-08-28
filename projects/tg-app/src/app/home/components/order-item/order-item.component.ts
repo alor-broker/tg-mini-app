@@ -7,12 +7,10 @@ import {
 import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
 import { BackButtonService } from "@environment-services-lib";
 import { DatePipe, NgClass } from "@angular/common";
-import { OrderStatusPipe } from "../../../core/pipes/order-status.pipe";
-import { OrderSidePipe } from "../../../core/pipes/order-side.pipe";
-import { OrderTypePipe } from "../../../core/pipes/order-type.pipe";
 import { OrderConditionPipe } from "../../../core/pipes/order-condition.pipe";
 import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
 import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 
 @Component({
@@ -22,13 +20,11 @@ import { SectionPanelComponent } from "../../../core/components/sections/section
     NzDescriptionsComponent,
     NzDescriptionsItemComponent,
     DatePipe,
-    OrderStatusPipe,
-    OrderSidePipe,
-    OrderTypePipe,
     OrderConditionPipe,
     NgClass,
     SectionsComponent,
     SectionPanelComponent,
+    TranslocoDirective,
   ],
   templateUrl: './order-item.component.html'
 })

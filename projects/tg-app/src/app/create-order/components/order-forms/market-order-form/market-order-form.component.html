@@ -1,24 +1,31 @@
 @if (orderMeta$ | async; as orderMeta) {
-  <form [formGroup]="form" [nzLayout]="'vertical'" nz-form>
+  <form
+    *transloco="let t; scope: 'create-order/order-forms'"
+    [formGroup]="form"
+    nzLayout="vertical"
+    nz-form
+  >
     <nz-form-item>
       <nz-form-label nzFor="quantity" nzRequired>
-        Кол-во
+        {{ t('createOrderOrderForms.quantityLabel') }}
       </nz-form-label>
       <nz-form-control [nzErrorTip]="quantityError">
 
         <tga-input-number formControlName="quantity" placeholder="0"></tga-input-number>
 
-        <span class="fs-sm text-subtitle-color">Разм.лота: {{ orderMeta.instrument.lotsize }} шт.</span>
+        <span class="fs-sm text-subtitle-color">
+          {{ t('createOrderOrderForms.lotSize') }} {{ orderMeta.instrument.lotsize }} {{ t('createOrderOrderForms.pcs') }}.
+        </span>
 
         <ng-template #quantityError>
           @if (form.controls.quantity.errors?.required) {
-            <span>Поле обязательно для заполнения</span>
+            <span>{{ t('form.errors.required') }}</span>
           }
           @if (form.controls.quantity.errors?.min) {
-            <span>Слишком мало</span>
+            <span>{{ t('form.errors.min') }}</span>
           }
           @if (form.controls.quantity.errors?.max) {
-            <span>Слишком много</span>
+            <span>{{ t('form.errors.max') }}</span>
           }
         </ng-template>
       </nz-form-control>

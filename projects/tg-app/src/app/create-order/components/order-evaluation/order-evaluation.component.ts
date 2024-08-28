@@ -4,6 +4,7 @@ import { BehaviorSubject, filter, Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { AsyncPipe, CurrencyPipe } from "@angular/common";
 import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-order-evaluation',
@@ -12,7 +13,8 @@ import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-a
     AsyncPipe,
     NzDescriptionsComponent,
     NzDescriptionsItemComponent,
-    CurrencyPipe
+    CurrencyPipe,
+    TranslocoDirective
   ],
   templateUrl: './order-evaluation.component.html',
   styleUrl: './order-evaluation.component.less'

@@ -1,4 +1,7 @@
-<div (mousedown)='$event.stopPropagation()'>
+<div
+  *transloco="let t; scope: 'create-order/instrument-select'"
+  (mousedown)='$event.stopPropagation()'
+>
   <nz-input-group [nzSuffix]="suffixIconSearch">
     <input #searchInput
            (blur)="checkInstrumentSelection()"
@@ -7,7 +10,7 @@
            [nzAutocomplete]="auto"
            nz-input
            [formControl]="searchControl"
-           placeholder="Поиск инструмента"
+           [placeholder]="t('createOrderInstrumentSelect.instrumentSearchPlaceholder')"
     />
   </nz-input-group>
 

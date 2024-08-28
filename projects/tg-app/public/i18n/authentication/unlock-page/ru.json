@@ -1,0 +1,5 @@
+{
+  "loginTitle": "Войти по код-паролю",
+  "invalidPasswordError": "Неверный пароль",
+  "cancelBtn": "Отмена"
+}

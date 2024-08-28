@@ -16,7 +16,9 @@
           {{ viewModel.viewData.comment }}
         </span>
       } @else {
-        <span>Нет активных инвестиционных идей.</span>
+        <span *transloco="let t; scope: 'home/investment-ideas-preview'">
+          {{ t('homeInvestmentIdeasPreview.emptyIdeasLabel') }}
+        </span>
       }
     }
   </div>

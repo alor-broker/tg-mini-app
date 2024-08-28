@@ -21,6 +21,7 @@ import { InputNumberComponent } from "../../../../core/components/input-number/i
 import { NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent } from "ng-zorro-antd/form";
 import { OrderEvaluationComponent } from "../../order-evaluation/order-evaluation.component";
 import { SubmitOrderButtonsComponent } from "../../submit-order-buttons/submit-order-buttons.component";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-market-order-form',
@@ -34,7 +35,8 @@ import { SubmitOrderButtonsComponent } from "../../submit-order-buttons/submit-o
     NzFormLabelComponent,
     OrderEvaluationComponent,
     ReactiveFormsModule,
-    SubmitOrderButtonsComponent
+    SubmitOrderButtonsComponent,
+    TranslocoDirective
   ],
   templateUrl: './market-order-form.component.html',
   styleUrls: [

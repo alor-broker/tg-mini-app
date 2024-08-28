@@ -11,6 +11,8 @@ import {
 import { CssVarExportService } from "./core/services/css-var-export.service";
 import { registerLocaleData } from "@angular/common";
 import ru from '@angular/common/locales/ru';
+import { LanguageService } from "@environment-services-lib";
+import { TranslocoService } from "@jsverse/transloco";
 
 registerLocaleData(ru);
 
@@ -28,6 +30,8 @@ export class AppComponent implements OnInit {
   constructor(
     @Inject(TelegramWebApp)
     private readonly tgWebApp: WebApp,
+    private readonly languageService: LanguageService,
+    private readonly translocoService: TranslocoService,
     private readonly cssVarExportService: CssVarExportService
   ) {
     this.tgWebApp.ready();
@@ -35,5 +39,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.cssVarExportService.export();
+    this.setLang();
+  }
+
+  setLang() {
+    this.translocoService.setActiveLang(this.languageService.getSystemLang());
   }
 }

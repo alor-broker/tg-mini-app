@@ -4,12 +4,14 @@ import { environment } from "../../../../environments/environment";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { Router } from "@angular/router";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-links',
   standalone: true,
   imports: [
-    NzIconDirective
+    NzIconDirective,
+    TranslocoDirective
   ],
   templateUrl: './links.component.html',
   styleUrl: './links.component.less'

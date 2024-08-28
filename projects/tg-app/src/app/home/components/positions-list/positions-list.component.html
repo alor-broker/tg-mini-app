@@ -36,7 +36,12 @@
         </tga-list-item>
       } @empty {
         <tga-list-item>
-          <span class="text-subtitle-color">В Вашем портфеле нет позиций.</span>
+          <span
+            *transloco="let t; scope: 'home/positions-list'"
+            class="text-subtitle-color"
+          >
+            {{ t('homePositionsList.emptyPositions') }}
+          </span>
         </tga-list-item>
       }
     } @else {

@@ -23,6 +23,7 @@ import { OrderEvaluationComponent } from "../../order-evaluation/order-evaluatio
 import { BaseOrderFormComponent } from "../base-order-form.component";
 import { CommonParameters } from "../../../sevices/commom-parameters/common-parameters.service";
 import { map } from "rxjs/operators";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-limit-order-form',
@@ -39,7 +40,8 @@ import { map } from "rxjs/operators";
     SectionPanelComponent,
     SubmitOrderButtonsComponent,
     AsyncPipe,
-    OrderEvaluationComponent
+    OrderEvaluationComponent,
+    TranslocoDirective
   ],
   templateUrl: './limit-order-form.component.html',
   styleUrls: [

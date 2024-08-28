@@ -28,6 +28,7 @@ import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { Router } from "@angular/router";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
+import { TranslocoDirective } from "@jsverse/transloco";
 
 @Component({
   selector: 'tga-positions-list',
@@ -39,7 +40,8 @@ import { RoutesHelper } from "../../../core/utils/routes.helper";
     NzAvatarComponent,
     ListItemComponent,
     ListComponent,
-    NzSkeletonComponent
+    NzSkeletonComponent,
+    TranslocoDirective
   ],
   templateUrl: './positions-list.component.html'
 })

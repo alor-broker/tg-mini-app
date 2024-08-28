@@ -12,6 +12,7 @@ import { switchMap } from "rxjs/operators";
 import { OrderApiErrorsTracker } from "../../utils/order-api-errors-tracker";
 import { CommonParameters, CommonParametersService } from "../../sevices/commom-parameters/common-parameters.service";
 import { Clipboard } from "@angular/cdk/clipboard";
+import { TranslatorService } from "../../../core/services/translator.service";
 
 interface OrderMeta {
   instrument: Instrument;
@@ -29,6 +30,7 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
   protected readonly commonParametersService: CommonParametersService = inject(CommonParametersService);
   protected readonly clipboard: Clipboard = inject(Clipboard);
   protected readonly linksService: LinksService = inject(LinksService);
+  protected readonly translatorService: TranslatorService = inject(TranslatorService);
   protected readonly destroyRef: DestroyRef = inject(DestroyRef);
 
   @Input({ required: true }) set instrument(instr: Instrument | null) {
@@ -47,7 +49,8 @@ export abstract class BaseOrderFormComponent implements OnInit, OnDestroy {
     this.orderApiErrorsTracker = new OrderApiErrorsTracker(
       this.modalService,
       this.clipboard,
-      this.linksService
+      this.linksService,
+      this.translatorService
     );
 
     this.orderMeta$ = this.selectedInstrument$

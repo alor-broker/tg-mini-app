@@ -68,7 +68,12 @@
         </tga-list-item>
       } @empty {
         <tga-list-item>
-          <span class="text-subtitle-color">В текущей торговой сессии заявок не было.</span>
+          <span
+            *transloco="let t; scope: 'home/orders-list'"
+            class="text-subtitle-color"
+          >
+            {{ t('homeOrdersList.emptyOrders') }}
+          </span>
         </tga-list-item>
       }
     } @else {

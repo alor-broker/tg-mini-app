@@ -3,6 +3,8 @@ import { ButtonType, LinksService, ModalService } from "@environment-services-li
 import { HttpErrorResponse } from "@angular/common/http";
 import { Clipboard } from "@angular/cdk/clipboard";
 import { environment } from "../../../environments/environment";
+import { TranslatorService } from "../../core/services/translator.service";
+import { switchMap } from "rxjs";
 
 enum ButtonId {
   Copy = 'copy',
@@ -15,32 +17,37 @@ export class OrderApiErrorsTracker extends ApiErrorsTracker {
     private readonly modalService: ModalService,
     private readonly clipboard: Clipboard,
     private readonly linksService: LinksService,
+    private readonly translatorService: TranslatorService
   ) {
     super();
   }
 
   override track(error: Error): void {
     if (error instanceof HttpErrorResponse) {
-      this.modalService.showMessage({
-          message:
-            `Код ошибки: ${error.error.code}\n` +
-            `Текст ошибки: ${error.error.message}\n\n` +
-            'Для более подробной информации свяжитесь с поддержкой (текст ошибки будет скопирован в буфер обмена)',
-          title: 'Ошибка выставления заявки',
-          buttons: [
-            {
-              id: ButtonId.Copy,
-              text: 'Скопировать текст ошибки'
-            },
-            {
-              id: ButtonId.Support,
-              text: 'Связаться с поддержкой'
-            },
-            {
-              type: ButtonType.Close
-            }
-          ]
-        })
+      this.translatorService.getTranslator('create-order/order-api-errors-tracker')
+        .pipe(
+          switchMap(t => this.modalService.showMessage({
+              message:
+                `${ t(['errorCode']) }: ${ error.error.code }\n` +
+                `${ t(['errorText']) }: ${ error.error.message }\n\n` +
+                `${ t(['helpInfo']) }`,
+              title: t(['errorTitle']),
+              buttons: [
+                {
+                  id: ButtonId.Copy,
+                  text: t(['copyBtn'])
+                },
+                {
+                  id: ButtonId.Support,
+                  text: t(['supportBtn'])
+                },
+                {
+                  type: ButtonType.Close
+                }
+              ]
+            })
+          )
+        )
         .subscribe(buttonId => {
           switch (buttonId) {
             case ButtonId.Copy:
