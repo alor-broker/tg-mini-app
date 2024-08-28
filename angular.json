@@ -154,8 +154,8 @@
               },
               {
                 "glob": "**/*",
-                "input": "projects/tg-app/public",
-                "output": "/assets/"
+                "input": "projects/tg-app/public/i18n/",
+                "output": "/assets/i18n/"
               }
             ],
             "styles": [
