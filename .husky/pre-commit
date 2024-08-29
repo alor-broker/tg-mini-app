@@ -1,0 +1,2 @@
+pnpm test -- --browsers=ChromeHeadless --watch=false
+pnpm build --configuration production
