@@ -136,6 +136,9 @@
             ],
             "tsConfig": "projects/tg-app/tsconfig.app.json",
             "inlineStyleLanguage": "less",
+            "allowedCommonJsDependencies": [
+              "moment"
+            ],
             "assets": [
               {
                 "glob": "**/*",
