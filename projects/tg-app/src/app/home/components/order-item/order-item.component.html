@@ -1,7 +1,6 @@
-<tga-sections>
+<tga-sections *transloco="let t; scope: 'home/order-item'">
   <tga-section-panel class="p-15">
     <nz-descriptions
-      *transloco="let t; scope: 'home/order-item'"
       nzBordered
       nzSize="small"
     >
@@ -70,5 +69,18 @@
         {{ order.volume }}
       </nz-descriptions-item>
     </nz-descriptions>
+
+    @if (order.status === orderStatus.Working) {
+      <div class="d-flex justify-content-end mt-10">
+        <button
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="cancelOrder()"
+        >
+          {{ t('homeOrderItem.cancelOrderBtn') }}
+        </button>
+      </div>
+    }
   </tga-section-panel>
 </tga-sections>

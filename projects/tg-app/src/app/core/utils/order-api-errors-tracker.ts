@@ -3,8 +3,9 @@ import { ButtonType, LinksService, ModalService } from "@environment-services-li
 import { HttpErrorResponse } from "@angular/common/http";
 import { Clipboard } from "@angular/cdk/clipboard";
 import { environment } from "../../../environments/environment";
-import { TranslatorService } from "../../core/services/translator.service";
+import { TranslatorService } from "../services/translator.service";
 import { switchMap } from "rxjs";
+import { OrderActionType } from "../models/order-api-errors-tracker.model";
 
 enum ButtonId {
   Copy = 'copy',
@@ -13,25 +14,30 @@ enum ButtonId {
 
 export class OrderApiErrorsTracker extends ApiErrorsTracker {
 
+  private orderActionType: OrderActionType;
+
   constructor(
     private readonly modalService: ModalService,
     private readonly clipboard: Clipboard,
     private readonly linksService: LinksService,
-    private readonly translatorService: TranslatorService
+    private readonly translatorService: TranslatorService,
+    orderActionType: OrderActionType
   ) {
     super();
+
+    this.orderActionType = orderActionType;
   }
 
   override track(error: Error): void {
     if (error instanceof HttpErrorResponse) {
-      this.translatorService.getTranslator('create-order/order-api-errors-tracker')
+      this.translatorService.getTranslator('core/order-api-errors-tracker')
         .pipe(
           switchMap(t => this.modalService.showMessage({
               message:
                 `${ t(['errorCode']) }: ${ error.error.code }\n` +
                 `${ t(['errorText']) }: ${ error.error.message }\n\n` +
                 `${ t(['helpInfo']) }`,
-              title: t(['errorTitle']),
+              title: this.orderActionType === OrderActionType.Create ? t(['createOrderErrorTitle']) : t(['cancelOrderErrorTitle']),
               buttons: [
                 {
                   id: ButtonId.Copy,

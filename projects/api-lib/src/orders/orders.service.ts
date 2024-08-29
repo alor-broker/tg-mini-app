@@ -6,6 +6,7 @@ import {
   ApiErrorsTracker,
   ApiRequestOptions,
   ApiResponse,
+  CancelOrderResponse,
   NewLimitOrder,
   NewMarketOrder,
   NewOrderResponse,
@@ -60,6 +61,25 @@ export class OrdersService extends BaseHttpApiService{
     )
   }
 
+  cancelOrder(
+    orderId: string,
+    params: { portfolio: string, exchange: string, stop: boolean },
+    options?: ApiRequestOptions
+  ): ApiResponse<CancelOrderResponse> {
+    return this.sendRequest<CancelOrderResponse>(
+      (config) => this.httpClient.delete<CancelOrderResponse>(
+        `${this.getBaseOrdersUrl(config)}/${orderId}`,
+        {
+          params: {
+            ...params,
+            jsonResponse: true
+          }
+        }
+      ),
+      options
+    );
+  }
+
   private getOrderRequest(
     order: NewLimitOrder | NewMarketOrder | NewStopMarketOrder | NewStopLimitOrder,
     portfolio: string,
@@ -67,7 +87,7 @@ export class OrdersService extends BaseHttpApiService{
     orderType: string
   ) {
     return this.httpClient.post<NewOrderResponse>(
-      `${this.getBaseOrdersUrl(config)}/${orderType}`,
+      `${this.getBaseOrdersActionsUrl(config)}/${orderType}`,
       {
         ...order,
         user: { portfolio }
@@ -80,7 +100,11 @@ export class OrdersService extends BaseHttpApiService{
     )
   }
 
+  private getBaseOrdersActionsUrl(config: ApiConfig) {
+    return `${this.getBaseOrdersUrl(config)}/actions`
+  }
+
   private getBaseOrdersUrl(config: ApiConfig) {
-    return `${config.apiUrl}/commandapi/warptrans/TRADE/v2/client/orders/actions`
+    return `${config.apiUrl}/commandapi/warptrans/TRADE/v2/client/orders`
   }
 }

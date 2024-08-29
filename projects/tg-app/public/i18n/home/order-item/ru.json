@@ -11,6 +11,11 @@
   "transTimeLabel": "Время",
   "endTimeLabel": "Действ. до",
   "volumeLabel": "Объём",
+  "cancelOrderBtn": "Отменить заявку",
+  "cancelModalMessage": "Вы уверены, что хотите отменить заявку?",
+
+  "yes": "Да",
+  "no": "Нет",
 
   "status": {
     "canceled":  "Отменена",

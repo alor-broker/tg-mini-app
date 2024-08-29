@@ -11,6 +11,11 @@
   "transTimeLabel": "Time",
   "endTimeLabel": "End time",
   "volumeLabel": "Volume",
+  "cancelOrderBtn": "Cancel order",
+  "cancelModalMessage": "Are you sure you want to cancel order?",
+
+  "yes": "Yes",
+  "no": "No",
 
   "status": {
     "canceled":  "Cancelled",
