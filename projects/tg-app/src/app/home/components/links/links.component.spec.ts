@@ -1,10 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { LinksComponent } from './links.component';
-import { LinksServiceSpy } from "../../../../testing-utils/links-service-spy";
 import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { provideHttpClient } from "@angular/common/http";
+import { MockProvider } from "ng-mocks";
+import { LinksService } from "@environment-services-lib";
 
 describe('LinksComponent', () => {
   let component: LinksComponent;
@@ -18,11 +22,11 @@ describe('LinksComponent', () => {
         NzIconModule
       ],
       providers: [
-        LinksServiceSpy.getSpy().provider,
+        MockProvider(LinksService),
         provideHttpClient()
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(LinksComponent);
     component = fixture.componentInstance;

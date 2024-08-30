@@ -1,11 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { CreateOrderComponent } from './create-order.component';
-import { BackButtonServiceSpy } from "../../../../testing-utils/back-button-service-spy";
 import { InstrumentsService } from "@api-lib";
 import { Subject } from "rxjs";
 import { CommonParametersService } from "../../sevices/commom-parameters/common-parameters.service";
 import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
+import { MockProvider } from "ng-mocks";
+import { BackButtonService } from "@environment-services-lib";
 
 describe('CreateOrderComponent', () => {
   let component: CreateOrderComponent;
@@ -18,7 +22,7 @@ describe('CreateOrderComponent', () => {
         CreateOrderComponent
       ],
       providers: [
-        BackButtonServiceSpy.getSpy().provider,
+        MockProvider(BackButtonService),
         {
           provide: InstrumentsService,
           useValue: {
@@ -34,7 +38,7 @@ describe('CreateOrderComponent', () => {
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CreateOrderComponent);
     component = fixture.componentInstance;

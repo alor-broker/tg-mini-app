@@ -1,10 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { CreatePasswordPageComponent } from './create-password-page.component';
 import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
-import { StorageServiceSpy } from "../../../../testing-utils/storage-service-spy";
-import { BiometryServiceSpy } from "../../../../testing-utils/biometry-service-spy";
-import { HapticFeedbackServiceSpy } from "../../../../testing-utils/haptic-feedback-service-spy";
+import { MockProvider } from "ng-mocks";
+import {
+  BiometryService,
+  HapticFeedbackService,
+  StorageService
+} from "@environment-services-lib";
 
 describe('CreatePasswordPageComponent', () => {
   let component: CreatePasswordPageComponent;
@@ -17,12 +23,12 @@ describe('CreatePasswordPageComponent', () => {
         TranslocoTestModuleProvider.getModule()
       ],
       providers: [
-        StorageServiceSpy.getSpy().provider,
-        BiometryServiceSpy.getSpy().provider,
-        HapticFeedbackServiceSpy.getSpy().provider
+        MockProvider(StorageService),
+        MockProvider(BiometryService),
+        MockProvider(HapticFeedbackService),
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CreatePasswordPageComponent);
     component = fixture.componentInstance;

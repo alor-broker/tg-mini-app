@@ -9,7 +9,7 @@
     ]
   },
   "include": [
-    "**/test.ts",
+    "**/test-setup.ts",
     "**/*.spec.ts",
     "**/*.d.ts"
   ]

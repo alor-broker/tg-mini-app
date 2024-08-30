@@ -1,4 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { InvestmentIdeasComponent } from './investment-ideas.component';
 import {
@@ -7,10 +10,13 @@ import {
 } from "@api-lib";
 import { Subject } from "rxjs";
 import { WatchedInvestmentIdeasService } from "../../services/watched-investment-ideas.service";
-import { BackButtonServiceSpy } from "../../../../testing-utils/back-button-service-spy";
 import { MarketService } from "../../../core/services/market.service";
-import { StorageServiceSpy } from "../../../../testing-utils/storage-service-spy";
 import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
+import { MockProvider } from "ng-mocks";
+import {
+  BackButtonService,
+  StorageService
+} from "@environment-services-lib";
 
 describe('InvestmentIdeasComponent', () => {
   let component: InvestmentIdeasComponent;
@@ -37,7 +43,7 @@ describe('InvestmentIdeasComponent', () => {
             getWatchedIdeasIds: jasmine.createSpy('getWatchedIdeasIds').and.returnValue(new Subject())
           }
         },
-        BackButtonServiceSpy.getSpy().provider,
+        MockProvider(BackButtonService),
         {
           provide: InstrumentsService,
           useValue: {
@@ -50,10 +56,10 @@ describe('InvestmentIdeasComponent', () => {
             getDefaultExchange: jasmine.createSpy('getDefaultExchange').and.returnValue(new Subject())
           }
         },
-        StorageServiceSpy.getSpy().provider
+        MockProvider(StorageService)
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(InvestmentIdeasComponent);
     component = fixture.componentInstance;

@@ -4,12 +4,10 @@ import {
 } from '@angular/core/testing';
 
 import { OrderItemComponent } from './order-item.component';
-import { BackButtonServiceSpy } from "../../../../testing-utils/back-button-service-spy";
 import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
-import {
-  OrderStatus,
-  PortfolioOrder
-} from "@api-lib";
+import { PortfolioOrder } from "@api-lib";
+import { MockProvider } from "ng-mocks";
+import { BackButtonService } from "@environment-services-lib";
 
 describe('OrderItemComponent', () => {
   let component: OrderItemComponent;
@@ -22,10 +20,10 @@ describe('OrderItemComponent', () => {
         TranslocoTestModuleProvider.getModule()
       ],
       providers: [
-        BackButtonServiceSpy.getSpy().provider
+        MockProvider(BackButtonService)
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(OrderItemComponent);
     component = fixture.componentInstance;

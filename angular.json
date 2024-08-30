@@ -33,7 +33,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/api-lib/src/test.ts",
+            "main": "projects/api-lib/src/test-setup.ts",
             "tsConfig": "projects/api-lib/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
@@ -244,6 +244,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "main": "projects/tg-app/src/test-setup.ts",
             "polyfills": [
               "zone.js",
               "zone.js/testing"

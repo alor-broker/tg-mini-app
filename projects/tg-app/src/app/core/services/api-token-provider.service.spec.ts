@@ -4,7 +4,8 @@ import { ApiTokenProviderService } from './api-token-provider.service';
 import { UserStateService } from "./user-state.service";
 import { Subject } from "rxjs";
 import { AuthService } from "../../../../../api-lib/src/auth/auth.service";
-import { StorageServiceSpy } from "../../../testing-utils/storage-service-spy";
+import { MockProvider } from "ng-mocks";
+import { StorageService } from "@environment-services-lib";
 
 describe('ApiTokenProviderService', () => {
   let service: ApiTokenProviderService;
@@ -24,7 +25,7 @@ describe('ApiTokenProviderService', () => {
             refreshJwtToken: jasmine.createSpy('refreshJwtToken').and.callThrough()
           }
         },
-        StorageServiceSpy.getSpy().provider
+        MockProvider(StorageService)
       ]
     });
     service = TestBed.inject(ApiTokenProviderService);

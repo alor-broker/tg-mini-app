@@ -1,4 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { StopOrderFormComponent } from './stop-order-form.component';
 import { TranslocoTestModuleProvider } from "../../../../../testing-utils/transloco-test-module-provider";
@@ -11,8 +14,10 @@ import { SubmitOrderButtonsComponent } from "../../submit-order-buttons/submit-o
 import { SelectedPortfolioDataContextService } from "../../../../home/services/selected-portfolio-data-context.service";
 import { Subject } from "rxjs";
 import { CommonParametersService } from "../../../sevices/commom-parameters/common-parameters.service";
-import { ModalServiceSpy } from "../../../../../testing-utils/modal-service-spy";
-import { LinksServiceSpy } from "../../../../../testing-utils/links-service-spy";
+import {
+  LinksService,
+  ModalService
+} from "@environment-services-lib";
 
 describe('StopOrderFormComponent', () => {
   let component: StopOrderFormComponent;
@@ -39,11 +44,11 @@ describe('StopOrderFormComponent', () => {
             parameters$: new Subject()
           }
         ),
-        ModalServiceSpy.getSpy().provider,
-        LinksServiceSpy.getSpy().provider
+        MockProvider(ModalService),
+        MockProvider(LinksService)
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(StopOrderFormComponent);
     component = fixture.componentInstance;

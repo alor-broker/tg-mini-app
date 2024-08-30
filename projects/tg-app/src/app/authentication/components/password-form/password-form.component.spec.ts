@@ -1,16 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { PasswordFormComponent } from './password-form.component';
-import {
-  MockProvider,
-  MockService
-} from "ng-mocks";
+import { MockProvider } from "ng-mocks";
 import {
   HapticFeedbackService,
   PlatformInfoService
 } from "@environment-services-lib";
-import { PlatformInfoServiceSpy } from "../../../../testing-utils/platform-info-service-spy";
-import { HapticFeedbackServiceSpy } from "../../../../testing-utils/haptic-feedback-service-spy";
 import { provideHttpClient } from "@angular/common/http";
 
 describe('PasswordFormComponent', () => {
@@ -22,11 +20,11 @@ describe('PasswordFormComponent', () => {
       imports: [PasswordFormComponent],
       providers: [
         provideHttpClient(),
-        PlatformInfoServiceSpy.getSpy().provider,
-        HapticFeedbackServiceSpy.getSpy().provider
+        MockProvider(PlatformInfoService),
+        MockProvider(HapticFeedbackService)
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(PasswordFormComponent);
     component = fixture.componentInstance;

@@ -1,16 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { SettingsPageComponent } from './settings-page.component';
 import { ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs";
 import { ApiTokenProviderService } from "../../../core/services/api-token-provider.service";
-import { LinksServiceSpy } from "../../../../testing-utils/links-service-spy";
-import { BackButtonServiceSpy } from "../../../../testing-utils/back-button-service-spy";
 import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
 import {
-  MockComponents
+  MockComponents,
+  MockProvider
 } from "ng-mocks";
 import { PasswordSettingsComponent } from "../../components/password-settings/password-settings.component";
+import {
+  BackButtonService,
+  LinksService
+} from "@environment-services-lib";
 
 describe('SettingsPageComponent', () => {
   let component: SettingsPageComponent;
@@ -38,11 +44,11 @@ describe('SettingsPageComponent', () => {
             logout: jasmine.createSpy('logout').and.callThrough()
           }
         },
-        LinksServiceSpy.getSpy().provider,
-        BackButtonServiceSpy.getSpy().provider
+        MockProvider(LinksService),
+        MockProvider(BackButtonService),
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(SettingsPageComponent);
     component = fixture.componentInstance;

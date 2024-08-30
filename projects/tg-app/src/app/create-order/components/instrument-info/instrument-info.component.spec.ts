@@ -1,10 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { InstrumentInfoComponent } from './instrument-info.component';
-import { InstrumentIconSourceServiceSpy } from "../../../core/services/instrument-icon-source.service.spy";
 import { MockProvider } from "ng-mocks";
 import { QuotesService } from "@api-lib";
 import { Subject } from "rxjs";
+import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 
 describe('InstrumentInfoComponent', () => {
   let component: InstrumentInfoComponent;
@@ -14,7 +17,7 @@ describe('InstrumentInfoComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InstrumentInfoComponent],
       providers: [
-        InstrumentIconSourceServiceSpy.getSpy().provider,
+        MockProvider(InstrumentIconSourceService),
         MockProvider(
           QuotesService,
           {
@@ -23,7 +26,7 @@ describe('InstrumentInfoComponent', () => {
         )
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(InstrumentInfoComponent);
     component = fixture.componentInstance;

@@ -1,11 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { OrdersListComponent } from './orders-list.component';
 import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
 import { Subject } from "rxjs";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 import { PortfolioOrdersService } from "@api-lib";
-import { InstrumentIconSourceServiceSpy } from "../../../core/services/instrument-icon-source.service.spy";
+import { MockProvider } from "ng-mocks";
 
 describe('OrdersListComponent', () => {
   let component: OrdersListComponent;
@@ -27,10 +30,10 @@ describe('OrdersListComponent', () => {
             getSessionLimitMarketOrders: jasmine.createSpy('getSessionLimitMarketOrders').and.returnValue(new Subject())
           }
         },
-        InstrumentIconSourceServiceSpy.getSpy().provider
+        MockProvider(InstrumentIconSourceService)
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(OrdersListComponent);
     component = fixture.componentInstance;
