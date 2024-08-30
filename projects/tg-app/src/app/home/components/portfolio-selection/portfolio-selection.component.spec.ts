@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PortfolioSelectionComponent } from './portfolio-selection.component';
+import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
+import { Subject } from "rxjs";
 
 describe('PortfolioSelectionComponent', () => {
   let component: PortfolioSelectionComponent;
@@ -8,7 +10,16 @@ describe('PortfolioSelectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PortfolioSelectionComponent]
+      imports: [PortfolioSelectionComponent],
+      providers:[
+        {
+          provide: SelectedPortfolioDataContextService,
+          useValue: {
+            portfolios$: new Subject(),
+            selectedPortfolio$: new Subject()
+          }
+        }
+      ]
     })
     .compileComponents();
 

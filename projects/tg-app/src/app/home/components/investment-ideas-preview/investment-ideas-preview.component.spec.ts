@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InvestmentIdeasPreviewComponent } from './investment-ideas-preview.component';
+import { InvestmentIdeasService } from "@api-lib";
+import { Subject } from "rxjs";
 
 describe('InvestmentIdeasPreviewComponent', () => {
   let component: InvestmentIdeasPreviewComponent;
@@ -8,7 +10,15 @@ describe('InvestmentIdeasPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InvestmentIdeasPreviewComponent]
+      imports: [InvestmentIdeasPreviewComponent],
+      providers: [
+        {
+          provide: InvestmentIdeasService,
+          useValue: {
+            getInvestmentIdeas: jasmine.createSpy('getInvestmentIdeas').and.returnValue(new Subject())
+          }
+        }
+      ]
     })
     .compileComponents();
 

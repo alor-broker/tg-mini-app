@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InstrumentInfoComponent } from './instrument-info.component';
+import { InstrumentIconSourceServiceSpy } from "../../../core/services/instrument-icon-source.service.spy";
+import { MockProvider } from "ng-mocks";
+import { QuotesService } from "@api-lib";
+import { Subject } from "rxjs";
 
 describe('InstrumentInfoComponent', () => {
   let component: InstrumentInfoComponent;
@@ -8,7 +12,16 @@ describe('InstrumentInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InstrumentInfoComponent]
+      imports: [InstrumentInfoComponent],
+      providers: [
+        InstrumentIconSourceServiceSpy.getSpy().provider,
+        MockProvider(
+          QuotesService,
+          {
+            getLastQuoteInfo: () => new Subject()
+          }
+        )
+      ]
     })
     .compileComponents();
 

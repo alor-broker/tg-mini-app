@@ -6,7 +6,11 @@ describe('CommonParametersService', () => {
   let service: CommonParametersService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        CommonParametersService
+      ]
+    });
     service = TestBed.inject(CommonParametersService);
   });
 

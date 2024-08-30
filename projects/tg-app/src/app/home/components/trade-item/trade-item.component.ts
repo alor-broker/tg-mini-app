@@ -22,9 +22,8 @@ export class TradeItemComponent implements OnInit, OnDestroy {
 
   side = Side;
 
-  constructor(
-    private readonly backButtonService: BackButtonService,
-  ) {}
+  constructor(private readonly backButtonService: BackButtonService) {
+  }
 
   private onBackButtonCallback = () => {
     this.onBack.emit();

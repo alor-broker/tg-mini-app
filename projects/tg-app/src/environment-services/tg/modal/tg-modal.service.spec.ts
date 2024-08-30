@@ -1,12 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TgModalService } from './tg-modal.service';
+import { TelegramWebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
 describe('TgModalService', () => {
   let service: TgModalService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: TelegramWebApp,
+          useValue: {
+            showPopup: jasmine.createSpy('showPopup').and.callThrough()
+          }
+        }
+      ]
+    });
     service = TestBed.inject(TgModalService);
   });
 

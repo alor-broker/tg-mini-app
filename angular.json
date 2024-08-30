@@ -252,12 +252,36 @@
             "assets": [
               {
                 "glob": "**/*",
+                "ignore": ["**/custom_icons/**/*"],
                 "input": "projects/tg-app/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/tg-app/public/custom_icons/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/tg-app/public/i18n/",
+                "output": "/assets/i18n/"
               }
             ],
             "styles": [
               "projects/tg-app/src/styles.less"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/tg-app/src/styles",
+                "projects/tg-app/src/styles/utils",
+                "projects/tg-app/src/styles/components",
+                "projects/tg-app/src/styles/mixins"
+              ]
+            },
             "scripts": []
           }
         }

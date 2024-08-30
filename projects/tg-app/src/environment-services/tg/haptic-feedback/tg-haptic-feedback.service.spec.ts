@@ -1,12 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TgHapticFeedbackService } from './tg-haptic-feedback.service';
+import { TelegramWebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
 describe('TgHapticFeedbackService', () => {
   let service: TgHapticFeedbackService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: TelegramWebApp,
+          useValue: {
+            isVersionAtLeast: jasmine.createSpy('isVersionAtLeast').and.returnValue(false),
+          }
+        }
+      ]
+    });
     service = TestBed.inject(TgHapticFeedbackService);
   });
 

@@ -36,9 +36,9 @@ export class OrderItemComponent implements OnInit, OnDestroy {
   orderStatus = OrderStatus;
   orderType = OrderType;
 
-  constructor(
-    private readonly backButtonService: BackButtonService,
-  ) {}
+  constructor(private readonly backButtonService: BackButtonService) {
+
+  }
 
   private onBackButtonCallback = () => {
     this.onBack.emit();

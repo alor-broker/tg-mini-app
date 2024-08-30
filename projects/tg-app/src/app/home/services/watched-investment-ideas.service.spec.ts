@@ -1,12 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
 import { WatchedInvestmentIdeasService } from './watched-investment-ideas.service';
+import { StorageServiceSpy } from "../../../testing-utils/storage-service-spy";
 
-describe('InvestmentIdeasService', () => {
+describe('WatchedInvestmentIdeasService', () => {
   let service: WatchedInvestmentIdeasService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        StorageServiceSpy.getSpy().provider
+      ]
+    });
     service = TestBed.inject(WatchedInvestmentIdeasService);
   });
 
