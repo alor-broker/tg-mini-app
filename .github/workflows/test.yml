@@ -31,7 +31,7 @@ jobs:
     - run: pnpm install
 
     - name: Test API lib
-      run: pnpm test-api-lib -- --browsers=ChromeHeadless --watch=false
+      run: pnpm test-api-lib --browsers=ChromeHeadless --watch=false
 
     - name: Test TG APP
-      run: pnpm test-tg-app -- --browsers=ChromeHeadless --watch=false
+      run: pnpm test-tg-app --browsers=ChromeHeadless --watch=false
