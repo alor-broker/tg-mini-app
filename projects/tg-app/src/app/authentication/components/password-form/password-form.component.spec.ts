@@ -17,8 +17,6 @@ describe('PasswordFormComponent', () => {
   let component: PasswordFormComponent;
   let fixture: ComponentFixture<PasswordFormComponent>;
 
-  const a = MockService(PlatformInfoService);
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PasswordFormComponent],

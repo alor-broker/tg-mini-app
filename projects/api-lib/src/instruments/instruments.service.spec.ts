@@ -1,10 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
 import { InstrumentsService } from './instruments.service';
-import { ApiConfigProviderSpy } from "../testing-utils/api-config-provider-spy";
-import { ApiErrorsTrackerSpy } from "../testing-utils/api-errors-tracker-spy";
 import { provideHttpClient } from "@angular/common/http";
 import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { MockProvider } from "ng-mocks";
+import {
+  ApiConfigProvider,
+  ApiErrorsTracker
+} from "@api-lib";
 
 describe('InstrumentsService', () => {
   let service: InstrumentsService;
@@ -12,8 +15,8 @@ describe('InstrumentsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ApiConfigProviderSpy.getSpy().provider,
-        ApiErrorsTrackerSpy.getSpy().provider,
+        MockProvider(ApiConfigProvider),
+        MockProvider(ApiErrorsTracker),
         provideHttpClient(),
         provideHttpClientTesting()
       ]
