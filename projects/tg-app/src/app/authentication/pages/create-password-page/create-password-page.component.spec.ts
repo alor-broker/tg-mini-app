@@ -1,6 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { CreatePasswordPageComponent } from './create-password-page.component';
+import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
+import { MockProvider } from "ng-mocks";
+import {
+  BiometryService,
+  HapticFeedbackService,
+  StorageService
+} from "@environment-services-lib";
 
 describe('CreatePasswordPageComponent', () => {
   let component: CreatePasswordPageComponent;
@@ -8,9 +18,17 @@ describe('CreatePasswordPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreatePasswordPageComponent]
+      imports: [
+        CreatePasswordPageComponent,
+        TranslocoTestModuleProvider.getModule()
+      ],
+      providers: [
+        MockProvider(StorageService),
+        MockProvider(BiometryService),
+        MockProvider(HapticFeedbackService),
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CreatePasswordPageComponent);
     component = fixture.componentInstance;

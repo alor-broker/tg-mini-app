@@ -1,10 +1,40 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { TelegramWebApp } from "@m1cron-labs/ng-telegram-mini-app";
+import { LanguageService } from "@environment-services-lib";
+import { TranslocoService } from "@jsverse/transloco";
+import { CssVarExportService } from "./core/services/css-var-export.service";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers:[
+        {
+          provide: TelegramWebApp,
+          useValue: {
+            ready: jasmine.createSpy('ready').and.callThrough()
+          }
+        },
+        {
+          provide: LanguageService,
+          useValue: {
+            getSystemLang: jasmine.createSpy('getSystemLang').and.returnValue('')
+          }
+        },
+        {
+          provide: TranslocoService,
+          useValue: {
+            setActiveLang: jasmine.createSpy('setActiveLang').and.callThrough()
+          }
+        },
+        {
+          provide: CssVarExportService,
+          useValue: {
+            export: jasmine.createSpy('export').and.callThrough()
+          }
+        }
+      ]
     }).compileComponents();
   });
 
@@ -12,18 +42,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have the 'tg-app' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('tg-app');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, tg-app');
   });
 });

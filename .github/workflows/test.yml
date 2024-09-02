@@ -27,5 +27,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+
     - run: pnpm install
-    - run: pnpm test -- --browsers=ChromeHeadless --watch=false
+
+    - name: Test API lib
+      run: pnpm test-api-lib --browsers=ChromeHeadless --watch=false
+
+    - name: Test TG APP
+      run: pnpm test-tg-app --browsers=ChromeHeadless --watch=false
