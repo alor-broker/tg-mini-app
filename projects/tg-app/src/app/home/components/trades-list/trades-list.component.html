@@ -1,5 +1,5 @@
 @if (viewModel$ | async; as viewModel) {
-  <tga-list *transloco="let t; scope: 'home/trades-list'">
+  <tga-list>
     @if (viewModel.viewData) {
       @for (trade of viewModel.viewData; track trade) {
         <tga-list-item>
@@ -30,8 +30,11 @@
                   <span nz-typography nzEllipsis>{{ trade.symbol }}</span>
                 </div>
                 <div>
-              <span class="text-subtitle-color">
-                {{ trade.qtyBatch | number }} {{ t('homeTradesList.lotsLabel') }}
+              <span
+                *transloco="let t; scope: 'home'"
+                class="text-subtitle-color"
+              >
+                {{ trade.qtyBatch | number }} {{ t('home.lotsLabel') }}
               </span>
                 </div>
               </div>
@@ -47,7 +50,10 @@
 
       } @empty {
         <tga-list-item>
-          <span class="text-subtitle-color">
+          <span
+            *transloco="let t; scope: 'home/trades-list'"
+            class="text-subtitle-color"
+          >
             {{ t('homeTradesList.emptyTrades') }}
           </span>
         </tga-list-item>

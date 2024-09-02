@@ -9,6 +9,7 @@ describe('TgLanguageService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        TgLanguageService,
         {
           provide: TelegramWebApp,
           useValue: {

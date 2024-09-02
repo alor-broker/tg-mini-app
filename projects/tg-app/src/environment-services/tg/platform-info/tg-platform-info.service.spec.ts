@@ -10,6 +10,7 @@ describe('TgPlatformInfoService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        TgPlatformInfoService,
         TgStorageService,
         {
           provide: TelegramWebApp,

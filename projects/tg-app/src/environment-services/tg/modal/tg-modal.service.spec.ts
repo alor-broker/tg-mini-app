@@ -9,6 +9,7 @@ describe('TgModalService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        TgModalService,
         {
           provide: TelegramWebApp,
           useValue: {
