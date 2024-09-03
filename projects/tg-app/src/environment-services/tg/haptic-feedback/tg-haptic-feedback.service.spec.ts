@@ -9,6 +9,7 @@ describe('TgHapticFeedbackService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        TgHapticFeedbackService,
         {
           provide: TelegramWebApp,
           useValue: {

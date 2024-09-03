@@ -3,9 +3,7 @@ import { TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 import { Observable } from "rxjs";
 import { ModalParams, ModalService } from "@environment-services-lib";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TgModalService extends ModalService {
 
   constructor(

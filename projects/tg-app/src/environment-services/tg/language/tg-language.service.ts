@@ -2,9 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { LanguageService } from "@environment-services-lib";
 import { TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TgLanguageService extends LanguageService {
 
   constructor(

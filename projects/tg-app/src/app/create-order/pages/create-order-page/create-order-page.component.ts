@@ -15,6 +15,7 @@ import { CommonParametersService } from "../../sevices/commom-parameters/common-
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { MarketOrderFormComponent } from "../../components/order-forms/market-order-form/market-order-form.component";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { LinksComponent } from "../../../home/components/links/links.component";
 
 @Component({
   selector: 'tga-create-order',
@@ -31,13 +32,14 @@ import { TranslocoDirective } from "@jsverse/transloco";
     LimitOrderFormComponent,
     ReactiveFormsModule,
     MarketOrderFormComponent,
-    TranslocoDirective
+    TranslocoDirective,
+    LinksComponent
   ],
   providers: [ CommonParametersService ],
-  templateUrl: './create-order.component.html',
-  styleUrl: './create-order.component.less'
+  templateUrl: './create-order-page.component.html',
+  styleUrl: './create-order-page.component.less'
 })
-export class CreateOrderComponent implements OnInit, OnDestroy {
+export class CreateOrderPageComponent implements OnInit, OnDestroy {
 
   instrumentSelectControl = new FormControl<Instrument | null>(null)
   selectedInstrument: Instrument | null = null;

@@ -2,9 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HapticFeedbackService, ImpactHapticStyle, NotificationHapticStyle } from "@environment-services-lib";
 import { HapticFeedback, NotificationType, TelegramWebApp, WebApp } from "@m1cron-labs/ng-telegram-mini-app";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TgHapticFeedbackService extends HapticFeedbackService {
 
   private hapticFeedbackCtx: HapticFeedback | null = null;

@@ -3,7 +3,7 @@ import {
   TestBed
 } from '@angular/core/testing';
 
-import { CreateOrderComponent } from './create-order.component';
+import { CreateOrderPageComponent } from './create-order-page.component';
 import { InstrumentsService } from "@api-lib";
 import { Subject } from "rxjs";
 import { CommonParametersService } from "../../sevices/commom-parameters/common-parameters.service";
@@ -12,14 +12,14 @@ import { MockProvider } from "ng-mocks";
 import { BackButtonService } from "@environment-services-lib";
 
 describe('CreateOrderComponent', () => {
-  let component: CreateOrderComponent;
-  let fixture: ComponentFixture<CreateOrderComponent>;
+  let component: CreateOrderPageComponent;
+  let fixture: ComponentFixture<CreateOrderPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         TranslocoTestModuleProvider.getModule(),
-        CreateOrderComponent
+        CreateOrderPageComponent
       ],
       providers: [
         MockProvider(BackButtonService),
@@ -40,7 +40,7 @@ describe('CreateOrderComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(CreateOrderComponent);
+    fixture = TestBed.createComponent(CreateOrderPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
