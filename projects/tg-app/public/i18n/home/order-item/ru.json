@@ -13,6 +13,7 @@
   "volumeLabel": "Объём",
   "cancelOrderBtn": "Отменить заявку",
   "cancelModalMessage": "Вы уверены, что хотите отменить заявку?",
+  "orderNotFound": "Звявка не найдена",
 
   "yes": "Да",
   "no": "Нет",

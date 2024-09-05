@@ -9,6 +9,7 @@ import {
   Output
 } from '@angular/core';
 import {
+  ApiResponse,
   OrdersService,
   OrderStatus,
   OrderType,
@@ -19,18 +20,19 @@ import {
 } from "@api-lib";
 import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
 import { BackButtonService, ButtonType, LinksService, ModalService } from "@environment-services-lib";
-import { DatePipe, NgClass } from "@angular/common";
+import { AsyncPipe, DatePipe, NgClass } from "@angular/common";
 import { OrderConditionPipe } from "../../../core/pipes/order-condition.pipe";
 import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
 import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
 import { TranslocoDirective } from "@jsverse/transloco";
 import { NzButtonComponent } from "ng-zorro-antd/button";
 import { TranslatorFn, TranslatorService } from "../../../core/services/translator.service";
-import { Observable, shareReplay, switchMap } from "rxjs";
+import { BehaviorSubject, Observable, shareReplay, switchMap, tap } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { OrderApiErrorsTracker } from "../../../core/utils/order-api-errors-tracker";
 import { OrderActionType } from "../../../core/models/order-api-errors-tracker.model";
 import { Clipboard } from "@angular/cdk/clipboard";
+import { NzIconDirective } from "ng-zorro-antd/icon";
 
 
 @Component({
@@ -46,16 +48,22 @@ import { Clipboard } from "@angular/cdk/clipboard";
     SectionPanelComponent,
     TranslocoDirective,
     NzButtonComponent,
+    AsyncPipe,
+    NzIconDirective,
   ],
   templateUrl: './order-item.component.html'
 })
 export class OrderItemComponent implements OnInit, OnDestroy {
-  @Input({ required: true }) order!: PortfolioStopOrder | PortfolioOrder;
+  @Input({ required: true }) orderData!: Pick<PortfolioOrder, 'portfolio' | 'exchange' | 'id' | 'type'>;
   @Output() onBack = new EventEmitter();
+  @Output() orderCancelled = new EventEmitter<string>();
 
   orderSide = Side;
   orderStatus = OrderStatus;
   orderType = OrderType;
+
+  order$!: ApiResponse<PortfolioStopOrder | PortfolioOrder>;
+  isLoading$ = new BehaviorSubject(false);
 
   private ordersTranslator!: Observable<TranslatorFn>;
   private orderApiErrorsTracker!: OrderApiErrorsTracker;
@@ -80,6 +88,9 @@ export class OrderItemComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.backButtonService.onClick(this.onBackButtonCallback)
     this.backButtonService.show();
+
+    this.getOrder();
+
     this.ordersTranslator = this.translatorService.getTranslator('home/order-item')
       .pipe(
         takeUntilDestroyed(this.destroyRef),
@@ -99,12 +110,12 @@ export class OrderItemComponent implements OnInit, OnDestroy {
     this.backButtonService.offClick(this.onBackButtonCallback);
   }
 
-  getOrderStopPrice(): number | null {
-    return (this.order as PortfolioStopOrder).stopPrice ?? null
+  getOrderStopPrice(order: PortfolioStopOrder | PortfolioOrder): number | null {
+    return (order as PortfolioStopOrder).stopPrice ?? null
   }
 
-  getOrderCondition(): StopOrderCondition | null {
-    return (this.order as PortfolioStopOrder).condition ?? null
+  getOrderCondition(order: PortfolioStopOrder | PortfolioOrder): StopOrderCondition | null {
+    return (order as PortfolioStopOrder).condition ?? null
   }
 
   cancelOrder() {
@@ -122,21 +133,29 @@ export class OrderItemComponent implements OnInit, OnDestroy {
       .subscribe(btnId => {
         if (btnId === 'yes') {
           this.ordersService.cancelOrder(
-              this.order.id,
+              this.orderData.id,
               {
-                portfolio: this.order.portfolio,
-                exchange: this.order.exchange,
-                stop: this.order.type === OrderType.StopMarket || this.order.type === OrderType.StopLimit
+                portfolio: this.orderData.portfolio,
+                exchange: this.orderData.exchange,
+                stop: this.orderData.type === OrderType.StopMarket || this.orderData.type === OrderType.StopLimit
               },
               { errorTracker: this.orderApiErrorsTracker }
             )
             .subscribe((res) => {
               if (res?.message === 'success') {
-                this.order.status = OrderStatus.Canceled;
+                this.getOrder();
                 this.cdr.detectChanges();
               }
             })
         }
       })
+  }
+
+  private getOrder() {
+    this.isLoading$.next(true);
+    this.order$ = this.ordersService.getOrder(this.orderData)
+      .pipe(
+        tap(() => this.isLoading$.next(false))
+      );
   }
 }

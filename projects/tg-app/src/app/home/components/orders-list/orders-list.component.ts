@@ -56,7 +56,7 @@ export class OrdersListComponent implements OnInit {
   viewModel$!: Observable<ViewModel<PortfolioOrder[]>>;
 
   @Output()
-  selectItem = new EventEmitter<PortfolioOrder>();
+  selectItem = new EventEmitter<Pick<PortfolioOrder, 'portfolio' | 'exchange' | 'id' | 'type'>>();
 
   readonly Sides = Side;
   readonly Statuses = OrderStatus;
@@ -93,5 +93,14 @@ export class OrdersListComponent implements OnInit {
 
   getIconUrl(order: PortfolioOrder): string {
     return this.instrumentIconSourceService.getIconUrl(order.symbol);
+  }
+
+  selectOrder(order: PortfolioOrder) {
+    this.selectItem.emit({
+      id: order.id,
+      portfolio: order.portfolio,
+      exchange: order.exchange,
+      type: order.type
+    })
   }
 }

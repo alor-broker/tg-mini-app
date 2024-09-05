@@ -11,7 +11,9 @@ import {
   NewMarketOrder,
   NewOrderResponse,
   NewStopLimitOrder,
-  NewStopMarketOrder
+  NewStopMarketOrder,
+  OrderType,
+  PortfolioOrder, PortfolioStopOrder
 } from "@api-lib";
 import { HttpClient } from "@angular/common/http";
 import { GuidGenerator } from "../utils/guid";
@@ -80,6 +82,18 @@ export class OrdersService extends BaseHttpApiService{
     );
   }
 
+  getOrder(
+    orderData: Pick<PortfolioOrder, 'portfolio' | 'exchange' | 'id' | 'type'>,
+    options?: ApiRequestOptions
+  ): ApiResponse<PortfolioOrder | PortfolioStopOrder> {
+    return this.sendRequest<PortfolioOrder | PortfolioStopOrder>(
+      (config) => this.httpClient.get<PortfolioOrder | PortfolioStopOrder>(
+        this.getOrderInfoUrl(config, orderData)
+      ),
+      options
+    );
+  }
+
   private getOrderRequest(
     order: NewLimitOrder | NewMarketOrder | NewStopMarketOrder | NewStopLimitOrder,
     portfolio: string,
@@ -97,7 +111,7 @@ export class OrdersService extends BaseHttpApiService{
           'X-REQID': GuidGenerator.newGuid()
         }
       }
-    )
+    );
   }
 
   private getBaseOrdersActionsUrl(config: ApiConfig) {
@@ -106,5 +120,16 @@ export class OrdersService extends BaseHttpApiService{
 
   private getBaseOrdersUrl(config: ApiConfig) {
     return `${config.apiUrl}/commandapi/warptrans/TRADE/v2/client/orders`
+  }
+
+  private getOrderInfoUrl(
+    config: ApiConfig,
+    orderData: Pick<PortfolioOrder, 'portfolio' | 'exchange' | 'id' | 'type'>
+  ) {
+    const orderType = orderData.type === OrderType.StopLimit || orderData.type === OrderType.StopMarket
+      ? 'stoporders'
+      : 'orders';
+
+    return `${config.apiUrl}/md/v2/Clients/${orderData.exchange}/${orderData.portfolio}/${orderType}/${orderData.id}`;
   }
 }
