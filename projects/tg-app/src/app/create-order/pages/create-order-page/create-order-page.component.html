@@ -1,4 +1,4 @@
-<tga-sections class="h-100" *transloco="let t; scope: 'create-order/create-order-page'">
+<tga-sections class="h-100 d-flex" *transloco="let t; scope: 'create-order/create-order-page'">
   <tga-section-panel class="p-15">
     <tga-instrument-select
       [formControl]="instrumentSelectControl"
@@ -14,8 +14,8 @@
   </tga-section-panel>
 
   @if (selectedInstrument != null) {
-    <tga-section-panel class="p-15">
-      <nz-tabset nzSize="small">
+    <tga-section-panel class="p-15 flex-fill overflow-hidden">
+      <nz-tabset nzSize="small" class="order-tabs">
         <nz-tab [nzTitle]="t('createOrderCreateOrderPage.limitTabTitle')">
           <tga-limit-order-form [instrument]="selectedInstrument"></tga-limit-order-form>
         </nz-tab>
@@ -28,8 +28,12 @@
       </nz-tabset>
     </tga-section-panel>
   } @else {
-    <tga-section-panel class="p-15 h-100 d-flex justify-content-center align-items-center">
+    <tga-section-panel class="p-15 d-flex justify-content-center align-items-center flex-fill">
       <span class="text-subtitle-color">{{ t('createOrderCreateOrderPage.emptyInstrumentTitle') }}</span>
     </tga-section-panel>
   }
+
+  <tga-section-panel class="p-15">
+    <tga-links></tga-links>
+  </tga-section-panel>
 </tga-sections>

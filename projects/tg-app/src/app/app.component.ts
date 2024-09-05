@@ -40,6 +40,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.cssVarExportService.export();
     this.setLang();
+    this.tgWebApp.expand();
+    this.tgWebApp.disableVerticalSwipes();
   }
 
   setLang() {

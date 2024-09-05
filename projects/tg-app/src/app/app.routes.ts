@@ -3,7 +3,7 @@ import { RoutesHelper } from "./core/utils/routes.helper";
 import { HomePageComponent } from "./home/pages/home-page/home-page.component";
 import { AuthGuard } from "./core/guards/auth-guard";
 import { SettingsPageComponent } from "./settings/pages/settings-page/settings-page.component";
-import { CreateOrderComponent } from "./create-order/pages/create-order/create-order.component";
+import { CreateOrderPageComponent } from "./create-order/pages/create-order-page/create-order-page.component";
 
 export const routes: Routes = [
   {
@@ -30,7 +30,7 @@ export const routes: Routes = [
   },
   {
     path: RoutesHelper.appRoutes.createOrder,
-    component: CreateOrderComponent,
+    component: CreateOrderPageComponent,
     canActivate: [AuthGuard.canActivate]
   },
   {

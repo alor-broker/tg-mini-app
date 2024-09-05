@@ -9,8 +9,6 @@ import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { take } from "rxjs";
 import { AsyncPipe } from "@angular/common";
 import { InvestmentIdeasComponent } from "../../../home/components/investment-ideas/investment-ideas.component";
-import { OrderItemComponent } from "../../../home/components/order-item/order-item.component";
-import { TradeItemComponent } from "../../../home/components/trade-item/trade-item.component";
 import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
 import { SectionPanelComponent } from "../../../core/components/sections/section-panel/section-panel.component";
 import { NzSwitchComponent } from "ng-zorro-antd/switch";
@@ -35,9 +33,6 @@ interface SettingsButton {
     NzIconDirective,
     NzTypographyComponent,
     AsyncPipe,
-    InvestmentIdeasComponent,
-    OrderItemComponent,
-    TradeItemComponent,
     SectionsComponent,
     SectionPanelComponent,
     NzSwitchComponent,

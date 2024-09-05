@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubmitOrderButtonsComponent } from './submit-order-buttons.component';
+import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
 
 describe('SubmitOrderButtonsComponent', () => {
   let component: SubmitOrderButtonsComponent;
@@ -8,7 +9,10 @@ describe('SubmitOrderButtonsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubmitOrderButtonsComponent]
+      imports: [
+        TranslocoTestModuleProvider.getModule(),
+        SubmitOrderButtonsComponent
+      ]
     })
     .compileComponents();
 

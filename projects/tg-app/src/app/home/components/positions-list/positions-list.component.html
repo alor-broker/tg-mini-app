@@ -23,7 +23,12 @@
                 </div>
                 @if (showLots(position)) {
                   <div>
-                    <span class="text-subtitle-color">{{ position.qtyTFutureBatch | number }} л.</span>
+                    <span
+                      *transloco="let t; scope: 'home'"
+                      class="text-subtitle-color"
+                    >
+                      {{ position.qtyTFutureBatch | number }} {{ t('home.lotsLabel') }}
+                    </span>
                   </div>
                 }
               </div>

@@ -1,6 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 
 import { HomePageComponent } from './home-page.component';
+import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
+import { MockProvider } from "ng-mocks";
+import { BackButtonService } from "@environment-services-lib";
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -8,9 +14,15 @@ describe('HomePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePageComponent]
+      imports: [
+        HomePageComponent,
+        TranslocoTestModuleProvider.getModule()
+      ],
+      providers: [
+        MockProvider(BackButtonService)
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
