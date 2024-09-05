@@ -56,7 +56,6 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
 export class OrderItemComponent implements OnInit, OnDestroy {
   @Input({ required: true }) orderData!: Pick<PortfolioOrder, 'portfolio' | 'exchange' | 'id' | 'type'>;
   @Output() onBack = new EventEmitter();
-  @Output() orderCancelled = new EventEmitter<string>();
 
   orderSide = Side;
   orderStatus = OrderStatus;
