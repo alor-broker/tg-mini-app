@@ -88,7 +88,10 @@
             <tga-investment-ideas (onBack)="closeSubview()"></tga-investment-ideas>
           }
           @case (SubviewTypes.Order) {
-            <tga-order-item [order]="drawerContext.data" (onBack)="closeSubview()"></tga-order-item>
+            <tga-order-item
+              [orderData]="drawerContext.data"
+              (onBack)="closeSubview()"
+            ></tga-order-item>
           }
           @case (SubviewTypes.Trade) {
             <tga-trade-item [trade]="drawerContext.data" (onBack)="closeSubview()"></tga-trade-item>

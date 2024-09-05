@@ -27,3 +27,5 @@ export interface NewOrderResponse {
   message: string;
   orderNumber: string;
 }
+
+export interface CancelOrderResponse extends NewOrderResponse {}
