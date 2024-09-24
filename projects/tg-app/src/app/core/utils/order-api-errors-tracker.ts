@@ -6,46 +6,46 @@ import { environment } from "../../../environments/environment";
 import { TranslatorService } from "../services/translator.service";
 import { switchMap } from "rxjs";
 import { OrderActionType } from "../models/order-api-errors-tracker.model";
+import { mapWith } from "./observable-helper";
+import { ButtonId } from "../../../environment-services/api/tg-app-api-errors-tracker.model";
+import { Injectable } from "@angular/core";
 
-enum ButtonId {
-  Copy = 'copy',
-  Support = 'support'
-}
-
+@Injectable()
 export class OrderApiErrorsTracker extends ApiErrorsTracker {
 
-  private orderActionType: OrderActionType;
+  private orderActionType!: OrderActionType;
 
   constructor(
     private readonly modalService: ModalService,
     private readonly clipboard: Clipboard,
     private readonly linksService: LinksService,
-    private readonly translatorService: TranslatorService,
-    orderActionType: OrderActionType
+    private readonly translatorService: TranslatorService
   ) {
     super();
-
-    this.orderActionType = orderActionType;
   }
 
   override track(error: Error): void {
     if (error instanceof HttpErrorResponse) {
       this.translatorService.getTranslator('core/order-api-errors-tracker')
         .pipe(
-          switchMap(t => this.modalService.showMessage({
+          mapWith(
+            () => this.translatorService.getTranslator(''),
+            (tOrderErrors, tMainErrors) => ({ tOrderErrors, tMainErrors })
+          ),
+          switchMap(({ tOrderErrors, tMainErrors }) => this.modalService.showMessage({
               message:
-                `${ t(['errorCode']) }: ${ error.error.code }\n` +
-                `${ t(['errorText']) }: ${ error.error.message }\n\n` +
-                `${ t(['helpInfo']) }`,
-              title: this.orderActionType === OrderActionType.Create ? t(['createOrderErrorTitle']) : t(['cancelOrderErrorTitle']),
+                `${ tMainErrors([ 'apiErrorsTracker', 'errorCode' ]) }: ${ error.error.code }\n` +
+                `${ tMainErrors([ 'apiErrorsTracker', 'errorText' ]) }: ${ error.error.message }\n\n` +
+                `${ tMainErrors([ 'apiErrorsTracker', 'helpInfo' ]) }`,
+              title: this.orderActionType === OrderActionType.Create ? tOrderErrors([ 'createOrderErrorTitle' ]) : tOrderErrors([ 'cancelOrderErrorTitle' ]),
               buttons: [
                 {
                   id: ButtonId.Copy,
-                  text: t(['copyBtn'])
+                  text: tMainErrors([ 'apiErrorsTracker', 'copyBtn' ])
                 },
                 {
                   id: ButtonId.Support,
-                  text: t(['supportBtn'])
+                  text: tMainErrors([ 'apiErrorsTracker', 'supportBtn' ])
                 },
                 {
                   type: ButtonType.Close
@@ -65,5 +65,9 @@ export class OrderApiErrorsTracker extends ApiErrorsTracker {
           }
         });
     }
+  }
+
+  setActionType(actionType: OrderActionType) {
+    this.orderActionType = actionType;
   }
 }

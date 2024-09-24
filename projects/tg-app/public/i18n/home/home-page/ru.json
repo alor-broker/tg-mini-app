@@ -5,5 +5,5 @@
   "tradeTitle": "Сделка",
   "ordersTitle": "Заявки",
   "orderTitle": "Заявка",
-  "stopOrdersTitle": "Стоп-заявки"
+  "stopOrdersTitle": "Условные заявки"
 }

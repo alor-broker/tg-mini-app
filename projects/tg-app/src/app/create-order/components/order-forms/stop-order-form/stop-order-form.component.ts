@@ -24,6 +24,7 @@ import moment from "moment";
 import { CommonParameters } from "../../../sevices/commom-parameters/common-parameters.service";
 import { map } from "rxjs/operators";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { OrderApiErrorsTracker } from "../../../../core/utils/order-api-errors-tracker";
 
 @Component({
   selector: 'tga-stop-order-form',
@@ -49,7 +50,8 @@ import { TranslocoDirective } from "@jsverse/transloco";
   styleUrls: [
     './stop-order-form.component.less',
     '../base-order-form.component.less'
-  ]
+  ],
+  providers: [OrderApiErrorsTracker]
 })
 export class StopOrderFormComponent extends BaseOrderFormComponent implements OnInit {
   conditionType = LessMore;
@@ -166,5 +168,19 @@ export class StopOrderFormComponent extends BaseOrderFormComponent implements On
       .subscribe(val => {
         this.form.controls.price.setValue(val);
       });
+
+    this.form.controls.stopEndUnixTime.valueChanges
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        distinctUntilChanged((prev, curr) => prev?.toString() !== curr?.toString())
+      )
+      .subscribe(v => {
+        if (v == null) {
+          return;
+        }
+
+        const endOfDayDate = moment(v).endOf('day').valueOf();
+        this.form.controls.stopEndUnixTime.setValue(new Date(endOfDayDate))
+      })
   }
 }

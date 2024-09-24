@@ -1,5 +1,6 @@
 import {
   Component,
+  DestroyRef,
   EventEmitter,
   OnInit,
   Output
@@ -33,6 +34,8 @@ import { ViewModel } from "../../../core/models/view-model.model";
 import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { OrdersRefreshService } from "../../services/orders-refresh.service";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'tga-orders-list',
@@ -64,22 +67,27 @@ export class OrdersListComponent implements OnInit {
   constructor(
     private readonly selectedPortfolioDataContextService: SelectedPortfolioDataContextService,
     private readonly apiPortfolioOrdersService: PortfolioOrdersService,
-    private readonly instrumentIconSourceService: InstrumentIconSourceService
+    private readonly instrumentIconSourceService: InstrumentIconSourceService,
+    private readonly ordersRefreshService: OrdersRefreshService,
+    private readonly destroyRef: DestroyRef
   ) {
   }
 
   ngOnInit(): void {
     const getOrders = (portfolio: Portfolio) => {
-      return this.apiPortfolioOrdersService.getSessionLimitMarketOrders(portfolio.portfolioKey).pipe(
-        map(t => t ?? []),
-        map(p => ({
-          isUpdating: true,
-          viewData: p
-        })),
-        startWith(({
-          isUpdating: true
-        })),
-      );
+      return this.ordersRefreshService.refresh$
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          switchMap(() => this.apiPortfolioOrdersService.getSessionLimitMarketOrders(portfolio.portfolioKey)),
+          map(t => t ?? []),
+          map(p => ({
+            isUpdating: true,
+            viewData: p
+          })),
+          startWith(({
+            isUpdating: true
+          })),
+        );
     }
 
     this.viewModel$ = this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(

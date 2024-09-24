@@ -38,23 +38,28 @@
                 [nzSrc]="getIconUrl(order)">
               </nz-avatar>
             </div>
-            <div class="d-flex flex-row flex-fill align-self-stretch list-item-bordered-part">
-              <div class="d-flex flex-column flex-fill">
+            <div class="d-flex flex-row flex-fill align-self-stretch list-item-bordered-part overflow-hidden flex-gap-10">
+              <div class="d-flex flex-column flex-fill justify-content-center">
                 <div>
                   <span nz-typography nzEllipsis>{{ order.symbol }}</span>
                 </div>
-                <div>
-                  <span
-                    *transloco="let t; scope: 'home'"
-                    class="text-subtitle-color"
-                  >
-                    {{ order.qtyBatch | number }} {{ t('home.lotsLabel') }}
-                  </span>
-                </div>
+
+                @if (order.qtyBatch != null) {
+                  <div>
+                    <span
+                      *transloco="let t; scope: 'home'"
+                      class="text-subtitle-color"
+                    >
+                      {{ order.qtyBatch | number }} {{ t('home.lotsLabel') }}
+                    </span>
+                  </div>
+                }
               </div>
 
-              <div class="d-flex flex-column align-items-end">
-                <div [ngClass]="{
+              <div class="d-flex flex-column align-items-end overflow-hidden text-end">
+                <div
+                  class="w-100 overflow-hidden text-ellipsis"
+                  [ngClass]="{
                     'buy-color': order.side === Sides.Buy,
                     'sell-color': order.side === Sides.Sell,
                   }"
@@ -66,17 +71,19 @@
 
                 </div>
                 @if (order.volume != null) {
-                  <div>
-                <span class="text-subtitle-color">
-                  @if (order.type === OrderTypes.StopMarket) {
-                    ~
-                  }
-                  {{ order.volume | number: '1.0-6' }} ₽
-                </span>
+                  <div class="w-100 overflow-hidden text-ellipsis text-nowrap">
+                    <span class="text-subtitle-color">
+                      @if (order.type === OrderTypes.StopMarket) {
+                        ~
+                      }
+                      {{ order.volume | number: '1.0-6' }} ₽
+                    </span>
                   </div>
                 }
               </div>
-              <span nz-icon nzType="right" nzTheme="outline" class="list-item-arrow ml-10"></span>
+              <div>
+                <span nz-icon nzType="right" nzTheme="outline" class="list-item-arrow"></span>
+              </div>
             </div>
           </div>
         </tga-list-item>

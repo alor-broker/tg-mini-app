@@ -80,6 +80,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
   readonly drawerContext$ = new BehaviorSubject<DrawerContext>({ isVisible: false })
   isBackButtonAvailable = false;
 
+  isInvestmentIdeasUnauthorizedError = false;
+
   constructor(
     private readonly backButtonService: BackButtonService
   ) {
@@ -105,5 +107,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.drawerContext$.next({
       isVisible: false
     });
+  }
+
+  onInvestmentIdeasUnauthorizedError() {
+    this.isInvestmentIdeasUnauthorizedError = true;
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable, shareReplay } from "rxjs";
 import { map } from "rxjs/operators";
-import { MarketSettings } from "../models/market-settings.model";
+import { CurrencySettings, MarketSettings } from "../models/market-settings.model";
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,12 @@ export class MarketService {
   getDefaultExchange(): Observable<string | undefined> {
     return this.getMarketSettings().pipe(
       map(x => x.exchanges.find(ex => ex.settings.isDefault)?.exchange)
+    );
+  }
+
+  getCurrenciesSettings(): Observable<CurrencySettings> {
+    return this.getMarketSettings().pipe(
+      map(x => x.currencies)
     );
   }
 }

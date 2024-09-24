@@ -53,11 +53,12 @@
                 </div>
               </div>
 
-              <div class="d-flex flex-column">
+              <div class="d-flex flex-column justify-content-center">
                 <div [ngClass]="{
-              'buy-color': order.side === Sides.Buy,
-              'sell-color': order.side === Sides.Sell,
-        }"
+                    'buy-color': order.side === Sides.Buy,
+                    'sell-color': order.side === Sides.Sell,
+                    'text-end': true
+                  }"
                 >
                   {{ order.price | number: '1.0-6' }}
                 </div>

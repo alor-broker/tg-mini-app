@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
 import {
+  InstrumentKey,
   PortfolioPosition,
   PortfolioPositionsService
 } from "@api-lib";
@@ -29,6 +30,7 @@ import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { Router } from "@angular/router";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { MarketService } from "../../../core/services/market.service";
 
 @Component({
   selector: 'tga-positions-list',
@@ -52,6 +54,7 @@ export class PositionsListComponent implements OnInit {
     private readonly selectedPortfolioDataContextService: SelectedPortfolioDataContextService,
     private readonly apiPortfolioPositionsService: PortfolioPositionsService,
     private readonly instrumentIconSourceService: InstrumentIconSourceService,
+    private readonly marketService: MarketService,
     private readonly router: Router
   ) {
   }
@@ -105,16 +108,49 @@ export class PositionsListComponent implements OnInit {
   }
 
   createOrder(position: PortfolioPosition) {
-    RoutesHelper.openFromRoot(
-      this.router,
-      RoutesHelper.appRoutes.createOrder,
-      {
-        ticker: this.getTickerString(position)
-      }
-    )
+    this.getInstrumentFromPortfolio(position)
+      .subscribe(instrument => {
+        if (instrument == null) {
+          return;
+        }
+
+        RoutesHelper.openFromRoot(
+          this.router,
+          RoutesHelper.appRoutes.createOrder,
+          {
+            ticker: this.getTickerString(instrument)
+          }
+        )
+      });
   }
 
-  private getTickerString(position: PortfolioPosition): string {
+  private getTickerString(position: InstrumentKey): string {
     return `${position.exchange}:${position.symbol}`
+  }
+
+  private getInstrumentFromPortfolio(position: PortfolioPosition): Observable<null | InstrumentKey> {
+    return this.marketService.getCurrenciesSettings()
+      .pipe(
+        map(currencies => {
+          if (currencies.baseCurrency === position.symbol) {
+            return null;
+          }
+
+          const mappedCurrency = currencies.portfolioCurrencies.find(c => c.positionSymbol === position.symbol);
+
+          if (mappedCurrency != null) {
+            if (mappedCurrency.exchangeInstrument == null) {
+              return null;
+            }
+
+            return {
+              symbol: mappedCurrency.exchangeInstrument.symbol,
+              exchange: mappedCurrency.exchangeInstrument.exchange ?? currencies.defaultCurrencyExchange
+            };
+          }
+
+          return { symbol: position.symbol, exchange: position.exchange }
+        })
+      )
   }
 }

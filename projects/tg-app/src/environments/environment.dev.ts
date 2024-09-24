@@ -6,7 +6,7 @@ export const environment = {
 
   externalLinks: {
     astras: "https://astras.alor.ru",
-    personalAccount: "https://lk.alor.ru/",
+    personalAccount: "https://lk-dev-front.alorbroker.ru",
     tgAlor: "https://t.me/alorbroker",
     tgAlorSupport: "https://t.me/alor_broker"
   }

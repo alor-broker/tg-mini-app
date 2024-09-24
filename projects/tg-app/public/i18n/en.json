@@ -13,5 +13,13 @@
     "less": "Less",
     "moreOrEqual": "More or equal",
     "lessOrEqual": "Less or equal"
+  },
+
+  "apiErrorsTracker": {
+    "errorCode": "Error code",
+    "errorText": "Error message",
+    "helpInfo": "For more details, contact support (the error will be copied to the clipboard)",
+    "copyBtn": "Copy error",
+    "supportBtn": "Contact support"
   }
 }

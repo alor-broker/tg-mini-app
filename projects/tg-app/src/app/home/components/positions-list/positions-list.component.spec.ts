@@ -9,6 +9,7 @@ import { Subject } from "rxjs";
 import { PortfolioPositionsService } from "@api-lib";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 import { MockProvider } from "ng-mocks";
+import { MarketService } from "../../../core/services/market.service";
 
 describe('PositionsListComponent', () => {
   let component: PositionsListComponent;
@@ -30,7 +31,8 @@ describe('PositionsListComponent', () => {
             getAllForPortfolio: jasmine.createSpy('getAllForPortfolio').and.returnValue(new Subject())
           }
         },
-        MockProvider(InstrumentIconSourceService)
+        MockProvider(InstrumentIconSourceService),
+        MockProvider(MarketService)
       ]
     })
       .compileComponents();
