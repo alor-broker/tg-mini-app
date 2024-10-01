@@ -6,6 +6,7 @@ import {
   Output
 } from '@angular/core';
 import {
+  ApiResponse,
   OrderStatus,
   OrderType,
   PortfolioOrder,
@@ -14,14 +15,11 @@ import {
   Side
 } from "@api-lib";
 import {
-  Observable,
   shareReplay,
-  startWith,
   switchMap
 } from "rxjs";
 import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
-import { map } from "rxjs/operators";
 import {
   AsyncPipe,
   DecimalPipe,
@@ -32,7 +30,6 @@ import { ListItemComponent } from "../../../core/components/list/list-item/list-
 import { NzAvatarComponent } from "ng-zorro-antd/avatar";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { NzTypographyComponent } from "ng-zorro-antd/typography";
-import { ViewModel } from "../../../core/models/view-model.model";
 import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { TranslocoDirective } from "@jsverse/transloco";
@@ -58,7 +55,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   styleUrl: './stop-orders-list.component.less'
 })
 export class StopOrdersListComponent implements OnInit {
-  viewModel$!: Observable<ViewModel<PortfolioStopOrder[]>>;
+  orders$!: ApiResponse<PortfolioStopOrder[]>;
 
   @Output()
   selectItem = new EventEmitter<Pick<PortfolioOrder, 'portfolio' | 'exchange' | 'id' | 'type'>>();
@@ -81,23 +78,12 @@ export class StopOrdersListComponent implements OnInit {
       return this.ordersRefreshService.refresh$
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          switchMap(() => this.apiPortfolioOrdersService.getSessionStopOrders(portfolio.portfolioKey)),
-          map(t => t ?? []),
-          map(p => ({
-            isUpdating: true,
-            viewData: p
-          })),
-          startWith(({
-            isUpdating: true
-          })),
+          switchMap(() => this.apiPortfolioOrdersService.getSessionStopOrders(portfolio.portfolioKey))
         );
     }
 
-    this.viewModel$ = this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
+    this.orders$ = this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
       switchMap(p => getOrders(p)),
-      startWith(({
-        isUpdating: true
-      })),
       shareReplay(1)
     )
   }

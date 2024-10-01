@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
 import {
+  ApiResponse,
   InstrumentKey,
   PortfolioPosition,
   PortfolioPositionsService
@@ -11,8 +12,8 @@ import {
 import {
   Observable,
   shareReplay,
-  startWith,
-  switchMap
+  switchMap,
+  take
 } from "rxjs";
 import { map } from "rxjs/operators";
 import {
@@ -24,8 +25,6 @@ import { NzAvatarComponent } from "ng-zorro-antd/avatar";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 import { ListItemComponent } from "../../../core/components/list/list-item/list-item.component";
 import { ListComponent } from "../../../core/components/list/list/list.component";
-import { ViewModel } from "../../../core/models/view-model.model";
-import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { Router } from "@angular/router";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
@@ -48,7 +47,7 @@ import { MarketService } from "../../../core/services/market.service";
   templateUrl: './positions-list.component.html'
 })
 export class PositionsListComponent implements OnInit {
-  viewModel$!: Observable<ViewModel<PortfolioPosition[]>>;
+  positions$!: ApiResponse<PortfolioPosition[]>;
 
   constructor(
     private readonly selectedPortfolioDataContextService: SelectedPortfolioDataContextService,
@@ -60,25 +59,9 @@ export class PositionsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const getPositions = (portfolio: Portfolio): Observable<ViewModel<PortfolioPosition[]>> => {
-      return this.apiPortfolioPositionsService.getAllForPortfolio(portfolio.portfolioKey).pipe(
-        map(p => p ?? []),
-        map(p => ({
-          isUpdating: true,
-          viewData: p
-        })),
-        startWith(({
-          isUpdating: true
-        })),
-      )
-    }
-
-    this.viewModel$ =
+    this.positions$ =
       this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
-        switchMap(portfolio => getPositions(portfolio)),
-        startWith(({
-          isUpdating: true
-        })),
+        switchMap(portfolio => this.apiPortfolioPositionsService.getAllForPortfolio(portfolio.portfolioKey)),
         shareReplay(1)
       );
   }
@@ -109,6 +92,7 @@ export class PositionsListComponent implements OnInit {
 
   createOrder(position: PortfolioPosition) {
     this.getInstrumentFromPortfolio(position)
+      .pipe(take(1))
       .subscribe(instrument => {
         if (instrument == null) {
           return;
