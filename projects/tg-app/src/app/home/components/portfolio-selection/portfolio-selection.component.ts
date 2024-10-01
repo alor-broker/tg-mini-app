@@ -4,8 +4,8 @@ import {
 } from '@angular/core';
 import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
 import {
-  combineLatest,
   Observable,
+  of,
   shareReplay,
   startWith
 } from "rxjs";
@@ -24,6 +24,7 @@ import { AsyncPipe } from "@angular/common";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { map } from "rxjs/operators";
 import { ViewModel } from "../../../core/models/view-model.model";
+import { mapWith } from "../../../core/utils/observable-helper";
 
 interface PortfolioSelectionViewData {
   allPortfolios: Portfolio[];
@@ -53,18 +54,26 @@ export class PortfolioSelectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const selection$ = combineLatest({
-      allPortfolios: this.selectedPortfolioDataContextService.portfolios$,
-      selectedPortfolio: this.selectedPortfolioDataContextService.selectedPortfolio$
-    });
+    const selection$ = this.selectedPortfolioDataContextService.portfolios$
+      .pipe(
+        mapWith(
+          portfolios => portfolios.length > 0
+            ? this.selectedPortfolioDataContextService.selectedPortfolio$
+            : of(null),
+          (allPortfolios, selectedPortfolio) => {
+            if (allPortfolios.length === 0 || selectedPortfolio == null) {
+              return;
+            }
+
+            return { allPortfolios, selectedPortfolio };
+          }
+        )
+      )
 
     this.viewModel$ = selection$.pipe(
       map(s => ({
           isUpdating: false,
-          viewData: {
-            allPortfolios: s.allPortfolios,
-            selectedPortfolio: s.selectedPortfolio
-          }
+          viewData: s
         })
       ),
       startWith(({

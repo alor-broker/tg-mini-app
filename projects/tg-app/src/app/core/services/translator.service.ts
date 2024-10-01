@@ -16,13 +16,18 @@ export class TranslatorService {
   ) { }
 
   getTranslator(scope: string): Observable<TranslatorFn> {
-    const scopePath = scope.length ? scope + '/' : '';
-    return this.translocoService.selectTranslate('', {}, { scope }).pipe(
+    const scopePath = scope.length > 0 ? scope + '/' : '';
+
+    return this.translocoService.selectTranslate(
+      '',
+      {},
+      scope.length > 0 ? { scope } : undefined
+    ).pipe(
       map(() =>
         (key: string[], params?: HashMap) =>
           this.translocoService.translate(
             getTranslationPath(
-              scopePath ? [scopePath] : [],
+              scopePath ? [ scopePath ] : [],
               key
             ),
             params

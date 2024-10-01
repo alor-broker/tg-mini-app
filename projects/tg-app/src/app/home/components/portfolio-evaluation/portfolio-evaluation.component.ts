@@ -1,31 +1,17 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
-import {
-  PortfolioSummary,
-  PortfolioSummaryService
-} from "@api-lib";
-import {
-  filter,
-  Observable,
-  shareReplay,
-  startWith
-} from "rxjs";
-import {
-  map,
-  switchMap
-} from "rxjs/operators";
-import {
-  AsyncPipe,
-  DecimalPipe
-} from "@angular/common";
+import { PortfolioSummary, PortfolioSummaryService } from "@api-lib";
+import { filter, Observable, of, shareReplay, startWith } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
+import { AsyncPipe, DecimalPipe } from "@angular/common";
 import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { ViewModel } from "../../../core/models/view-model.model";
 import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { ButtonType, LinksService, ModalService } from "@environment-services-lib";
+import { TranslatorService } from "../../../core/services/translator.service";
+import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: 'tga-portfolio-evaluation',
@@ -45,7 +31,10 @@ export class PortfolioEvaluationComponent implements OnInit {
 
   constructor(
     private readonly selectedPortfolioDataContextService: SelectedPortfolioDataContextService,
-    private readonly apiPortfolioSummaryService: PortfolioSummaryService
+    private readonly apiPortfolioSummaryService: PortfolioSummaryService,
+    private readonly modalService: ModalService,
+    private readonly translatorService: TranslatorService,
+    private readonly linksService: LinksService
   ) {
   }
 
@@ -63,13 +52,49 @@ export class PortfolioEvaluationComponent implements OnInit {
       )
     };
 
-    this.viewModel$ =
-      this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
-        switchMap(portfolio => getSummary(portfolio)),
+    this.viewModel$ = this.selectedPortfolioDataContextService.portfolios$
+      .pipe(
+        switchMap((portfolios) => {
+          if (portfolios.length > 0) {
+            return this.selectedPortfolioDataContextService.selectedPortfolio$
+              .pipe(
+                switchMap(portfolio => getSummary(portfolio))
+              )
+          } else {
+            this.showEmptyPortfoliosModal();
+          }
+
+          return of({ isUpdating: false });
+        }),
         startWith(({
           isUpdating: true
         })),
         shareReplay(1)
       );
+  }
+
+  private showEmptyPortfoliosModal() {
+    this.translatorService.getTranslator('home/portfolio-evaluation')
+      .pipe(
+        switchMap(t => this.modalService.showMessage({
+            title: t(['emptyPortfoliosModalTitle']),
+            message: t(['emptyPortfoliosModalText']),
+            buttons: [
+              {
+                text: t(['emptyPortfoliosModalButton']),
+                id: 'deposit'
+              },
+              {
+                type: ButtonType.Close
+              }
+            ]
+          })
+        )
+      )
+      .subscribe(id => {
+        if (id === 'deposit') {
+          this.linksService.openBrowserLink(environment.externalLinks.personalAccount + '/operations/money/money_input')
+        }
+      })
   }
 }

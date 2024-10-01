@@ -24,6 +24,7 @@ import { BaseOrderFormComponent } from "../base-order-form.component";
 import { CommonParameters } from "../../../sevices/commom-parameters/common-parameters.service";
 import { map } from "rxjs/operators";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { OrderApiErrorsTracker } from "../../../../core/utils/order-api-errors-tracker";
 
 @Component({
   selector: 'tga-limit-order-form',
@@ -47,7 +48,9 @@ import { TranslocoDirective } from "@jsverse/transloco";
   styleUrls: [
     './limit-order-form.component.less',
     '../base-order-form.component.less'
-  ]
+  ],
+  providers: [OrderApiErrorsTracker]
+
 })
 export class LimitOrderFormComponent extends BaseOrderFormComponent implements OnInit, OnDestroy {
 

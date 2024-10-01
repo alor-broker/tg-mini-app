@@ -2,13 +2,15 @@
   *transloco="let t; scope: 'authentication/unlock-page'"
   class="h-100 d-flex flex-column align-items-center justify-content-center flex-gap-15 user-select-none"
 >
-  <h2> {{ t('authenticationUnlockPage.loginTitle') }} </h2>
+  <h2 class="m-0"> {{ t('authenticationUnlockPage.loginTitle') }} </h2>
 
-  <span class="text-destructive-color">
+  <span class="text-destructive-color text-center">
     @if (passwordError) {
-      {{ t('authenticationUnlockPage.invalidPasswordError') }}
+      <p class="m-0">{{ t('authenticationUnlockPage.invalidPasswordError') }}</p>
+      <p class="m-0">{{ t('authenticationUnlockPage.attemptsCount', { count: attemptsCount }) }}</p>
     } @else {
-      &nbsp;
+      <p class="m-0">&nbsp;</p>
+      <p class="m-0">&nbsp;</p>
     }
   </span>
 

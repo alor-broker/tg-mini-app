@@ -5,7 +5,7 @@
  * @returns string with translation path
  */
 export function getTranslationPath(scope: string[], property: string[]): string {
-  const scopeStr = scope.length
+  const scopeStr = scope.length > 0
     ? scope
     .join('/')
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>

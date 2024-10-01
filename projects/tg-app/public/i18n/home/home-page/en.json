@@ -5,5 +5,5 @@
   "tradeTitle": "Trade",
   "ordersTitle": "Orders",
   "orderTitle": "Order",
-  "stopOrdersTitle": "Stop-orders"
+  "stopOrdersTitle": "Conditional orders"
 }

@@ -5,6 +5,8 @@ import { SelectedPortfolioDataContextService } from "../../services/selected-por
 import { Subject } from "rxjs";
 import { PortfolioSummaryService } from "@api-lib";
 import { TranslocoTestModuleProvider } from "../../../../testing-utils/transloco-test-module-provider";
+import { MockProvider } from "ng-mocks";
+import { LinksService, ModalService } from "@environment-services-lib";
 
 describe('PortfolioEvaluationComponent', () => {
   let component: PortfolioEvaluationComponent;
@@ -20,7 +22,8 @@ describe('PortfolioEvaluationComponent', () => {
         {
           provide: SelectedPortfolioDataContextService,
           useValue: {
-            selectedPortfolio$: new Subject()
+            selectedPortfolio$: new Subject(),
+            portfolios$: new Subject()
           }
         },
         {
@@ -28,7 +31,9 @@ describe('PortfolioEvaluationComponent', () => {
           useValue: {
             getPortfolioSummary: jasmine.createSpy('getPortfolioSummary').and.returnValue(new Subject())
           }
-        }
+        },
+        MockProvider(ModalService),
+        MockProvider(LinksService)
       ]
     })
     .compileComponents();

@@ -1,9 +1,4 @@
 {
   "createOrderErrorTitle": "Order submit error",
-  "cancelOrderErrorTitle": "Order cancel error",
-  "errorCode": "Error code",
-  "errorText": "Error message",
-  "helpInfo": "For more details, contact support (the error will be copied to the clipboard)",
-  "copyBtn": "Copy error",
-  "supportBtn": "Contact support"
+  "cancelOrderErrorTitle": "Order cancel error"
 }

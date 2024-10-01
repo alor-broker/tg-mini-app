@@ -78,28 +78,32 @@ export class SelectedPortfolioDataContextService implements OnDestroy {
             positions
           })
         ),
-        map(x => {
-          const positionPortfolios = CollectionsHelper.selectUnique(
+        map(x => CollectionsHelper
+          .selectUnique(
             x.positions ?? [],
             element => ({
               portfolio: element.portfolio,
               exchange: element.exchange
             }) as PortfolioKey
-          );
+          )
+          .reduce((acc, curr) => {
+              const portfolio = (x.portfolios ?? []).find(p => p.portfolio === curr.portfolio);
 
-          const portfolios: Portfolio[] = [];
-          for (const portfolio of x.portfolios ?? []) {
-            const positionPortfolio = positionPortfolios.find(p => p.portfolio === portfolio.portfolio);
-            if (positionPortfolio != null) {
-              portfolios.push({
-                portfolioKey: positionPortfolio,
-                market: this.getPortfolioMarket(portfolio)
-              })
-            }
-          }
+              if (portfolio == null) {
+                return acc;
+              }
 
-          return portfolios.sort((a, b) => a.portfolioKey.portfolio.localeCompare(b.portfolioKey.portfolio));
-        }),
+              return [
+                {
+                  portfolioKey: curr,
+                  market: this.getPortfolioMarket(portfolio)
+                },
+                ...acc
+              ];
+            }, [] as Portfolio[]
+          )
+          .sort((a, b) => a.portfolioKey.portfolio.localeCompare(b.portfolioKey.portfolio))
+        ),
         take(1),
         shareReplay(1)
       );

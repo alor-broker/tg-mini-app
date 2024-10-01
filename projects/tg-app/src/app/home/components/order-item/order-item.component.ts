@@ -19,7 +19,7 @@ import {
   StopOrderCondition
 } from "@api-lib";
 import { NzDescriptionsComponent, NzDescriptionsItemComponent } from "ng-zorro-antd/descriptions";
-import { BackButtonService, ButtonType, LinksService, ModalService } from "@environment-services-lib";
+import { BackButtonService, ButtonType, ModalService } from "@environment-services-lib";
 import { AsyncPipe, DatePipe, NgClass } from "@angular/common";
 import { OrderConditionPipe } from "../../../core/pipes/order-condition.pipe";
 import { SectionsComponent } from "../../../core/components/sections/sections/sections/sections.component";
@@ -31,8 +31,8 @@ import { BehaviorSubject, Observable, shareReplay, switchMap, tap } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { OrderApiErrorsTracker } from "../../../core/utils/order-api-errors-tracker";
 import { OrderActionType } from "../../../core/models/order-api-errors-tracker.model";
-import { Clipboard } from "@angular/cdk/clipboard";
 import { NzIconDirective } from "ng-zorro-antd/icon";
+import { OrdersRefreshService } from "../../services/orders-refresh.service";
 
 
 @Component({
@@ -51,6 +51,7 @@ import { NzIconDirective } from "ng-zorro-antd/icon";
     AsyncPipe,
     NzIconDirective,
   ],
+  providers: [OrderApiErrorsTracker],
   templateUrl: './order-item.component.html'
 })
 export class OrderItemComponent implements OnInit, OnDestroy {
@@ -65,16 +66,15 @@ export class OrderItemComponent implements OnInit, OnDestroy {
   isLoading$ = new BehaviorSubject(false);
 
   private ordersTranslator!: Observable<TranslatorFn>;
-  private orderApiErrorsTracker!: OrderApiErrorsTracker;
 
   constructor(
     private readonly backButtonService: BackButtonService,
     private readonly ordersService: OrdersService,
     private readonly modalService: ModalService,
     private readonly translatorService: TranslatorService,
-    private readonly clipboard: Clipboard,
-    private readonly linksService: LinksService,
+    private readonly orderApiErrorsTracker: OrderApiErrorsTracker,
     private readonly cdr: ChangeDetectorRef,
+    private readonly ordersRefreshService: OrdersRefreshService,
     private readonly destroyRef: DestroyRef
   ) {
   }
@@ -96,13 +96,7 @@ export class OrderItemComponent implements OnInit, OnDestroy {
         shareReplay(1)
       );
 
-    this.orderApiErrorsTracker = new OrderApiErrorsTracker(
-      this.modalService,
-      this.clipboard,
-      this.linksService,
-      this.translatorService,
-      OrderActionType.Cancel
-    );
+    this.orderApiErrorsTracker.setActionType(OrderActionType.Cancel);
   }
 
   ngOnDestroy() {
@@ -142,6 +136,7 @@ export class OrderItemComponent implements OnInit, OnDestroy {
             )
             .subscribe((res) => {
               if (res?.message === 'success') {
+                this.ordersRefreshService.refreshOrders();
                 this.getOrder();
                 this.cdr.detectChanges();
               }

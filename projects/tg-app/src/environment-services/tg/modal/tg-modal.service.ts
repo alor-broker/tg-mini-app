@@ -6,6 +6,8 @@ import { ModalParams, ModalService } from "@environment-services-lib";
 @Injectable()
 export class TgModalService extends ModalService {
 
+  private maxModalMessageLength = 256;
+
   constructor(
     @Inject(TelegramWebApp) private readonly tgWebApp: WebApp
   ) {
@@ -14,8 +16,19 @@ export class TgModalService extends ModalService {
 
   override showMessage(params: ModalParams): Observable<string> {
     return new Observable<string>(subscriber => {
+      if (!this.tgWebApp.isVersionAtLeast('6.2')) {
+        subscriber.complete();
+        return;
+      }
+
+      let modalMessage = params.message;
+      modalMessage = modalMessage.length <= this.maxModalMessageLength
+        ? modalMessage
+        : modalMessage.slice(0, this.maxModalMessageLength - 3) + '...';
+
       this.tgWebApp.showPopup({
         ...params,
+        message: modalMessage,
         buttons: (params.buttons?.length ?? 0 > 0) ? params.buttons : [{ text: 'OK' }]
       }, (buttonId?: string) => {
         subscriber.next(buttonId);

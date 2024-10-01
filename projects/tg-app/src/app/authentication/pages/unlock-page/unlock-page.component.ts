@@ -46,6 +46,7 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
   redirectUrl!: string;
 
   passwordError = false;
+  attemptsCount = 10;
 
   constructor(
     private readonly biometryService: BiometryService,
@@ -132,6 +133,10 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
                 this.hapticFeedbackService.notificationOccurred(NotificationHapticStyle.Error);
 
                 this.passwordError = true;
+                this.attemptsCount--;
+
+                this.checkLogout();
+
                 this.passwordControl.setValue('');
                 this.cdr.detectChanges();
               }
@@ -181,5 +186,13 @@ export class UnlockPageComponent implements OnInit, OnDestroy {
 
   private passwordChecked() {
     this.router.navigate([this.redirectUrl], { queryParams: { checked: true } })
+  }
+
+  private checkLogout() {
+    if (this.attemptsCount !== 0) {
+      return;
+    }
+
+    this.apiTokenProviderService.setRefreshToken('');
   }
 }

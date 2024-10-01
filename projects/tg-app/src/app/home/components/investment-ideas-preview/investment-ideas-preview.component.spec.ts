@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InvestmentIdeasPreviewComponent } from './investment-ideas-preview.component';
-import { InvestmentIdeasService } from "@api-lib";
+import { ApiErrorsTracker, InvestmentIdeasService } from "@api-lib";
 import { Subject } from "rxjs";
+import { MockProvider } from "ng-mocks";
 
 describe('InvestmentIdeasPreviewComponent', () => {
   let component: InvestmentIdeasPreviewComponent;
@@ -17,7 +18,8 @@ describe('InvestmentIdeasPreviewComponent', () => {
           useValue: {
             getInvestmentIdeas: jasmine.createSpy('getInvestmentIdeas').and.returnValue(new Subject())
           }
-        }
+        },
+        MockProvider(ApiErrorsTracker)
       ]
     })
     .compileComponents();
