@@ -1,6 +1,6 @@
 {
   "limitTabTitle": "Лимитная",
   "marketTabTitle": "Рыночная",
-  "conditionalTabTitle": "Стоп",
+  "conditionalTabTitle": "Условная",
   "emptyInstrumentTitle": "Выберите инструмент"
 }

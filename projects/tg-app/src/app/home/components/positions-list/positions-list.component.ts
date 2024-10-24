@@ -4,14 +4,16 @@ import {
 } from '@angular/core';
 import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
 import {
+  ApiResponse,
+  InstrumentKey,
   PortfolioPosition,
   PortfolioPositionsService
 } from "@api-lib";
 import {
   Observable,
   shareReplay,
-  startWith,
-  switchMap
+  switchMap,
+  take
 } from "rxjs";
 import { map } from "rxjs/operators";
 import {
@@ -23,12 +25,11 @@ import { NzAvatarComponent } from "ng-zorro-antd/avatar";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 import { ListItemComponent } from "../../../core/components/list/list-item/list-item.component";
 import { ListComponent } from "../../../core/components/list/list/list.component";
-import { ViewModel } from "../../../core/models/view-model.model";
-import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { Router } from "@angular/router";
 import { RoutesHelper } from "../../../core/utils/routes.helper";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { MarketService } from "../../../core/services/market.service";
 
 @Component({
   selector: 'tga-positions-list',
@@ -46,36 +47,21 @@ import { TranslocoDirective } from "@jsverse/transloco";
   templateUrl: './positions-list.component.html'
 })
 export class PositionsListComponent implements OnInit {
-  viewModel$!: Observable<ViewModel<PortfolioPosition[]>>;
+  positions$!: ApiResponse<PortfolioPosition[]>;
 
   constructor(
     private readonly selectedPortfolioDataContextService: SelectedPortfolioDataContextService,
     private readonly apiPortfolioPositionsService: PortfolioPositionsService,
     private readonly instrumentIconSourceService: InstrumentIconSourceService,
+    private readonly marketService: MarketService,
     private readonly router: Router
   ) {
   }
 
   ngOnInit(): void {
-    const getPositions = (portfolio: Portfolio): Observable<ViewModel<PortfolioPosition[]>> => {
-      return this.apiPortfolioPositionsService.getAllForPortfolio(portfolio.portfolioKey).pipe(
-        map(p => p ?? []),
-        map(p => ({
-          isUpdating: true,
-          viewData: p
-        })),
-        startWith(({
-          isUpdating: true
-        })),
-      )
-    }
-
-    this.viewModel$ =
+    this.positions$ =
       this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
-        switchMap(portfolio => getPositions(portfolio)),
-        startWith(({
-          isUpdating: true
-        })),
+        switchMap(portfolio => this.apiPortfolioPositionsService.getAllForPortfolio(portfolio.portfolioKey)),
         shareReplay(1)
       );
   }
@@ -105,16 +91,50 @@ export class PositionsListComponent implements OnInit {
   }
 
   createOrder(position: PortfolioPosition) {
-    RoutesHelper.openFromRoot(
-      this.router,
-      RoutesHelper.appRoutes.createOrder,
-      {
-        ticker: this.getTickerString(position)
-      }
-    )
+    this.getInstrumentFromPortfolio(position)
+      .pipe(take(1))
+      .subscribe(instrument => {
+        if (instrument == null) {
+          return;
+        }
+
+        RoutesHelper.openFromRoot(
+          this.router,
+          RoutesHelper.appRoutes.createOrder,
+          {
+            ticker: this.getTickerString(instrument)
+          }
+        )
+      });
   }
 
-  private getTickerString(position: PortfolioPosition): string {
+  private getTickerString(position: InstrumentKey): string {
     return `${position.exchange}:${position.symbol}`
+  }
+
+  private getInstrumentFromPortfolio(position: PortfolioPosition): Observable<null | InstrumentKey> {
+    return this.marketService.getCurrenciesSettings()
+      .pipe(
+        map(currencies => {
+          if (currencies.baseCurrency === position.symbol) {
+            return null;
+          }
+
+          const mappedCurrency = currencies.portfolioCurrencies.find(c => c.positionSymbol === position.symbol);
+
+          if (mappedCurrency != null) {
+            if (mappedCurrency.exchangeInstrument == null) {
+              return null;
+            }
+
+            return {
+              symbol: mappedCurrency.exchangeInstrument.symbol,
+              exchange: mappedCurrency.exchangeInstrument.exchange ?? currencies.defaultCurrencyExchange
+            };
+          }
+
+          return { symbol: position.symbol, exchange: position.exchange }
+        })
+      )
   }
 }

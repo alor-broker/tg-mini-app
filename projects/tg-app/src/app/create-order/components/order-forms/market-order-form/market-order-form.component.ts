@@ -22,6 +22,7 @@ import { NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLab
 import { OrderEvaluationComponent } from "../../order-evaluation/order-evaluation.component";
 import { SubmitOrderButtonsComponent } from "../../submit-order-buttons/submit-order-buttons.component";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { OrderApiErrorsTracker } from "../../../../core/utils/order-api-errors-tracker";
 
 @Component({
   selector: 'tga-market-order-form',
@@ -42,7 +43,8 @@ import { TranslocoDirective } from "@jsverse/transloco";
   styleUrls: [
     './market-order-form.component.less',
     '../base-order-form.component.less'
-  ]
+  ],
+  providers: [OrderApiErrorsTracker]
 })
 export class MarketOrderFormComponent extends BaseOrderFormComponent implements OnInit, OnDestroy {
 

@@ -7,10 +7,10 @@
     nzType="text"
     [nzDisabled]="!viewModel.viewData"
   >
-    @if (viewModel.viewData) {
-      {{ viewModel.viewData.selectedPortfolio.portfolioKey.portfolio }}
+    @if (viewModel.viewData != null) {
+      {{ viewModel.viewData.selectedPortfolio.portfolioKey.exchange }} {{ viewModel.viewData.selectedPortfolio.portfolioKey.portfolio }}
       <span nz-icon nzType="down"></span>
-    } @else {
+    } @else if (viewModel.isUpdating) {
       <span nz-icon nzType="loading" nzTheme="outline"></span>
     }
   </button>
@@ -22,7 +22,7 @@
           nz-menu-item
           (click)="changeSelection(portfolio)"
         >
-          {{ portfolio.portfolioKey.portfolio }} {{ portfolio.market }}
+          {{ portfolio.portfolioKey.exchange }} {{ portfolio.portfolioKey.portfolio }} {{ portfolio.market }}
         </li>
       }
     </ul>

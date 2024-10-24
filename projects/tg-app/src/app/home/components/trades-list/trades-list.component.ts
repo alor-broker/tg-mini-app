@@ -6,18 +6,16 @@ import {
 } from '@angular/core';
 import { SelectedPortfolioDataContextService } from "../../services/selected-portfolio-data-context.service";
 import {
+  ApiResponse,
   PortfolioTrade,
   PortfolioTradesService,
   Side
 } from "@api-lib";
 import { InstrumentIconSourceService } from "../../../core/services/instrument-icon-source.service";
 import {
-  Observable,
   shareReplay,
-  startWith,
   switchMap
 } from "rxjs";
-import { map } from "rxjs/operators";
 import { NzAvatarComponent } from "ng-zorro-antd/avatar";
 import {
   AsyncPipe,
@@ -28,8 +26,6 @@ import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { NzIconDirective } from "ng-zorro-antd/icon";
 import { ListComponent } from "../../../core/components/list/list/list.component";
 import { ListItemComponent } from "../../../core/components/list/list-item/list-item.component";
-import { ViewModel } from "../../../core/models/view-model.model";
-import { Portfolio } from "../../../core/models/porfolio.models";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { TranslocoDirective } from "@jsverse/transloco";
 
@@ -52,7 +48,7 @@ import { TranslocoDirective } from "@jsverse/transloco";
   styleUrl: './trades-list.component.less'
 })
 export class TradesListComponent implements OnInit {
-  viewModel$!: Observable<ViewModel<PortfolioTrade[]>>;
+  trades$!: ApiResponse<PortfolioTrade[]>;
 
   @Output()
   selectItem = new EventEmitter<PortfolioTrade>();
@@ -67,25 +63,9 @@ export class TradesListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const getTrades = (portfolio: Portfolio): Observable<ViewModel<PortfolioTrade[]>> => {
-      return this.apiPortfolioTradesService.getSessionTrades(portfolio.portfolioKey).pipe(
-        map(t => t ?? []),
-        map(p => ({
-          isUpdating: true,
-          viewData: p
-        })),
-        startWith(({
-          isUpdating: true
-        })),
-      )
-    }
-
-    this.viewModel$ = this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
-      switchMap(p => getTrades(p)),
-      shareReplay(1),
-      startWith(({
-        isUpdating: true
-      })),
+    this.trades$ = this.selectedPortfolioDataContextService.selectedPortfolio$.pipe(
+      switchMap(p => this.apiPortfolioTradesService.getSessionTrades(p.portfolioKey)),
+      shareReplay(1)
     )
   }
 

@@ -1,8 +1,11 @@
 import {
   Component,
-  OnInit
+  EventEmitter,
+  OnInit,
+  Output
 } from '@angular/core';
 import {
+  ApiErrorsTracker,
   InvestmentIdea,
   InvestmentIdeasService
 } from "@api-lib";
@@ -17,6 +20,7 @@ import { AsyncPipe } from "@angular/common";
 import { NzSkeletonComponent } from "ng-zorro-antd/skeleton";
 import { NzTypographyComponent } from "ng-zorro-antd/typography";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { InvestmentIdeasApiErrorsTracker } from "../../services/investment-ideas-api-errors-tracker";
 
 @Component({
   selector: 'tga-investment-ideas-preview',
@@ -31,17 +35,37 @@ import { TranslocoDirective } from "@jsverse/transloco";
   styleUrl: './investment-ideas-preview.component.less'
 })
 export class InvestmentIdeasPreviewComponent implements OnInit {
+
+  @Output()
+  unauthorizedError = new EventEmitter();
+
   viewModel$!: Observable<ViewModel<InvestmentIdea | null>>;
 
-  constructor(private readonly investmentIdeasService: InvestmentIdeasService) {
+  constructor(
+    private readonly investmentIdeasService: InvestmentIdeasService,
+    private readonly apiErrorsTracker: ApiErrorsTracker
+  ) {
   }
 
   ngOnInit(): void {
+    const unauthorizedErrorCb = () => {
+      this.unauthorizedError.emit();
+    }
+
+    const investmentIdeasApiErrorsTracker = new InvestmentIdeasApiErrorsTracker(
+      this.apiErrorsTracker,
+      unauthorizedErrorCb
+    );
+
     this.viewModel$ =
       this.investmentIdeasService.getInvestmentIdeas({
-        orderBy: 'timestamp',
-        valid: true
-      }).pipe(
+          orderBy: 'timestamp',
+          valid: true
+        },
+        {
+          errorTracker: investmentIdeasApiErrorsTracker
+        }
+      ).pipe(
         map(i => {
           const ideas = i ?? [];
 
